@@ -1,0 +1,25 @@
+<block>
+  <name>Hsync</name>
+  <key>tempest_Hsync</key>
+  <category>[TEMPEST]</category>
+  <import>import tempest</import>
+  <make>tempest.Hsync($Htotal, $delay)</make>
+  <param>
+    <name>Horizontal pixels</name>
+    <key>Htotal</key>
+    <type>int</type>
+  </param>
+  <param>
+    <name>Delay</name>
+    <key>delay</key>
+    <type>int</type>
+  </param>
+  <sink>
+    <name>in</name>
+    <type>complex</type>
+  </sink>
+  <source>
+    <name>out</name>
+    <type>complex</type>
+  </source>
+</block>
