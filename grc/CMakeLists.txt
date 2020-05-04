@@ -18,5 +18,6 @@
 # Boston, MA 02110-1301, USA.
 
 install(FILES
-    tempest_Hsync.xml DESTINATION share/gnuradio/grc/blocks
+    tempest_Hsync.xml
+    tempest_sampling_synchronization.xml DESTINATION share/gnuradio/grc/blocks
 )

@@ -22,5 +22,6 @@
 ########################################################################
 install(FILES
     api.h
-    Hsync.h DESTINATION include/tempest
+    Hsync.h
+    sampling_synchronization.h DESTINATION include/tempest
 )

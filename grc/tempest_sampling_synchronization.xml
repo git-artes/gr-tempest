@@ -1,0 +1,20 @@
+<block>
+  <name>Sampling synchronization</name>
+  <key>tempest_sampling_synchronization</key>
+  <category>[TEMPEST]</category>
+  <import>import tempest</import>
+  <make>tempest.sampling_synchronization($Htotal)</make>
+  <param>
+    <name>Horizontal pixels</name>
+    <key>Htotal</key>
+    <type>int</type>
+  </param>
+  <sink>
+    <name>in</name>
+    <type>complex</type>
+  </sink>
+  <source>
+    <name>out</name>
+    <type>complex</type>
+  </source>
+</block>
