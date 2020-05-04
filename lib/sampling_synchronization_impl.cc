@@ -29,6 +29,7 @@
 #include <gnuradio/io_signature.h>
 #include "sampling_synchronization_impl.h"
 #include <volk/volk.h>
+#include <random>
 
 namespace gr {
   namespace tempest {
@@ -47,7 +48,9 @@ namespace gr {
       : gr::block("sampling_synchronization",
               gr::io_signature::make(1, 1, sizeof(gr_complex)),
               gr::io_signature::make(1, 1, sizeof(gr_complex))), 
-              d_inter(gr::filter::mmse_fir_interpolator_cc())
+              d_inter(gr::filter::mmse_fir_interpolator_cc()),
+              d_dist(0, 1),
+              d_gen(std::random_device{}())
     {
     
         set_relative_rate(1);
@@ -59,7 +62,7 @@ namespace gr {
         const int alignment_multiple = volk_get_alignment() / sizeof(gr_complex);
         set_alignment(std::max(1, alignment_multiple));
 
-        d_max_deviation = 0.01;
+        d_max_deviation = 0.10;
         d_max_deviation_px = (int)std::ceil(Htotal*d_max_deviation);
         d_samp_inc = 1; 
         d_samp_phase = 0; 
@@ -74,6 +77,8 @@ namespace gr {
             d_abs_historic_corr[i] = 0;
         }
         d_alpha_corr = 1e-6; 
+
+        d_proba_of_updating = 0.01;
     }
 
     /*
@@ -155,36 +160,34 @@ namespace gr {
 
         d_in_conj = new gr_complex[noutput_items]; 
         volk_32fc_conjugate_32fc(&d_in_conj[0], &in[0], noutput_items);
-        for (int i=0; i<noutput_items; i++){
-            // I calculate the correlation between the current sample and the past samples, 
-            // and update the historic values
-            volk_32fc_s32fc_multiply_32fc(&d_current_corr[0], &in[i+d_Htotal-d_max_deviation_px], d_in_conj[i]*d_alpha_corr, 2*d_max_deviation_px+1);
-            //for(int deviation = 0; deviation<2*d_max_deviation_px+1; deviation++){
-             //   d_historic_corr[deviation] = (1-d_alpha_corr)*d_historic_corr[deviation] + d_current_corr[deviation];
-            //}
-            volk_32fc_s32fc_multiply_32fc(&d_historic_corr[0], &d_historic_corr[0], (1-d_alpha_corr), 2*d_max_deviation_px+1);
-            volk_32fc_x2_add_32fc(&d_historic_corr[0], &d_historic_corr[0], &d_current_corr[0], 2*d_max_deviation_px+1);
+        
+        if(d_dist(d_gen)<d_proba_of_updating){
+            for (int i=0; i<noutput_items; i++){
+                // I calculate the correlation between the current sample and the past samples, 
+                // and update the historic values
+                volk_32fc_s32fc_multiply_32fc(&d_current_corr[0], &in[i+d_Htotal-d_max_deviation_px], d_in_conj[i]*d_alpha_corr, 2*d_max_deviation_px+1);
 
-            volk_32fc_magnitude_squared_32f(&d_abs_historic_corr[0], &d_historic_corr[0], 2*d_max_deviation_px+1);
+                volk_32fc_s32fc_multiply_32fc(&d_historic_corr[0], &d_historic_corr[0], (1-d_alpha_corr), 2*d_max_deviation_px+1);
+                volk_32fc_x2_add_32fc(&d_historic_corr[0], &d_historic_corr[0], &d_current_corr[0], 2*d_max_deviation_px+1);
 
-        //    
-        //    
+                volk_32fc_magnitude_squared_32f(&d_abs_historic_corr[0], &d_historic_corr[0], 2*d_max_deviation_px+1);
+
+                //    
+                //    
 
 
-            //for (int dev=0; dev<2*d_max_deviation_px+1; dev++)
-            //    printf("d_current_corr[%i]=%f+j %f\n", dev, std::real(d_current_corr[dev]), std::imag(d_current_corr[dev]));
-            update_interpolation_ratio(d_abs_historic_corr, 2*d_max_deviation_px+1);
-
+                //for (int dev=0; dev<2*d_max_deviation_px+1; dev++)
+                //    printf("d_current_corr[%i]=%f+j %f\n", dev, std::real(d_current_corr[dev]), std::imag(d_current_corr[dev]));
+                update_interpolation_ratio(d_abs_historic_corr, 2*d_max_deviation_px+1);
+            }
         }
+
+        printf("d_samp_inc: %f\n", d_samp_inc);
+
 
         int required_for_interpolation = 0;
         required_for_interpolation = interpolate_input(&in[0], &out[0],noutput_items);
         
-        //memcpy(&out[0],&in[0],noutput_items*sizeof(gr_complex));
-        //required_for_interpolation = noutput_items;
-
-        //printf("d_samp_inc: %f\n",d_samp_inc);
-
         // Tell runtime system how many input items we consumed on
         // each input stream.
         consume_each (required_for_interpolation);

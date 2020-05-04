@@ -26,6 +26,7 @@
 
 #include <tempest/sampling_synchronization.h>
 #include <gnuradio/filter/mmse_fir_interpolator_cc.h>
+#include <random>
 
 namespace gr {
   namespace tempest {
@@ -45,6 +46,13 @@ namespace gr {
          float d_samp_phase;
 
          float d_alpha_samp_inc;
+
+         // to accelerate the process, I'll only update the interpolation
+         // once every a random number of iterations with probability d_portion
+         std::uniform_real_distribution<float> d_dist;
+         std::minstd_rand d_gen;
+         float d_proba_of_updating;
+
 
         // the correlation
         gr_complex * d_historic_corr;
