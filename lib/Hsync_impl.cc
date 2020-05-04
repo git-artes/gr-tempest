@@ -1,22 +1,27 @@
 /* -*- c++ -*- */
 /* 
- * Copyright 2020 <+YOU OR YOUR COMPANY+>.
- * 
- * This is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 3, or (at your option)
- * any later version.
- * 
- * This software is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with this software; see the file COPYING.  If not, write to
- * the Free Software Foundation, Inc., 51 Franklin Street,
- * Boston, MA 02110-1301, USA.
- */
+* Copyright 2020
+*   Federico "Larroca" La Rocca <flarroca@fing.edu.uy>
+* 
+*   Instituto de Ingenieria Electrica, Facultad de Ingenieria,
+*   Universidad de la Republica, Uruguay.
+* 
+* 
+* This is free software; you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation; either version 3, or (at your option)
+* any later version.
+* 
+* This software is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+* 
+* You should have received a copy of the GNU General Public License
+* along with this software; see the file COPYING.  If not, write to
+* the Free Software Foundation, Inc., 51 Franklin Street,
+* Boston, MA 02110-1301, USA.
+*/
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"
@@ -50,7 +55,7 @@ namespace gr {
             set_relative_rate(1);
             d_delay = delay;
             d_Htotal = Htotal;
-            d_initial_acquisition = 0;
+            d_line_locked = 0;
 
             //VOLK alignment as recommended by GNU Radio's Manual. It has a similar effect 
             //than set_output_multiple(), thus we will generally get multiples of this value
@@ -59,7 +64,7 @@ namespace gr {
             set_alignment(std::max(1, alignment_multiple));
 
             //I'll generate complete lines per call to the block
-           set_output_multiple(d_Htotal);
+            set_output_multiple(d_Htotal);
 
             d_corr = new gr_complex[d_Htotal + d_delay];
             if (d_corr == NULL)
@@ -75,6 +80,11 @@ namespace gr {
             
             d_previous_line_start = 0;
             d_previous_peak_epsilon = 0;
+
+            d_consecutive_aligns = 0;
+            d_consecutive_aligns_threshold = 10;
+            d_shorter_range_size = 8;
+            d_max_aligns = d_Htotal/4;
 
         }
 
@@ -111,7 +121,7 @@ namespace gr {
                 volk_32f_index_max_16u(&peak_index, &datain[0], d_datain_length); 
 
                 if (datain_length>=d_Htotal){
-                    float min = datain[(peak_index + d_Htotal/2) % d_Htotal];
+                    float min = datain[(peak_index + d_delay/2) % d_Htotal];
                     if(d_avg_min==(float)INFINITY){
                         d_avg_min = min;
                     }
@@ -146,15 +156,17 @@ namespace gr {
                 //happen with border that by chance are at the same distance as the d_delay. In this
                 //case we will ignore the result of this peak_process, as we don't know whether samples 
                 //were lost (and the line has actually changed). 
-                for(int i=(peak_index % d_delay); i<datain_length; i=i+d_delay){
-                    if((datain[ i ] > d_avg_max - d_threshold_factor_rise*(d_avg_max-d_avg_min)) && i!=peak_index  ){
-                        // i.e. it could also be a peak according to our criteria, we thus declare this a failure
-                        success = false;
-                    }
+                //for(int i=(peak_index % d_delay); i<datain_length; i=i+d_delay){
+                //    if((datain[ i ] > d_avg_max - d_threshold_factor_rise*(d_avg_max-d_avg_min)) && i!=peak_index  ){
+                //        // i.e. it could also be a peak according to our criteria, we thus declare this a failure
+                //        success = false;
+                //    }
+                //}
+
+
+                if (success){
+                    *peak_pos = peak_index;
                 }
-
-
-                *peak_pos = peak_index;
                 return (success);
 
             }
@@ -189,7 +201,15 @@ namespace gr {
                     // Calculate frequency correction
                     *peak_epsilon = fast_atan2f(d_corr[peak]);
                 }
+                
+                //found_peak = peak_detect_process(&d_abs_corr[0], (lookup_start - lookup_stop), &peak);
+                //*max_corr_pos = peak + lookup_stop;
+
+                //// Calculate frequency correction
+                //*peak_epsilon = fast_atan2f(d_corr[peak]);
+                
                 return (found_peak);
+
 
            }
 
@@ -240,38 +260,59 @@ namespace gr {
 
                 //printf("is_unaligned():%s\n",is_unaligned() ? "True":"False");
                 //
-                //////////////////////
-                // NOW I'M TESTING THE SIMPEST ALGORITHM
-                //////////////////////
-                //d_initial_acquisition = false;
 
                 for (int line = 0; line < noutput_items/d_Htotal ; line++) {
-                    if (!d_initial_acquisition)
+                    //////////////////////
+                    // NOW I'M TESTING THE SIMPEST ALGORITHM
+                    //////////////////////
+                    d_line_locked = false;
+                    //printf("d_consecutive_aligns: %i\n",d_consecutive_aligns);      
+                    if (!d_line_locked)
                     {
                         // If we are here it means that we have no idea where the max_corr may be. We thus 
                         // search it thoroughly
-                        d_initial_acquisition = max_corr_sync(&in[d_consumed], d_Htotal, 0, &d_line_start, &d_peak_epsilon);
-                        d_line_found = d_initial_acquisition; 
+
+                        d_line_found = max_corr_sync(&in[d_consumed], d_Htotal+d_delay, d_delay, &d_line_start, &d_peak_epsilon);
+                        d_line_locked = d_line_found; 
                         
-                        printf("d_initial_acquisition (no idea): %i\n",d_initial_acquisition);      
+                        printf("d_line_locked (no idea): %i\n",d_line_locked);
                         printf("d_line_start (no idea): %i\n",d_line_start);      
                     }
                     else
                     {
-                        //If we are here it means that in the previous iteration we found the line. We
+                        //If we are here it means that we are sure where the line is, and 
                         //now thus only search near it. 
-                        d_line_found = max_corr_sync(&in[d_consumed], d_line_start + 8, std::max(d_line_start - 8, 0), &d_line_start, &d_peak_epsilon);
+
+                        
+                        d_line_found = max_corr_sync(&in[d_consumed], d_line_start + d_shorter_range_size, std::max(d_line_start - d_shorter_range_size, 0), &d_line_start, &d_peak_epsilon);
+                        if(!d_line_found){
                         printf("d_line_found (search near): %i\n",d_line_found);      
                         printf("d_line_start (search near): %i\n",d_line_start);      
-                        if ( !d_line_found )
+                        }
+                        
+                        if (d_line_found)
                         {
-                            // We may have not found the max corr because the smaller search range was too small (rare, but possible, 
-                            // in particular when sampling time error are present). We thus re-try with a bigger search range and 
-                            // d_line_start. 
-                            d_line_found = max_corr_sync(&in[d_consumed], d_Htotal, 0, &d_line_start, &d_peak_epsilon );
+                            d_consecutive_aligns = std::min(d_max_aligns,d_consecutive_aligns + 1);
+                        }
+                        else
+                        {
+                            d_consecutive_aligns = std::max(0,d_consecutive_aligns - 1);
+                            // We may have not found the max corr because the smaller search range was too small. It may 
+                            // happen either because we lost samples (in which case we should search for the line more 
+                            // thoroughly), or because in this particular line the correlation signal was too small.
+                            // To avoid confusing these two, we will only change the line position when several of 
+                            // these situations happen in a row. 
 
-                            printf("d_line_found (failed near): %i\n",d_line_found);      
-                            printf("d_line_start (failed near): %i\n",d_line_start);      
+                            if(d_consecutive_aligns<d_consecutive_aligns_threshold){ 
+                                d_line_found = max_corr_sync(&in[d_consumed], d_Htotal+d_delay, d_delay, &d_line_start, &d_peak_epsilon );
+                                
+                                // since we are no longer sure where the line starts, I change this to false
+                                d_line_locked = false;
+                                d_consecutive_aligns = 0;
+
+                                printf("d_line_found (failed near): %i\n",d_line_found);      
+                                printf("d_line_start (failed near): %i\n",d_line_start);      
+                            }
                         }
                     }
 
@@ -279,7 +320,7 @@ namespace gr {
                     {
                         //printf("d_line_start: %i\n",d_line_start);      
 
-                        //low = d_cp_start + d_cp_start_offset - d_fft_length + 1 ;
+                       // printf("************[d_line_found] d_line_start (used): %i\n",d_line_start);      
                         derotate(&in[d_consumed+d_line_start], &out[line*d_Htotal]);
 
                         d_previous_line_start = d_line_start;
@@ -290,10 +331,11 @@ namespace gr {
                     }
                     else
                     {
-                        d_initial_acquisition = false;
+                        //d_line_locked = false;
 
                         // as we could not establish the line begin, I'll use the value estimated on the 
                         // previous iteration
+                        printf("************[!d_line_found] d_line_start (used): %i\n",d_previous_line_start);      
                         derotate(&in[d_consumed+d_previous_line_start], &out[line*d_Htotal]);
                         d_out = d_out + d_Htotal; 
 

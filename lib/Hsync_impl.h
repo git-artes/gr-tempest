@@ -37,8 +37,15 @@ namespace gr {
          float d_peak_epsilon;
          float d_previous_peak_epsilon;
 
+         // the number of consecutive aligns in shorter ranges (to check whether we are locked)
+         int d_consecutive_aligns;
+         int d_consecutive_aligns_threshold;
+         int d_shorter_range_size;
+         int d_max_aligns;
+
          int d_line_found; 
-         int d_initial_acquisition;
+         // true means I'm sure where the line may be
+         int d_line_locked;
          int d_out;
          int d_consumed;
 
