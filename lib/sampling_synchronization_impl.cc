@@ -64,7 +64,7 @@ namespace gr {
 
         d_max_deviation = 0.10;
         d_max_deviation_px = (int)std::ceil(Htotal*d_max_deviation);
-        d_samp_inc = 1; 
+        d_samp_inc_remainder = 0;
         d_samp_phase = 0; 
         d_alpha_samp_inc = 1e-3;
 
@@ -100,7 +100,7 @@ namespace gr {
            for (int i = 0; i < ninputs; i++)
            {
                //ninput_items_required[i] = ( d_cp_length + d_fft_length ) * (noutput_items + 1) ;
-               ninput_items_required[i] = (int)ceil((noutput_items + 1) * d_samp_inc) + d_inter.ntaps() + d_Htotal+d_max_deviation_px ;
+               ninput_items_required[i] = (int)ceil((noutput_items + 1) * (1+d_samp_inc_remainder)) + d_inter.ntaps() + d_Htotal+d_max_deviation_px ;
            }
 
     }
@@ -117,15 +117,15 @@ namespace gr {
             volk_32f_index_max_16u(&peak_index, datain, datain_length); 
 
             // the new interpolation ratio is how far the peak is from d_Htotal.
-            float new_interpolation_ratio = ((float)(peak_index-d_max_deviation_px + d_Htotal))/(float)d_Htotal;
+            d_new_interpolation_ratio = ((float)(peak_index-d_max_deviation_px + d_Htotal))/(float)d_Htotal;
             //for (int i=0; i<datain_length; i++)
             //    printf("datain[%i]=%f\n", i, datain[i]);
             //printf("peak_index: %i\n",peak_index);
-            //printf("new_interpolation_ratio: %f\n",new_interpolation_ratio);
-            //printf("d_samp_inc: %f\n",d_samp_inc);
+            //printf("new_interpolation_ratio: %f\n",d_new_interpolation_ratio);
+            //printf("d_samp_inc: %.20f\n",d_samp_inc_remainder+1);
 
-            d_samp_inc = (1-d_alpha_samp_inc)*d_samp_inc + d_alpha_samp_inc*new_interpolation_ratio;
-
+            //d_samp_inc = (1-d_alpha_samp_inc)*d_samp_inc - d_alpha_samp_inc* d_new_interpolation_ratio;
+            d_samp_inc_remainder = d_samp_inc_remainder - d_alpha_samp_inc*(d_samp_inc_remainder+1 - d_new_interpolation_ratio);
     }
 
     int sampling_synchronization_impl::interpolate_input(const gr_complex * in, gr_complex * out, int size){
@@ -137,7 +137,7 @@ namespace gr {
         while(oo < size) {
             out[oo++] = d_inter.interpolate(&in[ii], d_samp_phase);
 
-            s = d_samp_phase + d_samp_inc;
+            s = d_samp_phase + d_samp_inc_remainder + 1;
             f = floor(s);
             incr = (int)f;
             d_samp_phase = s - f;
@@ -182,7 +182,7 @@ namespace gr {
             }
         }
 
-        printf("d_samp_inc: %f\n", d_samp_inc);
+        //printf("d_samp_inc: %f\n", d_samp_inc);
 
 
         int required_for_interpolation = 0;
