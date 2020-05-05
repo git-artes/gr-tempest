@@ -42,7 +42,7 @@ namespace gr {
          // the maximum number of pixels I'll search for the peak in percentaje
          float d_max_deviation; 
          // the estimated interpolation I'd have to use to have a correct sampling - 1
-         float d_samp_inc_remainder;
+         double d_samp_inc_remainder;
          float d_samp_phase;
          float d_new_interpolation_ratio;
 
