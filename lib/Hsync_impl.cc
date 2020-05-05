@@ -78,13 +78,11 @@ namespace gr {
             // peak_detect_init(0.8, 0.9, 30, 0.9);
             peak_detect_init(0.5, 0.9);
             
-            d_previous_line_start = 0;
-            d_previous_peak_epsilon = 0;
 
             d_consecutive_aligns = 0;
             d_consecutive_aligns_threshold = 10;
-            d_shorter_range_size = 8;
-            d_max_aligns = d_Htotal/4;
+            d_shorter_range_size = d_Htotal/50;
+            d_max_aligns = d_Htotal/10;
 
         }
 
@@ -94,6 +92,7 @@ namespace gr {
         Hsync_impl::~Hsync_impl()
         {
             delete [] d_corr;
+            delete [] d_abs_corr;
         }
 
         void 
@@ -172,7 +171,7 @@ namespace gr {
             }
 
         int
-            Hsync_impl::max_corr_sync(const gr_complex * in, int lookup_start, int lookup_stop, int * max_corr_pos, float * peak_epsilon)
+            Hsync_impl::max_corr_sync(const gr_complex * in, int lookup_start, int lookup_stop, int * max_corr_pos)
             {
 
                 assert(lookup_start >= lookup_stop);
@@ -197,38 +196,17 @@ namespace gr {
                 if ((found_peak = peak_detect_process(&d_abs_corr[0], (lookup_start - lookup_stop), &peak)))
                 {
                     *max_corr_pos = peak + lookup_stop;
-
-                    // Calculate frequency correction
-                    *peak_epsilon = fast_atan2f(d_corr[peak]);
                 }
                 
                 //found_peak = peak_detect_process(&d_abs_corr[0], (lookup_start - lookup_stop), &peak);
                 //*max_corr_pos = peak + lookup_stop;
 
-                //// Calculate frequency correction
-                //*peak_epsilon = fast_atan2f(d_corr[peak]);
                 
                 return (found_peak);
 
 
            }
 
-        // Derotates the signal 
-        // TODO implement it?
-        void 
-            Hsync_impl::derotate(const gr_complex * in, gr_complex * out)
-            {
-                memcpy(out, in, d_Htotal*sizeof(gr_complex));
-                //double sensitivity = (double)(-1) / (double)d_fft_length;
-                //d_phaseinc = sensitivity * d_peak_epsilon;
-
-                //gr_complex phase_increment = gr_complex(std::cos(d_phaseinc), std::sin(d_phaseinc)); 
-                //gr_complex phase_current = gr_complex(std::cos(d_phase), std::sin(d_phase)); 
-
-                //volk_32fc_s32fc_x2_rotator_32fc(&out[0], &in[0], phase_increment, &phase_current, d_fft_length) ; 
-                //d_phase = std::arg(phase_current); 
-                //d_phase = fmod(d_phase + d_phaseinc*d_cp_length, (float)2*M_PI);
-           }
 
         void
             Hsync_impl::forecast (int noutput_items, gr_vector_int &ninput_items_required)
@@ -265,18 +243,18 @@ namespace gr {
                     //////////////////////
                     // NOW I'M TESTING THE SIMPEST ALGORITHM
                     //////////////////////
-                    d_line_locked = false;
+                    //d_line_locked = false;
                     //printf("d_consecutive_aligns: %i\n",d_consecutive_aligns);      
                     if (!d_line_locked)
                     {
                         // If we are here it means that we have no idea where the max_corr may be. We thus 
                         // search it thoroughly
 
-                        d_line_found = max_corr_sync(&in[d_consumed], d_Htotal+d_delay, d_delay, &d_line_start, &d_peak_epsilon);
+                        d_line_found = max_corr_sync(&in[d_consumed], d_Htotal+d_delay, d_delay, &d_line_start);
                         d_line_locked = d_line_found; 
                         
-                        printf("d_line_locked (no idea): %i\n",d_line_locked);
-                        printf("d_line_start (no idea): %i\n",d_line_start);      
+                        //printf("d_line_locked (no idea): %i\n",d_line_locked);
+                        //printf("d_line_start (no idea): %i\n",d_line_start);      
                     }
                     else
                     {
@@ -284,10 +262,10 @@ namespace gr {
                         //now thus only search near it. 
 
                         
-                        d_line_found = max_corr_sync(&in[d_consumed], d_line_start + d_shorter_range_size, std::max(d_line_start - d_shorter_range_size, 0), &d_line_start, &d_peak_epsilon);
+                        d_line_found = max_corr_sync(&in[d_consumed], d_line_start + d_shorter_range_size, std::max(d_line_start - d_shorter_range_size, 0), &d_line_start);
                         if(!d_line_found){
-                        printf("d_line_found (search near): %i\n",d_line_found);      
-                        printf("d_line_start (search near): %i\n",d_line_start);      
+                        //printf("d_line_found (search near): %i\n",d_line_found);      
+                        //printf("d_line_start (search near): %i\n",d_line_start);      
                         }
                         
                         if (d_line_found)
@@ -304,52 +282,23 @@ namespace gr {
                             // these situations happen in a row. 
 
                             if(d_consecutive_aligns<d_consecutive_aligns_threshold){ 
-                                d_line_found = max_corr_sync(&in[d_consumed], d_Htotal+d_delay, d_delay, &d_line_start, &d_peak_epsilon );
+                                d_line_found = max_corr_sync(&in[d_consumed], d_Htotal+d_delay, d_delay, &d_line_start );
                                 
                                 // since we are no longer sure where the line starts, I change this to false
                                 d_line_locked = false;
                                 d_consecutive_aligns = 0;
 
-                                printf("d_line_found (failed near): %i\n",d_line_found);      
-                                printf("d_line_start (failed near): %i\n",d_line_start);      
                             }
                         }
                     }
 
-                    if ( d_line_found )
-                    {
-                        //printf("d_line_start: %i\n",d_line_start);      
 
-                       // printf("************[d_line_found] d_line_start (used): %i\n",d_line_start);      
-                        derotate(&in[d_consumed+d_line_start], &out[line*d_Htotal]);
+                    memcpy(&out[line*d_Htotal], &in[d_consumed+d_line_start], d_Htotal*sizeof(gr_complex));
 
-                        d_previous_line_start = d_line_start;
-                        d_previous_peak_epsilon = d_peak_epsilon;
+                    d_out = d_out + d_Htotal; 
 
-                        d_out = d_out + d_Htotal; 
-
-                    }
-                    else
-                    {
-                        //d_line_locked = false;
-
-                        // as we could not establish the line begin, I'll use the value estimated on the 
-                        // previous iteration
-                        printf("************[!d_line_found] d_line_start (used): %i\n",d_previous_line_start);      
-                        derotate(&in[d_consumed+d_previous_line_start], &out[line*d_Htotal]);
-                        d_out = d_out + d_Htotal; 
-
-                        //// Restart with a half number so that we'll not endup with the same situation
-                        //// This will prevent peak_detect to not detect anything
-                        //d_consumed += (d_Htotal)/2;
-                        //// Tell runtime system how many output items we produced.
-                        
-                        d_consumed += d_Htotal;
-                        consume_each(d_consumed);
-                        return (d_out);
-                    }
-
-                    d_consumed += d_Htotal;
+                    d_consumed += std::max(d_line_start,1);
+                    //d_consumed += d_Htotal;
                 }
 
                 // Tell runtime system how many input items we consumed on

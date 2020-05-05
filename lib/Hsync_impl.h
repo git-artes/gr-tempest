@@ -33,9 +33,6 @@ namespace gr {
          int d_Htotal;
 
          int d_line_start;
-         int d_previous_line_start;
-         float d_peak_epsilon;
-         float d_previous_peak_epsilon;
 
          // the number of consecutive aligns in shorter ranges (to check whether we are locked)
          int d_consecutive_aligns;
@@ -85,14 +82,7 @@ namespace gr {
        * correctly found or not. Now  the return value is used (either true or false). 
        *
        */
-      int max_corr_sync(const gr_complex * in, int lookup_start, int lookup_stop, int * max_corr_pos, float * peak_epsilon);
-
-      /*!
-       * \brief Using the vector derot calculated by ml_sync (an exponential modulated with minus the estimated frequency error), 
-       * this method simply multiplies it by the input and saves it in the output. 
-       */
-      void derotate(const gr_complex * in, gr_complex *out);
-
+      int max_corr_sync(const gr_complex * in, int lookup_start, int lookup_stop, int * max_corr_pos);
 
 
      public:

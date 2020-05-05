@@ -43,7 +43,7 @@ namespace gr {
          float d_max_deviation; 
          // the estimated interpolation I'd have to use to have a correct sampling - 1
          double d_samp_inc_remainder;
-         float d_samp_phase;
+         double d_samp_phase;
          float d_new_interpolation_ratio;
 
          float d_alpha_samp_inc;
