@@ -28,6 +28,7 @@ link_directories(${Boost_LIBRARY_DIRS})
 list(APPEND tempest_sources
     Hsync_impl.cc
     sampling_synchronization_impl.cc
+    Vsync_impl.cc
 )
 
 set(tempest_sources "${tempest_sources}" PARENT_SCOPE)

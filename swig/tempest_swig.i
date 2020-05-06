@@ -10,6 +10,7 @@
 %{
 #include "tempest/Hsync.h"
 #include "tempest/sampling_synchronization.h"
+#include "tempest/Vsync.h"
 %}
 
 
@@ -17,3 +18,5 @@
 GR_SWIG_BLOCK_MAGIC2(tempest, Hsync);
 %include "tempest/sampling_synchronization.h"
 GR_SWIG_BLOCK_MAGIC2(tempest, sampling_synchronization);
+%include "tempest/Vsync.h"
+GR_SWIG_BLOCK_MAGIC2(tempest, Vsync);
