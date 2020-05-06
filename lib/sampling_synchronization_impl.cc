@@ -105,6 +105,12 @@ namespace gr {
 
     }
 
+    void sampling_synchronization_impl::set_Htotal(int Htotal){
+        d_Htotal = Htotal;
+        d_max_deviation_px = (int)std::ceil(Htotal*d_max_deviation);
+    }
+
+
     void sampling_synchronization_impl::update_interpolation_ratio(const float * datain, const int datain_length){
 
 #if VOLK_GT_122

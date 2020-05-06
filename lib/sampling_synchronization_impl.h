@@ -73,6 +73,8 @@ namespace gr {
       sampling_synchronization_impl(int Htotal);
       ~sampling_synchronization_impl();
 
+      void set_Htotal(int Htotal);
+
       // Where all the action really happens
       void forecast (int noutput_items, gr_vector_int &ninput_items_required);
 

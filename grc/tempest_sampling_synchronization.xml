@@ -4,6 +4,7 @@
   <category>[TEMPEST]</category>
   <import>import tempest</import>
   <make>tempest.sampling_synchronization($Htotal)</make>
+  <callback>set_Htotal($Htotal)</callback>
   <param>
     <name>Horizontal pixels</name>
     <key>Htotal</key>

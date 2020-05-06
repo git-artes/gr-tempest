@@ -49,6 +49,8 @@ namespace gr {
        * creating new instances.
        */
       static sptr make(int Htotal);
+
+      virtual void set_Htotal(int Htotal) = 0;
     };
 
   } // namespace tempest

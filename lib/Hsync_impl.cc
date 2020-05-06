@@ -53,9 +53,7 @@ namespace gr {
                     gr::io_signature::make(1, 1, sizeof(gr_complex)))
         {
             set_relative_rate(1);
-            d_delay = delay;
-            d_Htotal = Htotal;
-            d_line_locked = 0;
+            set_Htotal_and_delay(Htotal, delay);
 
             //VOLK alignment as recommended by GNU Radio's Manual. It has a similar effect 
             //than set_output_multiple(), thus we will generally get multiples of this value
@@ -63,26 +61,12 @@ namespace gr {
             const int alignment_multiple = volk_get_alignment() / sizeof(gr_complex);
             set_alignment(std::max(1, alignment_multiple));
 
-            //I'll generate complete lines per call to the block
-            set_output_multiple(d_Htotal);
-
-            d_corr = new gr_complex[d_Htotal + d_delay];
-            if (d_corr == NULL)
-                std::cout << "cannot allocate memory: d_corr" << std::endl;
-            d_abs_corr = new float[d_Htotal + d_delay];
-            if (d_abs_corr == NULL)
-                std::cout << "cannot allocate memory: d_abs_corr" << std::endl;
-            
+           
            //d_peak_epsilon = 0;
             //peak_detect_init(0.2, 0.25, 30, 0.0005);
             // peak_detect_init(0.8, 0.9, 30, 0.9);
             peak_detect_init(0.5, 0.9);
             
-
-            d_consecutive_aligns = 0;
-            d_consecutive_aligns_threshold = 10;
-            d_shorter_range_size = d_Htotal/50;
-            d_max_aligns = d_Htotal/10;
 
         }
 
@@ -93,6 +77,31 @@ namespace gr {
         {
             delete [] d_corr;
             delete [] d_abs_corr;
+        }
+
+        void Hsync_impl::set_Htotal_and_delay(int Htotal, int delay){
+
+            d_delay = delay;
+            d_Htotal = Htotal;
+            
+            d_consecutive_aligns = 0;
+            d_line_locked = 0;
+
+            //I'll generate complete lines per call to the block
+            set_output_multiple(d_Htotal);
+
+            d_corr = new gr_complex[d_Htotal + d_delay];
+            if (d_corr == NULL)
+                std::cout << "cannot allocate memory: d_corr" << std::endl;
+            d_abs_corr = new float[d_Htotal + d_delay];
+            if (d_abs_corr == NULL)
+                std::cout << "cannot allocate memory: d_abs_corr" << std::endl;
+ 
+            d_consecutive_aligns = 0;
+            d_consecutive_aligns_threshold = 10;
+            d_shorter_range_size = d_Htotal/50;
+            d_max_aligns = d_Htotal/10;
+ 
         }
 
         void 

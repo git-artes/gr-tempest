@@ -4,6 +4,7 @@
   <category>[TEMPEST]</category>
   <import>import tempest</import>
   <make>tempest.Hsync($Htotal, $delay)</make>
+  <callback>set_Htotal_and_delay($Htotal,$delay)</callback>
   <param>
     <name>Horizontal pixels</name>
     <key>Htotal</key>
