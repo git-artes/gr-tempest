@@ -93,14 +93,15 @@ namespace gr {
            
             if (delay != old) { 
                 d_delay = delay;
-                set_history(d_delay+1);
-                declare_sample_delay(history() - 1);
-                d_delta += d_delay - old;
+            //    set_history(d_delay+1);
+            //    declare_sample_delay(history() - 1);
+            //    d_delta += d_delay - old;
             }
 
         }
         
         int Vsync_impl::get_delay(){
+            printf("d_delay: %i\n",d_delay);
             return d_delay;
         }
 
@@ -147,7 +148,7 @@ namespace gr {
 #endif
                 volk_32f_index_max_16u(&peak_index, &d_energy_avg[0], d_datain_length); 
 
-                set_delay(peak_index*d_Htotal);
+                set_delay(peak_index);
 
 
                 ////////////////////////////////

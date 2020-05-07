@@ -43,6 +43,8 @@ namespace gr {
          float d_max_deviation; 
          // the estimated interpolation I'd have to use to have a correct sampling - 1
          double d_samp_inc_remainder;
+         // a manual correction assigned by the user at run-time
+         double d_samp_inc_correction; 
          double d_samp_phase;
          float d_new_interpolation_ratio;
 
@@ -70,10 +72,12 @@ namespace gr {
         int interpolate_input(const gr_complex * in, gr_complex * out, int size);
 
      public:
-      sampling_synchronization_impl(int Htotal);
+      sampling_synchronization_impl(int Htotal, double manual_correction);
       ~sampling_synchronization_impl();
 
       void set_Htotal(int Htotal);
+
+      void set_manual_correction(double correction);
 
       // Where all the action really happens
       void forecast (int noutput_items, gr_vector_int &ninput_items_required);

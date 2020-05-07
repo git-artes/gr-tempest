@@ -35,16 +35,16 @@ namespace gr {
   namespace tempest {
 
     sampling_synchronization::sptr
-    sampling_synchronization::make(int Htotal)
+    sampling_synchronization::make(int Htotal, double manual_correction)
     {
       return gnuradio::get_initial_sptr
-        (new sampling_synchronization_impl(Htotal));
+        (new sampling_synchronization_impl(Htotal, manual_correction));
     }
 
     /*
      * The private constructor
      */
-    sampling_synchronization_impl::sampling_synchronization_impl(int Htotal)
+    sampling_synchronization_impl::sampling_synchronization_impl(int Htotal, double manual_correction)
       : gr::block("sampling_synchronization",
               gr::io_signature::make(1, 1, sizeof(gr_complex)),
               gr::io_signature::make(1, 1, sizeof(gr_complex))), 
@@ -65,6 +65,7 @@ namespace gr {
         d_max_deviation = 0.10;
         d_max_deviation_px = (int)std::ceil(Htotal*d_max_deviation);
         d_samp_inc_remainder = 0;
+        d_samp_inc_correction = manual_correction;
         d_samp_phase = 0; 
         d_alpha_samp_inc = 1e-3;
 
@@ -109,7 +110,12 @@ namespace gr {
         d_Htotal = Htotal;
         d_max_deviation_px = (int)std::ceil(Htotal*d_max_deviation);
     }
+    
+    void sampling_synchronization_impl::set_manual_correction(double correction){
 
+        d_samp_inc_correction = correction;
+
+    }
 
     void sampling_synchronization_impl::update_interpolation_ratio(const float * datain, const int datain_length){
 
@@ -143,7 +149,7 @@ namespace gr {
         while(oo < size) {
             out[oo++] = d_inter.interpolate(&in[ii], d_samp_phase);
 
-            s = d_samp_phase + d_samp_inc_remainder + 1;
+            s = d_samp_phase + d_samp_inc_remainder + d_samp_inc_correction + 1;
             f = floor(s);
             incr = (int)f;
             d_samp_phase = s - f;
