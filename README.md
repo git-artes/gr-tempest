@@ -2,6 +2,8 @@
 
 **An implementation of TEMPEST en GNU Radio.** 
 
+![Screenshot of simulation](https://iie.fing.edu.uy/investigacion/grupos/artes/wp-content/uploads/sites/13/2020/05/captura_tempest.png)
+
 **Status:** The examples folder contains several examples that work with recordings. Until the end of the quarantine I won't be able to test it on hardware, but I'm confident it should work. Feedback is more than welcome!
 
 **If you find the code useful, please consider starring the repository. This will help us get funding to support the project.**
@@ -17,15 +19,15 @@ For a technical explanation you may read [Marinov's thesis](https://github.com/m
 See the examples folder for working examples. Recordings may be obtained from https://iie.fing.edu.uy/investigacion/grupos/artes/es/proyectos/espionaje-por-emisiones-electromagneticas/ (in spanish).
 
 There are four examples: 
-- *manual_simulated_tempest_example.grc*. This is a simulation of TEMPEST and the signal you are actually spying. It helps to understand the parameters involved and the resulting signal's problems. Both the channel's and the synchronization algorithms' parameters may be modified on the fly from the interface. The image source was mostly copied from [gr-paint's](https://github.com/drmpeg/gr-paint).
-- *manual_tempest_example.grc*. Feed a recording or the USRP pointing to a VGA cable and you should see an image! In this example, all parameters of the synchronization algorithm are manually set, and sampling errors are corrected. Moreover, the fine sampling correction should be modified until a stable image is obtained, and horizontal and vertical alignment are also changeable. 
+- *manual_simulated_tempest_example.grc*. This is a simulation of TEMPEST and the signal you are actually spying. It helps to understand the parameters involved and the resulting signal's problems. Both the channel's and the synchronization algorithms' parameters may be modified on the fly from the interface. The image source was mostly copied from [gr-paint's](https://github.com/drmpeg/gr-paint) and any image file readable by PIL may be used (and in any size, as the block reshapes it to the size indicated in the block). 
+- *manual_tempest_example.grc*. Feed a recording or the USRP pointing to a VGA cable and you should see an image! However, in this example all parameters of the VGA signal are manually set (and sampling errors are corrected based on these parameters). Moreover, the fine sampling correction should be modified until a stable image is obtained (and horizontal and vertical alignment are also changeable). 
 - *semi_automatic_tempest_example.grc*. Same as above, but the resolutions are obtained from a list of the most typical resolutions available. I've obtained the list from TempestSDR (although the command `xrandr --verbose` should produce the list too). 
 - *automatic_tempest_example.grc*. Same as above, but the horizontal line is synchronized (thus, only manual vertical alignment is necessary). To achieve this, you should estimate the number of pixels that separate two vertical lines that always appear in the image (due to blanking). Note however that the algorithm may be unstable. In that case, fall back to *semi_automatic_tempest_example.grc*. 
 
 Limitations: 
 - A vertical alignment block is under testing, although it still does not work. 
 - The spied image is shown in a *Video SDL Sink*, which has its limitations (such as dynamically setting its dimensions). 
-- The synchronization blocks may be heavy on the PC. This may be alleviated by properly configuring VOLK as explained below. Moreover, if CPU is still a problem with the *sampling synchronization* block, you may try reducing the variable `d_proba_of_updating` and/or `d_max_deviation` in *lib/sampling_synchronization_impl.cc*.
+- The synchronization blocks may be heavy on the PC. This may be alleviated by properly configuring VOLK as explained below. Moreover, if CPU is still a problem with the *sampling synchronization* block, you may try reducing the variable `d_proba_of_updating` and/or `d_max_deviation` in *lib/sampling_synchronization_impl.cc* (and using only *manual_simulated_tempest_example.grc*).
 
 **Requirements**: GNU Radio 3.7, either compiled from source or installed with a binary (see below if this this is your case for further requirements). A 3.8-compatible version coming soon. 
 
