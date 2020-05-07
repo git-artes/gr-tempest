@@ -6,9 +6,9 @@
 
 **If you find the code useful, please consider starring the repository. This will help us get funding to support the project.**
 
-TEMPEST (or [Van Eck Phreaking](https://en.wikipedia.org/wiki/Van_Eck_phreaking)) is a technique to eavesdrop video monitors by receiving the electromagnetic signal emitted by the VGA cable and connectors (although other targets are possible, such as keyboards, for which the same term is generally used, see [Wikipedia/Tempest](https://en.wikipedia.org/wiki/Tempest_(codename)). 
+TEMPEST (or [Van Eck Phreaking](https://en.wikipedia.org/wiki/Van_Eck_phreaking)) is a technique to eavesdrop video monitors by receiving the electromagnetic signal emitted by the VGA cable and connectors (although other targets are possible, such as keyboards, for which the same term is generally used, see [Wikipedia/Tempest](https://en.wikipedia.org/wiki/Tempest_(codename))). 
 
-This is basically a re-implementation of Martin Marinov's excelent TempestSDR in GNU Radio (see https://github.com/martinmarinov/TempestSDR). The reason is that I felt it may be easier to maintain and extend. Note however that the basic ideas were imitated, but the synchronization algorithms are different, and some functionalities (particularly the GUI) are missing. 
+This is basically a re-implementation of Martin Marinov's excelent TempestSDR in GNU Radio (see https://github.com/martinmarinov/TempestSDR). The reason is that I felt it may be easier to maintain and extend. Note however that the basic ideas were imitated, but the synchronization algorithms are different, and some functionalities (particularly in the GUI) are missing. 
 
 For a technical explanation you may read [Marinov's thesis](https://github.com/martinmarinov/TempestSDR/raw/master/documentation/acs-dissertation.pdf) or [Pablo Menoni's thesis](https://iie.fing.edu.uy/publicaciones/2018/Men18/) (in spanish).
 
@@ -18,14 +18,14 @@ See the examples folder for working examples. Recordings may be obtained from ht
 
 There are four examples: 
 - *manual_simulated_tempest_example.grc*. This is a simulation of TEMPEST and the signal you are actually spying. It helps to understand the parameters involved and the resulting signal's problems. Both the channel's and the synchronization algorithms' parameters may be modified on the fly from the interface. The image source was mostly copied from [gr-paint's](https://github.com/drmpeg/gr-paint).
-- *manual_tempest_example.grc*. Feed a recording or the USRP pointing to a VGA cable and you should see an image! In this example, all parameters of the synchronization algorithm are changeable, although sampling errors are corrected. Moreover, the fine sampling correction should be modified until a stable image is obtained, and horizontal and vertical alignment are also changeable. 
-- *semi_automatic_tempest_example.grc*. Same as above, but the resolutions are obtained from the most typical resolutions available. I've obtained the list from TempestSDR (although the command `xrandr --verbose` should produce the list too. 
-- *automatic_tempest_example.grc*. Same as above, but the horizontal line is synchronized (thus, only manual vertical alignment is necessary). To achieve this, should estimate the number of pixels that separate two vertical lines that always appear in the image (due to blanking). Note however that the algorithm may be unstable. In that case, fall back to *semi_automatic_tempest_example.grc*. 
+- *manual_tempest_example.grc*. Feed a recording or the USRP pointing to a VGA cable and you should see an image! In this example, all parameters of the synchronization algorithm are manually set, and sampling errors are corrected. Moreover, the fine sampling correction should be modified until a stable image is obtained, and horizontal and vertical alignment are also changeable. 
+- *semi_automatic_tempest_example.grc*. Same as above, but the resolutions are obtained from a list of the most typical resolutions available. I've obtained the list from TempestSDR (although the command `xrandr --verbose` should produce the list too). 
+- *automatic_tempest_example.grc*. Same as above, but the horizontal line is synchronized (thus, only manual vertical alignment is necessary). To achieve this, you should estimate the number of pixels that separate two vertical lines that always appear in the image (due to blanking). Note however that the algorithm may be unstable. In that case, fall back to *semi_automatic_tempest_example.grc*. 
 
 Limitations: 
 - A vertical alignment block is under testing, although it still does not work. 
 - The spied image is shown in a *Video SDL Sink*, which has its limitations (such as dynamically setting its dimensions). 
-- The synchronization blocks may be heavy on the PC. This may be alleviated by properly configuring VOLK as explained below. Moreover, if CPU is still a problem with the *sampling synchronization* block, you may try reducing the variable `d_proba_of_updating` and/or `d_max_deviation`.
+- The synchronization blocks may be heavy on the PC. This may be alleviated by properly configuring VOLK as explained below. Moreover, if CPU is still a problem with the *sampling synchronization* block, you may try reducing the variable `d_proba_of_updating` and/or `d_max_deviation` in *lib/sampling_synchronization_impl.cc*.
 
 **Requirements**: GNU Radio 3.7, either compiled from source or installed with a binary (see below if this this is your case for further requirements). A 3.8-compatible version coming soon. 
 
@@ -71,10 +71,10 @@ On Debian/Ubuntu based distributions, you may have to run:
 *A*: This is a problem with using Cmake with a version >= 3, which is installed in Ubuntu 16, for instance. The good news is that you may ignore all these warnings. 
 
 *Q*: It is not compiling. What's the problem?  
-*A*: Again, you should read carefully the errors. Again, it's most probably a missing library, for instance log4cpp (in Ubuntu liblog4cpp5-dev). If the problem is with the API of GNU Radio, you should update it.   
+*A*: Again, you should read carefully the errors. Again, it's most probably a missing library, for instance log4cpp (in Ubuntu liblog4cpp5-dev). If the problem is with the API of GNU Radio, you should update it. I've tested gr-tempest with GNU Radio 3.7.11.
 
-*Q*: I got the following error: "AttributeError: 'module' object has no attribute 'viterbi_decoder'" (or some other block). Why?  
-*A*: This problem may be generated by several factors. Did you "sudo ldconfig"? Do you have PYTHONPATH set? (It should include at least /usr/local/lib/python2.7/dist-packages). Another possibility is that you don't have swig installed (in this case, you must uninstall gr-tempest, delete CMakeCache.txt in the build directory, and re-install; that is, after installing swig).   
+*Q*: I got the following error: "AttributeError: 'module' object has no attribute 'sampling_synchronization'" (or some other block). Why?  
+*A*: This problem may be generated by several factors. Did you "sudo ldconfig"? Another possibility is that you don't have swig installed (in this case, you must uninstall gr-tempest, delete CMakeCache.txt in the build directory, and re-install; that is, after installing swig).   
 
 IIE Instituto de Ingeniería Eléctrica  
 Facultad de Ingeniería  
