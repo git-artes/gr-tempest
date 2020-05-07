@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<block>
+  <name>Image File Source</name>
+  <key>tempest_image_source</key>
+  <category>[TEMPEST]</category>
+  <import>import tempest</import>
+  <make>tempest.image_source($image_file, $Hvisible, $Vvisible, $Htotal, $Vtotal, $repeatmode)</make>
+  <param>
+    <name>Image File</name>
+    <key>image_file</key>
+    <value></value>
+    <type>file_open</type>
+</param>
+  <param>
+    <name>Htotal</name>
+    <key>Htotal</key>
+    <type>int</type>
+  </param>
+  <param>
+    <name>Vtotal</name>
+    <key>Vtotal</key>
+    <type>int</type>
+  </param>
+  <param>
+    <name>Hvisible</name>
+    <key>Hvisible</key>
+    <type>int</type>
+  </param>
+  <param>
+    <name>Vvisible</name>
+    <key>Vvisible</key>
+    <type>int</type>
+  </param>
+  <param>
+    <name>Repeat</name>
+    <key>repeatmode</key>
+    <value>Yes</value>
+    <type>enum</type>
+    <option>
+      <name>Yes</name>
+      <key>1</key>
+    </option>
+    <option>
+      <name>Yes, with file re-read</name>
+      <key>2</key>
+    </option>
+  </param>
+  <source>
+    <name>out</name>
+    <type>float</type>
+  </source>
+</block>

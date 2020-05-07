@@ -20,5 +20,6 @@
 install(FILES
     tempest_Hsync.xml
     tempest_sampling_synchronization.xml
-    tempest_Vsync.xml DESTINATION share/gnuradio/grc/blocks
+    tempest_Vsync.xml
+    tempest_image_source.xml DESTINATION share/gnuradio/grc/blocks
 )

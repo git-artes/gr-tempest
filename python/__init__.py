@@ -31,4 +31,5 @@ except ImportError:
 	pass
 
 # import any pure python here
+from image_source import image_source
 #
