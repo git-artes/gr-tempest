@@ -109,6 +109,7 @@ namespace gr {
     void sampling_synchronization_impl::set_Htotal(int Htotal){
         d_Htotal = Htotal;
         d_max_deviation_px = (int)std::ceil(Htotal*d_max_deviation);
+        printf("[TEMPEST] Setting Htotal to %i in sampling synchronization block.\n", Htotal);
     }
     
     void sampling_synchronization_impl::set_manual_correction(double correction){

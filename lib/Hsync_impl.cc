@@ -83,6 +83,8 @@ namespace gr {
 
             d_delay = delay;
             d_Htotal = Htotal;
+
+            printf("[TEMPEST] Setting Htotal to %i and delay to %i in Hsync block.\n",Htotal, delay);
             
             d_consecutive_aligns = 0;
             d_line_locked = 0;
