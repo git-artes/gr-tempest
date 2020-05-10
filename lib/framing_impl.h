@@ -39,6 +39,7 @@ namespace gr {
          int d_Hdisplay; 
          int d_Vdisplay; 
          int d_current_line; 
+         float * d_zeros;
 
      public:
       framing_impl(int Htotal, int Vtotal, int Hdisplay, int Vdisplay);

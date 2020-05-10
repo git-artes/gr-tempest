@@ -52,6 +52,11 @@ namespace gr {
         d_Vtotal = Vtotal; 
         d_Hdisplay = Hdisplay; 
         d_Vdisplay = Vdisplay; 
+        d_zeros = new float[d_Hdisplay];
+        for (int i=0; i<d_Hdisplay; i++){
+            d_zeros[i] = 0;
+        }
+
         d_current_line = 0;
 
         set_output_multiple(Hdisplay);
@@ -102,15 +107,23 @@ namespace gr {
         for(int line=0; line<noutput_items/d_Hdisplay; line++){
             if(d_current_line<d_Vdisplay){
                 // This is a line I should copy
-               memcpy(&out[line*d_Hdisplay], &in[line*d_Htotal], std::min(d_Hdisplay,d_Htotal)*sizeof(float)); 
-               d_out = d_out + d_Hdisplay;
+                d_out = d_out + d_Hdisplay;
+
+                if (d_current_line<d_Vtotal){
+                    memcpy(&out[line*d_Hdisplay], &in[line*d_Htotal], std::min(d_Hdisplay,d_Htotal)*sizeof(float)); 
+                }
+                else{
+                    memcpy(&out[line*d_Hdisplay], &d_zeros[0], d_Hdisplay*sizeof(float)); 
+                }
 
             }
-            d_consumed += d_Htotal;
-
+            if(d_current_line<d_Vtotal){
+                // these are lines correspoding to an input
+                d_consumed += d_Htotal;
+            }
             //printf("line: %i, d_current_line: %i, d_Vdisplay: %i, d_Hdisplay: %i, d_Htotal, %i, d_consumed: %i, noutput_items: %i, d_out: %i\n", line, d_current_line, d_Vdisplay, d_Hdisplay, d_Htotal, d_consumed, noutput_items, d_out);
-            
-            d_current_line = (d_current_line+1)%d_Vtotal;
+
+            d_current_line = (d_current_line+1)%std::max(d_Vdisplay,d_Vtotal);
         }
 
         // Do <+signal processing+>

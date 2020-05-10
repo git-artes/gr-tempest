@@ -46,7 +46,7 @@
     </param>
     <param>
       <key>id</key>
-      <value>semi_automatic_tempest_example</value>
+      <value>manual_tempest_example</value>
     </param>
     <param>
       <key>max_nouts</key>
@@ -93,34 +93,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(432, 28)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>id</key>
-      <value>Hblank</value>
-    </param>
-    <param>
-      <key>value</key>
-      <value>Hsize-Hvisible</value>
-    </param>
-  </block>
-  <block>
-    <key>variable</key>
-    <param>
-      <key>comment</key>
-      <value></value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>True</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(1184, 28)</value>
+      <value>(1184, 44)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -136,10 +109,14 @@
     </param>
   </block>
   <block>
-    <key>variable</key>
+    <key>variable_qtgui_range</key>
     <param>
       <key>comment</key>
       <value></value>
+    </param>
+    <param>
+      <key>value</key>
+      <value>1328</value>
     </param>
     <param>
       <key>_enabled</key>
@@ -147,7 +124,11 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(512, 28)</value>
+      <value>(472, 12)</value>
+    </param>
+    <param>
+      <key>gui_hint</key>
+      <value>1, 0, 1,1</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -158,62 +139,36 @@
       <value>Hsize</value>
     </param>
     <param>
-      <key>value</key>
-      <value>Hsizes[mode]</value>
-    </param>
-  </block>
-  <block>
-    <key>variable</key>
-    <param>
-      <key>comment</key>
-      <value></value>
+      <key>label</key>
+      <value>Horizontal resolution (total)</value>
     </param>
     <param>
-      <key>_enabled</key>
-      <value>True</value>
+      <key>min_len</key>
+      <value>200</value>
     </param>
     <param>
-      <key>_coordinate</key>
-      <value>(576, 164)</value>
+      <key>orient</key>
+      <value>Qt.Horizontal</value>
     </param>
     <param>
-      <key>_rotation</key>
+      <key>start</key>
       <value>0</value>
     </param>
     <param>
-      <key>id</key>
-      <value>Hsizes</value>
+      <key>step</key>
+      <value>1</value>
     </param>
     <param>
-      <key>value</key>
-      <value>[832, 936, 800, 848, 832, 840, 832, 976, 992, 1008, 1008, 1024, 1024, 1056, 1040, 1056, 1048, 1072, 1312, 1264, 1344, 1328, 1312, 1376, 1392, 1408, 1520, 1600, 1552, 1568, 1680, 1680, 1800, 1728, 1728, 1760, 1688, 1688, 1728, 1760, 1776, 1800, 1880, 1896, 1896, 1912, 1928, 1904, 1936, 2144, 2160, 2176, 2192, 2144, 2176, 2096, 2176, 2160, 2160, 2160, 2160, 2160, 2208, 1840, 2240, 2256, 2448, 2456, 2528, 2560, 2576, 2608, 2592, 2624, 2600, 2640, 2048, 2044, 2800]</value>
-    </param>
-  </block>
-  <block>
-    <key>variable</key>
-    <param>
-      <key>comment</key>
-      <value></value>
+      <key>stop</key>
+      <value>int(4096*1.5)</value>
     </param>
     <param>
-      <key>_enabled</key>
-      <value>True</value>
+      <key>rangeType</key>
+      <value>int</value>
     </param>
     <param>
-      <key>_coordinate</key>
-      <value>(608, 28)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>id</key>
-      <value>Hvisible</value>
-    </param>
-    <param>
-      <key>value</key>
-      <value>Hvisibles[mode]</value>
+      <key>widget</key>
+      <value>counter</value>
     </param>
   </block>
   <block>
@@ -228,61 +183,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(256, 228)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>id</key>
-      <value>Hvisibles</value>
-    </param>
-    <param>
-      <key>value</key>
-      <value>[640, 720, 640, 640, 640, 640, 640, 768, 768, 768, 768, 768, 800, 800, 800, 800, 800, 800, 1024, 1024, 1024, 1024, 1024, 1024, 1024, 1024, 1152, 1152, 1152, 1152, 1280, 1280, 1280, 1280, 1280, 1280, 1280, 1280, 1280, 1280, 1280, 1368, 1400, 1400, 1400, 1400, 1400, 1440, 1440, 1600, 1600, 1600, 1600, 1600, 1600, 1600, 1600, 1600, 1600, 1600, 1600, 1600, 1600, 1680, 1680, 1680, 1792, 1792, 1856, 1856, 1920, 1920, 1920, 1920, 1920, 1920, 1920, 1920, 2048]</value>
-    </param>
-  </block>
-  <block>
-    <key>variable</key>
-    <param>
-      <key>comment</key>
-      <value></value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>True</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(432, 92)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>id</key>
-      <value>Vblank</value>
-    </param>
-    <param>
-      <key>value</key>
-      <value>Vsize-Vvisible</value>
-    </param>
-  </block>
-  <block>
-    <key>variable</key>
-    <param>
-      <key>comment</key>
-      <value></value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>True</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(1184, 92)</value>
+      <value>(1184, 108)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -298,10 +199,14 @@
     </param>
   </block>
   <block>
-    <key>variable</key>
+    <key>variable_qtgui_range</key>
     <param>
       <key>comment</key>
       <value></value>
+    </param>
+    <param>
+      <key>value</key>
+      <value>806</value>
     </param>
     <param>
       <key>_enabled</key>
@@ -309,7 +214,11 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(512, 92)</value>
+      <value>(464, 148)</value>
+    </param>
+    <param>
+      <key>gui_hint</key>
+      <value>1, 1, 1,1</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -320,89 +229,36 @@
       <value>Vsize</value>
     </param>
     <param>
-      <key>value</key>
-      <value>Vsizes[mode]</value>
-    </param>
-  </block>
-  <block>
-    <key>variable</key>
-    <param>
-      <key>comment</key>
-      <value></value>
+      <key>label</key>
+      <value>Vertical resolution (total)</value>
     </param>
     <param>
-      <key>_enabled</key>
-      <value>True</value>
+      <key>min_len</key>
+      <value>200</value>
     </param>
     <param>
-      <key>_coordinate</key>
-      <value>(576, 228)</value>
+      <key>orient</key>
+      <value>Qt.Horizontal</value>
     </param>
     <param>
-      <key>_rotation</key>
+      <key>start</key>
       <value>0</value>
     </param>
     <param>
-      <key>id</key>
-      <value>Vsizes</value>
+      <key>step</key>
+      <value>1</value>
     </param>
     <param>
-      <key>value</key>
-      <value>[445, 446, 525, 509, 520, 500, 509, 597, 601, 602, 605, 611, 625, 628, 666, 625, 631, 636, 622, 817, 806, 806, 800, 808, 814, 823, 895, 900, 907, 915, 795, 828, 1000, 1002, 1011, 1017, 1066, 1066, 1072, 1085, 1097, 795, 1082, 1094, 1096, 1103, 1112, 932, 1087, 1035, 1044, 1050, 1059, 1060, 1069, 1070, 1075, 1250, 1250, 1250, 1250, 1250, 1271, 1080, 1089, 1087, 1394, 1417, 1439, 1500, 1125, 1126, 1242, 1253, 1500, 1500, 2434, 2434, 1589]</value>
-    </param>
-  </block>
-  <block>
-    <key>variable</key>
-    <param>
-      <key>comment</key>
-      <value></value>
+      <key>stop</key>
+      <value>int(2160*1.5)</value>
     </param>
     <param>
-      <key>_enabled</key>
-      <value>True</value>
+      <key>rangeType</key>
+      <value>int</value>
     </param>
     <param>
-      <key>_coordinate</key>
-      <value>(608, 92)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>id</key>
-      <value>Vvisible</value>
-    </param>
-    <param>
-      <key>value</key>
-      <value>Vvisibles[mode]</value>
-    </param>
-  </block>
-  <block>
-    <key>variable</key>
-    <param>
-      <key>comment</key>
-      <value></value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>True</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(416, 228)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>id</key>
-      <value>Vvisibles</value>
-    </param>
-    <param>
-      <key>value</key>
-      <value>[400, 400, 480, 480, 480, 480, 480, 576, 576, 576, 576, 576, 600, 600, 600, 600, 600, 600, 600, 768, 768, 768, 768, 768, 768, 768, 864, 864, 864, 864, 768, 800, 960, 960, 960, 960, 1024, 1024, 1024, 1024, 1024, 768 , 1050, 1050, 1050, 1050, 1050, 900 , 1050, 1000, 1000, 1000, 1000, 1024, 1024, 1024, 1024, 1200, 1200, 1200, 1200, 1200, 1200, 1050, 1050, 1050, 1344, 1344, 1392, 1392, 1080, 1080, 1200, 1200, 1440, 1440, 2400, 2400, 1536] </value>
+      <key>widget</key>
+      <value>counter</value>
     </param>
   </block>
   <block>
@@ -421,7 +277,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1008, 84)</value>
+      <value>(1000, 84)</value>
     </param>
     <param>
       <key>gui_hint</key>
@@ -476,7 +332,7 @@
     </param>
     <param>
       <key>value</key>
-      <value>-550</value>
+      <value>-200</value>
     </param>
     <param>
       <key>_enabled</key>
@@ -484,7 +340,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(712, 28)</value>
+      <value>(640, 12)</value>
     </param>
     <param>
       <key>gui_hint</key>
@@ -543,11 +399,11 @@
     </param>
     <param>
       <key>_enabled</key>
-      <value>True</value>
+      <value>1</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(736, 164)</value>
+      <value>(728, 148)</value>
     </param>
     <param>
       <key>gui_hint</key>
@@ -610,7 +466,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(864, 156)</value>
+      <value>(848, 148)</value>
     </param>
     <param>
       <key>gui_hint</key>
@@ -669,7 +525,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(992, 20)</value>
+      <value>(936, 12)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -700,7 +556,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(864, 28)</value>
+      <value>(800, 12)</value>
     </param>
     <param>
       <key>gui_hint</key>
@@ -748,105 +604,6 @@
     </param>
   </block>
   <block>
-    <key>variable_qtgui_chooser</key>
-    <param>
-      <key>comment</key>
-      <value></value>
-    </param>
-    <param>
-      <key>value</key>
-      <value>20</value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>True</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(16, 84)</value>
-    </param>
-    <param>
-      <key>gui_hint</key>
-      <value></value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>id</key>
-      <value>mode</value>
-    </param>
-    <param>
-      <key>label0</key>
-      <value></value>
-    </param>
-    <param>
-      <key>label1</key>
-      <value></value>
-    </param>
-    <param>
-      <key>label2</key>
-      <value></value>
-    </param>
-    <param>
-      <key>label3</key>
-      <value></value>
-    </param>
-    <param>
-      <key>label4</key>
-      <value></value>
-    </param>
-    <param>
-      <key>label</key>
-      <value>Display's resolution</value>
-    </param>
-    <param>
-      <key>labels</key>
-      <value>modes</value>
-    </param>
-    <param>
-      <key>num_opts</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>option0</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>option1</key>
-      <value>1</value>
-    </param>
-    <param>
-      <key>option2</key>
-      <value>2</value>
-    </param>
-    <param>
-      <key>option3</key>
-      <value>3</value>
-    </param>
-    <param>
-      <key>option4</key>
-      <value>4</value>
-    </param>
-    <param>
-      <key>options</key>
-      <value>range(len(modes))</value>
-    </param>
-    <param>
-      <key>orient</key>
-      <value>Qt.QVBoxLayout</value>
-    </param>
-    <param>
-      <key>type</key>
-      <value>int</value>
-    </param>
-    <param>
-      <key>widget</key>
-      <value>combo_box</value>
-    </param>
-  </block>
-  <block>
     <key>variable</key>
     <param>
       <key>comment</key>
@@ -858,34 +615,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(240, 164)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>id</key>
-      <value>modes</value>
-    </param>
-    <param>
-      <key>value</key>
-      <value>["640x400 @ 85Hz", "720x400 @ 85Hz", "640x480 @ 60Hz", "640x480 @ 100Hz", "640x480 @ 72Hz", "640x480 @ 75Hz", "640x480 @ 85Hz", "768x576 @ 60 Hz", "768x576 @ 72 Hz", "768x576 @ 75 Hz", "768x576 @ 85 Hz", "768x576 @ 100 Hz", "800x600 @ 56Hz", "800x600 @ 60Hz", "800x600 @ 72Hz", "800x600 @ 75Hz", "800x600 @ 85Hz", "800x600 @ 100Hz", "1024x600 @ 60 Hz", "1024x768i @ 43Hz", "1024x768 @ 60Hz", "1024x768 @ 70Hz", "1024x768 @ 75Hz", "1024x768 @ 85Hz", "1024x768 @ 100Hz", "1024x768 @ 120Hz", "1152x864 @ 60Hz", "1152x864 @ 75Hz", "1152x864 @ 85Hz", "1152x864 @ 100Hz", "1280x768 @ 60 Hz", "1280x800 @ 60 Hz", "1280x960 @ 60Hz", "1280x960 @ 75Hz", "1280x960 @ 85Hz", "1280x960 @ 100Hz", "1280x1024 @ 60Hz", "1280x1024 @ 75Hz", "1280x1024 @ 85Hz", "1280x1024 @ 100Hz", "1280x1024 @ 120Hz", "1368x768 @ 60 Hz", "1400x1050 @ 60Hz", "1400x1050 @ 72 Hz", "1400x1050 @ 75 Hz", "1400x1050 @ 85 Hz", "1400x1050 @ 100 Hz", "1440x900 @ 60 Hz", "1440x1050 @ 60 Hz", "1600x1000 @ 60Hz", "1600x1000 @ 75Hz", "1600x1000 @ 85Hz", "1600x1000 @ 100Hz", "1600x1024 @ 60Hz", "1600x1024 @ 75Hz", "1600x1024 @ 76Hz", "1600x1024 @ 85Hz", "1600x1200 @ 60Hz", "1600x1200 @ 65Hz", "1600x1200 @ 70Hz", "1600x1200 @ 75Hz", "1600x1200 @ 85Hz", "1600x1200 @ 100 Hz", "1680x1050 @ 60Hz  reduced blanking ", "1680x1050 @ 60Hz  non-interlaced ", "1680x1050 @ 60 Hz", "1792x1344 @ 60Hz", "1792x1344 @ 75Hz", "1856x1392 @ 60Hz", "1856x1392 @ 75Hz", "1920x1080 @ 60Hz", "1920x1080 @ 75Hz", "1920x1200 @ 60Hz", "1920x1200 @ 75Hz", "1920x1440 @ 60Hz", "1920x1440 @ 75Hz", "1920x2400 @ 25Hz", "1920x2400 @ 30Hz", "2048x1536 @ 60Hz"]</value>
-    </param>
-  </block>
-  <block>
-    <key>variable</key>
-    <param>
-      <key>comment</key>
-      <value></value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>True</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(216, 28)</value>
+      <value>(0, 76)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -901,10 +631,14 @@
     </param>
   </block>
   <block>
-    <key>variable</key>
+    <key>variable_qtgui_range</key>
     <param>
       <key>comment</key>
       <value></value>
+    </param>
+    <param>
+      <key>value</key>
+      <value>70</value>
     </param>
     <param>
       <key>_enabled</key>
@@ -912,7 +646,11 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(328, 28)</value>
+      <value>(240, 12)</value>
+    </param>
+    <param>
+      <key>gui_hint</key>
+      <value></value>
     </param>
     <param>
       <key>_rotation</key>
@@ -923,35 +661,36 @@
       <value>refresh_rate</value>
     </param>
     <param>
-      <key>value</key>
-      <value>refresh_rates[mode]</value>
-    </param>
-  </block>
-  <block>
-    <key>variable</key>
-    <param>
-      <key>comment</key>
-      <value></value>
+      <key>label</key>
+      <value>Refresh Rate (Hz)</value>
     </param>
     <param>
-      <key>_enabled</key>
-      <value>True</value>
+      <key>min_len</key>
+      <value>200</value>
     </param>
     <param>
-      <key>_coordinate</key>
-      <value>(416, 164)</value>
+      <key>orient</key>
+      <value>Qt.Horizontal</value>
     </param>
     <param>
-      <key>_rotation</key>
+      <key>start</key>
       <value>0</value>
     </param>
     <param>
-      <key>id</key>
-      <value>refresh_rates</value>
+      <key>step</key>
+      <value>1</value>
     </param>
     <param>
-      <key>value</key>
-      <value>[85, 85, 60, 100, 72, 75, 85, 60, 72, 75, 85, 100, 56, 60, 72, 75, 85, 100, 60, 43, 60, 70, 75, 85, 100, 120, 60, 75, 85, 100, 60, 60, 60, 75, 85, 100,  60,  75,  85,  100,  120, 60,  60,  72,  75,  85,  100 , 60,  60,  60,  75,  85,  100,  60,  75,  76,  85,  60,  65,  70,  75,  85,  100 ,  60,  60,  60,  60,  75,  60,  75,  60,  75,  60,  75,  60,  75,  25,  30,  60]</value>
+      <key>stop</key>
+      <value>240</value>
+    </param>
+    <param>
+      <key>rangeType</key>
+      <value>float</value>
+    </param>
+    <param>
+      <key>widget</key>
+      <value>counter</value>
     </param>
   </block>
   <block>
@@ -966,7 +705,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(232, 92)</value>
+      <value>(8, 140)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -978,7 +717,7 @@
     </param>
     <param>
       <key>value</key>
-      <value>int(30e6)</value>
+      <value>int(40e6)</value>
     </param>
   </block>
   <block>
@@ -1099,7 +838,7 @@
     </param>
     <param>
       <key>file</key>
-      <value>30M_tv_g50_v2.dat</value>
+      <value>grabacion_HDMI.dat</value>
     </param>
     <param>
       <key>_coordinate</key>
@@ -1154,7 +893,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(680, 452)</value>
+      <value>(712, 436)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1162,7 +901,7 @@
     </param>
     <param>
       <key>id</key>
-      <value>blocks_float_to_char_0_0</value>
+      <value>blocks_float_to_char_0</value>
     </param>
     <param>
       <key>maxoutbuf</key>
@@ -1201,7 +940,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1000, 556)</value>
+      <value>(992, 564)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1209,7 +948,7 @@
     </param>
     <param>
       <key>id</key>
-      <value>blocks_float_to_char_0_0_0</value>
+      <value>blocks_float_to_char_0_0</value>
     </param>
     <param>
       <key>maxoutbuf</key>
@@ -1354,7 +1093,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(928, 428)</value>
+      <value>(944, 412)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -2813,7 +2552,7 @@ on run-time. Then, enable the other path.</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(464, 420)</value>
+      <value>(496, 404)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -2874,7 +2613,7 @@ the chooser).</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(768, 556)</value>
+      <value>(776, 532)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -2916,20 +2655,20 @@ the chooser).</value>
     <sink_key>0</sink_key>
   </connection>
   <connection>
-    <source_block_id>blocks_float_to_char_0_0</source_block_id>
+    <source_block_id>blocks_float_to_char_0</source_block_id>
     <sink_block_id>video_sdl_sink_0_0</sink_block_id>
     <source_key>0</source_key>
     <sink_key>0</sink_key>
   </connection>
   <connection>
-    <source_block_id>blocks_float_to_char_0_0_0</source_block_id>
+    <source_block_id>blocks_float_to_char_0_0</source_block_id>
     <sink_block_id>video_sdl_sink_0_0_0</sink_block_id>
     <source_key>0</source_key>
     <sink_key>0</sink_key>
   </connection>
   <connection>
     <source_block_id>blocks_multiply_const_vxx_0</source_block_id>
-    <sink_block_id>blocks_float_to_char_0_0_0</sink_block_id>
+    <sink_block_id>blocks_float_to_char_0_0</sink_block_id>
     <source_key>0</source_key>
     <sink_key>0</sink_key>
   </connection>
@@ -2947,7 +2686,7 @@ the chooser).</value>
   </connection>
   <connection>
     <source_block_id>tempest_framing_0</source_block_id>
-    <sink_block_id>blocks_float_to_char_0_0</sink_block_id>
+    <sink_block_id>blocks_float_to_char_0</sink_block_id>
     <source_key>0</source_key>
     <sink_key>0</sink_key>
   </connection>
