@@ -23,10 +23,11 @@ There are four examples:
 - *manual_tempest_example.grc*. Feed a recording or the USRP pointing to a VGA cable and you should see an image! However, in this example all parameters of the VGA signal are manually set (and sampling errors are corrected based on these parameters). Moreover, the fine sampling correction should be modified until a stable image is obtained (and horizontal and vertical alignment are also changeable). 
 - *semi_automatic_tempest_example.grc*. Same as above, but the resolutions are obtained from a list of the most typical resolutions available. I've obtained the list from TempestSDR (although the command `xrandr --verbose` should produce the list too). 
 - *automatic_tempest_example.grc*. Same as above, but the horizontal line is synchronized (thus, only manual vertical alignment is necessary). To achieve this, you should estimate the number of pixels that separate two vertical lines that always appear in the image (due to blanking). Note however that the algorithm may be unstable. In that case, fall back to *semi_automatic_tempest_example.grc*. 
+- Semi-automatic and manual examples are also included to spy on HDMI signals. Due to the significant difference between VGA and HDMI, there is no automatic version yet. 
 
 Limitations: 
 - A vertical alignment block is under testing, although it still does not work. 
-- The spied image is shown in a *Video SDL Sink*, which has its limitations (such as dynamically setting its dimensions). 
+- The spied image is shown in a *Video SDL Sink*, which has its limitations (such as dynamically setting its dimensions). However, the block *Framing* somewhat solves this problem by choosing a user-defined rectangle of the incoming signal. Thus, exploring resolutions while executing the flowgraph is now possible. See the comments on the flowgraph. 
 - The synchronization blocks may be heavy on the PC. This may be alleviated by properly configuring VOLK as explained below. Moreover, if CPU is still a problem with the *sampling synchronization* block, you may try reducing the variable `d_proba_of_updating` and/or `d_max_deviation` in *lib/sampling_synchronization_impl.cc* (and using only *manual_simulated_tempest_example.grc*).
 
 **Requirements**: GNU Radio 3.7, either compiled from source or installed with a binary (see below if this this is your case for further requirements). A 3.8-compatible version coming soon. 

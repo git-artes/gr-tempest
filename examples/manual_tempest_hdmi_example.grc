@@ -1191,7 +1191,7 @@
     </param>
     <param>
       <key>center_freq0</key>
-      <value>px_rate*harmonic</value>
+      <value>px_rate*harmonic*10</value>
     </param>
     <param>
       <key>dc_offs_enb0</key>
