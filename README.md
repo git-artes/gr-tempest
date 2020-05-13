@@ -8,7 +8,7 @@
 
 **If you find the code useful, please consider starring the repository. This will help us get funding to support the project.**
 
-TEMPEST (or [Van Eck Phreaking](https://en.wikipedia.org/wiki/Van_Eck_phreaking)) is a technique to eavesdrop video monitors by receiving the electromagnetic signal emitted by the VGA cable and connectors (although other targets are possible, such as keyboards, for which the same term is generally used, see [Wikipedia/Tempest](https://en.wikipedia.org/wiki/Tempest_(codename))). 
+TEMPEST (or [Van Eck Phreaking](https://en.wikipedia.org/wiki/Van_Eck_phreaking)) is a technique to eavesdrop video monitors by receiving the electromagnetic signal emitted by the VGA/HDMI cable and connectors (although other targets are possible, such as keyboards, for which the same term is generally used, see [Wikipedia/Tempest](https://en.wikipedia.org/wiki/Tempest_(codename))). 
 
 This is basically a re-implementation of Martin Marinov's excelent TempestSDR in GNU Radio (see https://github.com/martinmarinov/TempestSDR). The reason is that I felt it may be easier to maintain and extend. Note however that the basic ideas were imitated, but the synchronization algorithms are different, and some functionalities (particularly in the GUI) are missing. 
 
