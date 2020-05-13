@@ -23,6 +23,8 @@
 cmake_minimum_required(VERSION 2.6)
 project(gr-tempest CXX C)
 enable_testing()
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++11 -fexceptions -frtti -lstdc++")
+
 
 #install to PyBOMBS target prefix if defined
 if(DEFINED ENV{PYBOMBS_PREFIX})
