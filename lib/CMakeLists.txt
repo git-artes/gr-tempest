@@ -81,7 +81,21 @@ if(VOLK_VERSION VERSION_GREATER 1.2.2)
     add_definitions(-DVOLK_GT_122=1)
 endif(VOLK_VERSION VERSION_GREATER 1.2.2)
 
+##################################################################################
+## Workaround for issues with adding complexes on VOLK
+## see https://github.com/git-artes/gr-tempest/issues/2#issuecomment-627612115
+##################################################################################
 
+find_file(VOLK_GREATER_THAN_14
+    NAMES volk/volk_32fc_x2_add_32fc.h
+    HINTS ${CMAKE_INSTALL_PREFIX}/include
+    PATHS /usr/local/include
+    /usr/include
+    ${CMAKE_INSTALL_PREFIX}/include
+    )
+if(VOLK_GREATER_THAN_14)
+    add_definitions(-DVOLK_GT_14=1)
+endif(VOLK_GREATER_THAN_14)
 
 ########################################################################
 # Build and register unit test

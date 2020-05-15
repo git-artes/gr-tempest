@@ -181,7 +181,13 @@ namespace gr {
                 volk_32fc_s32fc_multiply_32fc(&d_current_corr[0], &in[i+d_Htotal-d_max_deviation_px], d_in_conj[i]*d_alpha_corr, 2*d_max_deviation_px+1);
 
                 volk_32fc_s32fc_multiply_32fc(&d_historic_corr[0], &d_historic_corr[0], (1-d_alpha_corr), 2*d_max_deviation_px+1);
+#if VOLK_GT_14
                 volk_32fc_x2_add_32fc(&d_historic_corr[0], &d_historic_corr[0], &d_current_corr[0], 2*d_max_deviation_px+1);
+#else
+                for(int j=0; j<2*d_max_deviation_px+1; j++){
+                    d_historic_corr[j] = d_historic_corr[j] + d_current_corr[j];
+                }
+#endif
 
                 volk_32fc_magnitude_squared_32f(&d_abs_historic_corr[0], &d_historic_corr[0], 2*d_max_deviation_px+1);
 
