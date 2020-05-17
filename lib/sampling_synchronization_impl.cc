@@ -1,26 +1,27 @@
+/* -*- c++ -*- */
 /*
-* Copyright 2020
-*   Federico "Larroca" La Rocca <flarroca@fing.edu.uy>
-* 
-*   Instituto de Ingenieria Electrica, Facultad de Ingenieria,
-*   Universidad de la Republica, Uruguay.
-*  
-* This is free software; you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation; either version 3, or (at your option)
-* any later version.
-*  
-* This software is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*  
-* You should have received a copy of the GNU General Public License
-* along with this software; see the file COPYING.  If not, write to
-* the Free Software Foundation, Inc., 51 Franklin Street,
-* Boston, MA 02110-1301, USA.
-*/
-
+ * Copyright 2020
+ *   Federico "Larroca" La Rocca <flarroca@fing.edu.uy>
+ *
+ *   Instituto de Ingenieria Electrica, Facultad de Ingenieria,
+ *   Universidad de la Republica, Uruguay.
+ *  
+ * This is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3, or (at your option)
+ * any later version.
+ *  
+ * This software is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *  
+ * You should have received a copy of the GNU General Public License
+ * along with this software; see the file COPYING.  If not, write to
+ * the Free Software Foundation, Inc., 51 Franklin Street,
+ * Boston, MA 02110-1301, USA.
+ *
+ */
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"
@@ -41,6 +42,7 @@ namespace gr {
         (new sampling_synchronization_impl(Htotal, manual_correction));
     }
 
+
     /*
      * The private constructor
      */
@@ -51,8 +53,8 @@ namespace gr {
               d_inter(gr::filter::mmse_fir_interpolator_cc()),
               d_dist(0, 1),
               d_gen(std::random_device{}())
+
     {
-    
         set_relative_rate(1);
         d_Htotal = Htotal;
 
@@ -80,6 +82,7 @@ namespace gr {
         d_alpha_corr = 1e-6; 
 
         d_proba_of_updating = 0.01;
+
     }
 
     /*
@@ -87,7 +90,6 @@ namespace gr {
      */
     sampling_synchronization_impl::~sampling_synchronization_impl()
     {
-
         delete [] d_current_corr;
         delete [] d_historic_corr;
         delete [] d_abs_historic_corr;
@@ -103,7 +105,6 @@ namespace gr {
                //ninput_items_required[i] = ( d_cp_length + d_fft_length ) * (noutput_items + 1) ;
                ninput_items_required[i] = (int)ceil((noutput_items + 1) * (1+d_samp_inc_remainder)) + d_inter.ntaps() + d_Htotal+d_max_deviation_px ;
            }
-
     }
 
     void sampling_synchronization_impl::set_Htotal(int Htotal){
@@ -119,14 +120,8 @@ namespace gr {
     }
 
     void sampling_synchronization_impl::update_interpolation_ratio(const float * datain, const int datain_length){
-
-#if VOLK_GT_122
             uint16_t peak_index = 0;
             uint32_t d_datain_length = (uint32_t)(datain_length);
-#else
-            unsigned int peak_index = 0;
-            int d_datain_length = datain_length;
-#endif
             volk_32f_index_max_16u(&peak_index, datain, datain_length); 
 
             // the new interpolation ratio is how far the peak is from d_Htotal.
@@ -139,6 +134,7 @@ namespace gr {
 
             //d_samp_inc = (1-d_alpha_samp_inc)*d_samp_inc - d_alpha_samp_inc* d_new_interpolation_ratio;
             d_samp_inc_remainder = d_samp_inc_remainder - d_alpha_samp_inc*(d_samp_inc_remainder+1 - d_new_interpolation_ratio);
+
     }
 
     int sampling_synchronization_impl::interpolate_input(const gr_complex * in, gr_complex * out, int size){
@@ -161,14 +157,14 @@ namespace gr {
         return ii;
     }
 
-
     int
     sampling_synchronization_impl::general_work (int noutput_items,
                        gr_vector_int &ninput_items,
                        gr_vector_const_void_star &input_items,
                        gr_vector_void_star &output_items)
     {
-        const gr_complex *in = (const gr_complex *) input_items[0];
+
+    	const gr_complex *in = (const gr_complex *) input_items[0];
         gr_complex *out = (gr_complex *) output_items[0];
 
         d_in_conj = new gr_complex[noutput_items]; 
@@ -181,19 +177,8 @@ namespace gr {
                 volk_32fc_s32fc_multiply_32fc(&d_current_corr[0], &in[i+d_Htotal-d_max_deviation_px], d_in_conj[i]*d_alpha_corr, 2*d_max_deviation_px+1);
 
                 volk_32fc_s32fc_multiply_32fc(&d_historic_corr[0], &d_historic_corr[0], (1-d_alpha_corr), 2*d_max_deviation_px+1);
-#if VOLK_GT_14
                 volk_32fc_x2_add_32fc(&d_historic_corr[0], &d_historic_corr[0], &d_current_corr[0], 2*d_max_deviation_px+1);
-#else
-                for(int j=0; j<2*d_max_deviation_px+1; j++){
-                    d_historic_corr[j] = d_historic_corr[j] + d_current_corr[j];
-                }
-#endif
-
                 volk_32fc_magnitude_squared_32f(&d_abs_historic_corr[0], &d_historic_corr[0], 2*d_max_deviation_px+1);
-
-                //    
-                //    
-
 
                 //for (int dev=0; dev<2*d_max_deviation_px+1; dev++)
                 //    printf("d_current_corr[%i]=%f+j %f\n", dev, std::real(d_current_corr[dev]), std::imag(d_current_corr[dev]));
@@ -202,7 +187,6 @@ namespace gr {
         }
 
         //printf("d_samp_inc: %f\n", d_samp_inc);
-
 
         int required_for_interpolation = 0;
         required_for_interpolation = interpolate_input(&in[0], &out[0],noutput_items);
@@ -213,6 +197,8 @@ namespace gr {
 
         // Tell runtime system how many output items we produced.
         return noutput_items;
+
+
     }
 
   } /* namespace tempest */

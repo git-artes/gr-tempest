@@ -30,7 +30,9 @@ Limitations:
 - The spied image is shown in a *Video SDL Sink*, which has its limitations (such as dynamically setting its dimensions). However, the block *Framing* somewhat solves this problem by choosing a user-defined rectangle of the incoming signal. Thus, exploring resolutions while executing the flowgraph is now possible. See the comments on the flowgraph. 
 - The synchronization blocks may be heavy on the PC. This may be alleviated by properly configuring VOLK as explained below. Moreover, if CPU is still a problem with the *sampling synchronization* block, you may try reducing the variable `d_proba_of_updating` and/or `d_max_deviation` in *lib/sampling_synchronization_impl.cc* (and using only *manual_simulated_tempest_example.grc*).
 
-**Requirements**: GNU Radio 3.7, either compiled from source or installed with a binary (see below if this this is your case for further requirements). A 3.8-compatible version coming soon. If you have trouble compiling gr-tempest, I've prepared a docker container which meets the requirements (you have to compile and install gr-tempest in it though). Follow [this link](https://github.com/git-artes/docker-gnuradio) and use the gnuradio-releases-37 version. I've tested the simulated example. 
+**Requirements**: GNU Radio 3.8 or 3.7, either compiled from source or installed with a binary (see below if this this is your case for further requirements). If you have trouble compiling gr-tempest, I've prepared a docker container which meets the requirements (you have to compile and install gr-tempest in it though). Follow [this link](https://github.com/git-artes/docker-gnuradio). 
+
+**Important**: If you have GNU Radio 3.7 installed, you have to execute `git checkout maint-3.7` right after `cd gr-tempest` below.
 
 **Build instructions**
 
