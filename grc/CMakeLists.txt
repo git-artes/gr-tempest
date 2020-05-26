@@ -22,5 +22,6 @@ install(FILES
     tempest_sampling_synchronization.block.yml
     tempest_framing.block.yml
     tempest_Hsync.block.yml
-    tempest_image_source.block.yml DESTINATION share/gnuradio/grc/blocks
+    tempest_image_source.block.yml
+    tempest_normalize_flow.block.yml DESTINATION share/gnuradio/grc/blocks
 )

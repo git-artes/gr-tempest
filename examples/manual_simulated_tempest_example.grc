@@ -116,7 +116,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [568, 148]
+    coordinate: [568, 155]
     rotation: 0
     state: enabled
 - name: Vvisible
@@ -194,27 +194,6 @@ blocks:
     coordinate: [592, 324]
     rotation: 0
     state: enabled
-- name: escalar
-  id: variable_qtgui_range
-  parameters:
-    comment: ''
-    gui_hint: 6,0,1,2
-    label: Normalizing scalar
-    min_len: '200'
-    orient: Qt.Horizontal
-    rangeType: float
-    start: '-100'
-    step: '0.1'
-    stop: '100'
-    value: '15'
-    widget: counter_slider
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [704, 12]
-    rotation: 0
-    state: enabled
 - name: freq
   id: variable_qtgui_range
   parameters:
@@ -254,7 +233,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [728, 148]
+    coordinate: [729, 155]
     rotation: 0
     state: enabled
 - name: horizontal_offset
@@ -275,7 +254,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [848, 148]
+    coordinate: [843, 158]
     rotation: 0
     state: enabled
 - name: inter
@@ -302,6 +281,35 @@ blocks:
     coordinate: [1000, 20]
     rotation: 0
     state: enabled
+- name: inverted
+  id: variable_qtgui_chooser
+  parameters:
+    comment: ''
+    gui_hint: 8,1,1,1
+    label: Inverted Color?
+    label0: 'Yes'
+    label1: 'No'
+    label2: ''
+    label3: ''
+    label4: ''
+    labels: '[]'
+    num_opts: '2'
+    option1: '1'
+    option2: '2'
+    option3: '3'
+    option4: '4'
+    options: '[0, 1, 2]'
+    orient: Qt.QHBoxLayout
+    type: real
+    value: '-1'
+    widget: radio_buttons
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [709, 11]
+    rotation: 0
+    state: true
 - name: lines_offset
   id: variable_qtgui_range
   parameters:
@@ -372,7 +380,7 @@ blocks:
   id: variable_qtgui_range
   parameters:
     comment: ''
-    gui_hint: ''
+    gui_hint: 8,0,1,1
     label: Refresh Rate (Hz)
     min_len: '200'
     orient: Qt.Horizontal
@@ -470,58 +478,40 @@ blocks:
     coordinate: [1185, 782]
     rotation: 180
     state: enabled
-- name: blocks_float_to_char_0_0
-  id: blocks_float_to_char
+- name: blocks_float_to_short_0
+  id: blocks_float_to_short
   parameters:
     affinity: ''
     alias: ''
     comment: ''
     maxoutbuf: '0'
     minoutbuf: '0'
-    scale: '1'
+    scale: inverted
     vlen: '1'
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [253, 922]
+    coordinate: [323, 966]
     rotation: 180
-    state: enabled
-- name: blocks_float_to_char_0_0_0
-  id: blocks_float_to_char
+    state: true
+- name: blocks_float_to_short_0_0
+  id: blocks_float_to_short
   parameters:
     affinity: ''
     alias: ''
     comment: ''
     maxoutbuf: '0'
     minoutbuf: '0'
-    scale: '1'
+    scale: inverted
     vlen: '1'
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [364, 792]
+    coordinate: [565, 805]
     rotation: 180
     state: disabled
-- name: blocks_multiply_const_vxx_0
-  id: blocks_multiply_const_vxx
-  parameters:
-    affinity: ''
-    alias: ''
-    comment: ''
-    const: escalar
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    type: float
-    vlen: '1'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [817, 782]
-    rotation: 180
-    state: enabled
 - name: blocks_multiply_xx_0
   id: blocks_multiply_xx
   parameters:
@@ -635,7 +625,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [494, 897]
+    coordinate: [556, 936]
     rotation: 180
     state: enabled
 - name: tempest_image_source_0
@@ -659,6 +649,26 @@ blocks:
     coordinate: [6, 524]
     rotation: 0
     state: enabled
+- name: tempest_normalize_flow_0
+  id: tempest_normalize_flow
+  parameters:
+    affinity: ''
+    alias: ''
+    alpha_avg: 1e-2
+    comment: ''
+    max: '245'
+    maxoutbuf: '0'
+    min: '10'
+    minoutbuf: '0'
+    update_proba: '0.1'
+    window: interpolatedHsize
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [783, 807]
+    rotation: 180
+    state: true
 - name: tempest_sampling_synchronization_0
   id: tempest_sampling_synchronization
   parameters:
@@ -688,13 +698,13 @@ blocks:
     fps: '0'
     height: Vdisplay
     num_channels: '1'
-    type: byte
+    type: short
     width: Hdisplay
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [54, 889]
+    coordinate: [63, 912]
     rotation: 180
     state: enabled
 - name: video_sdl_sink_0_0_0
@@ -709,31 +719,31 @@ blocks:
     fps: '0'
     height: Vsize
     num_channels: '1'
-    type: byte
+    type: short
     width: interpolatedHsize
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [132, 760]
+    coordinate: [258, 773]
     rotation: 180
     state: disabled
 
 connections:
 - [analog_sig_source_x_0, '0', blocks_multiply_xx_0, '1']
-- [blocks_complex_to_mag_0, '0', blocks_multiply_const_vxx_0, '0']
+- [blocks_complex_to_mag_0, '0', tempest_normalize_flow_0, '0']
 - [blocks_delay_0, '0', blocks_complex_to_mag_0, '0']
-- [blocks_float_to_char_0_0, '0', video_sdl_sink_0_0, '0']
-- [blocks_float_to_char_0_0_0, '0', video_sdl_sink_0_0_0, '0']
-- [blocks_multiply_const_vxx_0, '0', blocks_float_to_char_0_0_0, '0']
-- [blocks_multiply_const_vxx_0, '0', tempest_framing_0, '0']
+- [blocks_float_to_short_0, '0', video_sdl_sink_0_0, '0']
+- [blocks_float_to_short_0_0, '0', video_sdl_sink_0_0_0, '0']
 - [blocks_multiply_xx_0, '0', rational_resampler_xxx_0, '0']
 - [blocks_throttle_0_0, '0', blocks_multiply_xx_0, '0']
 - [channels_channel_model_0, '0', tempest_sampling_synchronization_0, '0']
 - [interp_fir_filter_xxx_0, '0', blocks_throttle_0_0, '0']
 - [rational_resampler_xxx_0, '0', channels_channel_model_0, '0']
-- [tempest_framing_0, '0', blocks_float_to_char_0_0, '0']
+- [tempest_framing_0, '0', blocks_float_to_short_0, '0']
 - [tempest_image_source_0, '0', interp_fir_filter_xxx_0, '0']
+- [tempest_normalize_flow_0, '0', blocks_float_to_short_0_0, '0']
+- [tempest_normalize_flow_0, '0', tempest_framing_0, '0']
 - [tempest_sampling_synchronization_0, '0', blocks_delay_0, '0']
 
 metadata:

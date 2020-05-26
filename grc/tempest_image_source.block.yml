@@ -1,6 +1,6 @@
 id: tempest_image_source
-label: image_source
-category: '[tempest]'
+label: Image Source
+category: '[Tempest]'
 
 templates:
   imports: import tempest
