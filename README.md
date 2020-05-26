@@ -16,7 +16,7 @@ For a technical explanation you may read [Marinov's thesis](https://github.com/m
 
 **Notes and examples**
 
-See the examples folder for working examples (and https://www.youtube.com/watch?v=oTCu8HTaN3Y to see them in action). Recordings may be obtained from https://iie.fing.edu.uy/investigacion/grupos/artes/es/proyectos/espionaje-por-emisiones-electromagneticas/ (in spanish).
+See the examples folder for working examples (and [this youtube playlist](https://www.youtube.com/playlist?list=PLgyC55ufTHCJ9NARNCnoL9QT7isSI9SeV) to see them in action). Recordings may be obtained from https://iie.fing.edu.uy/investigacion/grupos/artes/es/proyectos/espionaje-por-emisiones-electromagneticas/ (in spanish).
 
 There are four examples: 
 - *manual_simulated_tempest_example.grc*. This is a simulation of TEMPEST and the signal you are actually spying. It helps to understand the parameters involved and the resulting signal's problems. Both the channel's and the synchronization algorithms' parameters may be modified on the fly from the interface. The image source was mostly copied from [gr-paint's](https://github.com/drmpeg/gr-paint) and any image file readable by PIL may be used (and in any size, as the block reshapes it to the size indicated in the block). 
