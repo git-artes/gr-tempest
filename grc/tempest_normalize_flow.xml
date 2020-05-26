@@ -1,0 +1,41 @@
+<block>
+  <name>Normalize flow</name>
+  <key>tempest_normalize_flow</key>
+  <category>[TEMPEST]</category>
+  <import>import tempest</import>
+  <make>tempest.normalize_flow($min, $max, $window, $alpha_avg, $update_proba)</make>
+  <callback>set_min_max($min,$max)</callback>
+  <param>
+    <name>Minimum</name>
+    <key>min</key>
+    <type>float</type>
+  </param>
+  <param>
+    <name>Maximum</name>
+    <key>max</key>
+    <type>float</type>
+  </param>
+  <param>
+    <name>Window</name>
+    <key>window</key>
+    <type>int</type>
+  </param>
+  <param>
+    <name>Alpha avg</name>
+    <key>alpha_avg</key>
+    <type>float</type>
+</param>
+  <param>
+    <name>Update proba</name>
+    <key>update_proba</key>
+    <type>float</type>
+  </param>
+  <sink>
+    <name>in</name>
+    <type>float</type>
+  </sink>
+  <source>
+    <name>out</name>
+    <type>float</type>
+  </source>
+</block>

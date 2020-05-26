@@ -277,7 +277,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(568, 148)</value>
+      <value>(544, 148)</value>
     </param>
     <param>
       <key>gui_hint</key>
@@ -430,7 +430,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1000, 92)</value>
+      <value>(1016, 92)</value>
     </param>
     <param>
       <key>gui_hint</key>
@@ -548,69 +548,6 @@
     </param>
     <param>
       <key>value</key>
-      <value>15</value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>True</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(704, 12)</value>
-    </param>
-    <param>
-      <key>gui_hint</key>
-      <value></value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>id</key>
-      <value>escalar</value>
-    </param>
-    <param>
-      <key>label</key>
-      <value>Normalizing scalar</value>
-    </param>
-    <param>
-      <key>min_len</key>
-      <value>200</value>
-    </param>
-    <param>
-      <key>orient</key>
-      <value>Qt.Horizontal</value>
-    </param>
-    <param>
-      <key>start</key>
-      <value>-100</value>
-    </param>
-    <param>
-      <key>step</key>
-      <value>0.1</value>
-    </param>
-    <param>
-      <key>stop</key>
-      <value>100</value>
-    </param>
-    <param>
-      <key>rangeType</key>
-      <value>float</value>
-    </param>
-    <param>
-      <key>widget</key>
-      <value>counter_slider</value>
-    </param>
-  </block>
-  <block>
-    <key>variable_qtgui_range</key>
-    <param>
-      <key>comment</key>
-      <value></value>
-    </param>
-    <param>
-      <key>value</key>
       <value>0</value>
     </param>
     <param>
@@ -682,7 +619,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(728, 148)</value>
+      <value>(728, 12)</value>
     </param>
     <param>
       <key>gui_hint</key>
@@ -745,7 +682,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(848, 148)</value>
+      <value>(856, 148)</value>
     </param>
     <param>
       <key>gui_hint</key>
@@ -844,6 +781,105 @@
     <param>
       <key>value</key>
       <value>int(Hsize/float(px_rate)*usrp_rate)</value>
+    </param>
+  </block>
+  <block>
+    <key>variable_qtgui_chooser</key>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>value</key>
+      <value>1</value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(704, 148)</value>
+    </param>
+    <param>
+      <key>gui_hint</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>inverted</value>
+    </param>
+    <param>
+      <key>label0</key>
+      <value>Yes</value>
+    </param>
+    <param>
+      <key>label1</key>
+      <value>No</value>
+    </param>
+    <param>
+      <key>label2</key>
+      <value></value>
+    </param>
+    <param>
+      <key>label3</key>
+      <value></value>
+    </param>
+    <param>
+      <key>label4</key>
+      <value></value>
+    </param>
+    <param>
+      <key>label</key>
+      <value>Inverted colors?</value>
+    </param>
+    <param>
+      <key>labels</key>
+      <value>[]</value>
+    </param>
+    <param>
+      <key>num_opts</key>
+      <value>2</value>
+    </param>
+    <param>
+      <key>option0</key>
+      <value>-1</value>
+    </param>
+    <param>
+      <key>option1</key>
+      <value>1</value>
+    </param>
+    <param>
+      <key>option2</key>
+      <value>2</value>
+    </param>
+    <param>
+      <key>option3</key>
+      <value>3</value>
+    </param>
+    <param>
+      <key>option4</key>
+      <value>4</value>
+    </param>
+    <param>
+      <key>options</key>
+      <value>[0, 1, 2]</value>
+    </param>
+    <param>
+      <key>orient</key>
+      <value>Qt.QHBoxLayout</value>
+    </param>
+    <param>
+      <key>type</key>
+      <value>real</value>
+    </param>
+    <param>
+      <key>widget</key>
+      <value>radio_buttons</value>
     </param>
   </block>
   <block>
@@ -1226,7 +1262,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(648, 784)</value>
+      <value>(696, 792)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1273,7 +1309,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(848, 780)</value>
+      <value>(896, 788)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1305,7 +1341,7 @@
     </param>
   </block>
   <block>
-    <key>blocks_float_to_char</key>
+    <key>blocks_float_to_short</key>
     <param>
       <key>alias</key>
       <value></value>
@@ -1313,104 +1349,6 @@
     <param>
       <key>comment</key>
       <value></value>
-    </param>
-    <param>
-      <key>affinity</key>
-      <value></value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(280, 876)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>180</value>
-    </param>
-    <param>
-      <key>id</key>
-      <value>blocks_float_to_char_0_0</value>
-    </param>
-    <param>
-      <key>maxoutbuf</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>minoutbuf</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>scale</key>
-      <value>1</value>
-    </param>
-    <param>
-      <key>vlen</key>
-      <value>1</value>
-    </param>
-  </block>
-  <block>
-    <key>blocks_float_to_char</key>
-    <param>
-      <key>alias</key>
-      <value></value>
-    </param>
-    <param>
-      <key>comment</key>
-      <value></value>
-    </param>
-    <param>
-      <key>affinity</key>
-      <value></value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>1</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(312, 708)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>180</value>
-    </param>
-    <param>
-      <key>id</key>
-      <value>blocks_float_to_char_0_0_0</value>
-    </param>
-    <param>
-      <key>maxoutbuf</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>minoutbuf</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>scale</key>
-      <value>1</value>
-    </param>
-    <param>
-      <key>vlen</key>
-      <value>1</value>
-    </param>
-  </block>
-  <block>
-    <key>blocks_multiply_const_vxx</key>
-    <param>
-      <key>alias</key>
-      <value></value>
-    </param>
-    <param>
-      <key>comment</key>
-      <value></value>
-    </param>
-    <param>
-      <key>const</key>
-      <value>escalar</value>
     </param>
     <param>
       <key>affinity</key>
@@ -1422,7 +1360,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(480, 780)</value>
+      <value>(288, 708)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1430,11 +1368,7 @@
     </param>
     <param>
       <key>id</key>
-      <value>blocks_multiply_const_vxx_0</value>
-    </param>
-    <param>
-      <key>type</key>
-      <value>float</value>
+      <value>blocks_float_to_short_0</value>
     </param>
     <param>
       <key>maxoutbuf</key>
@@ -1443,6 +1377,57 @@
     <param>
       <key>minoutbuf</key>
       <value>0</value>
+    </param>
+    <param>
+      <key>scale</key>
+      <value>inverted</value>
+    </param>
+    <param>
+      <key>vlen</key>
+      <value>1</value>
+    </param>
+  </block>
+  <block>
+    <key>blocks_float_to_short</key>
+    <param>
+      <key>alias</key>
+      <value></value>
+    </param>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>affinity</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(200, 884)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>180</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>blocks_float_to_short_0_0</value>
+    </param>
+    <param>
+      <key>maxoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>minoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>scale</key>
+      <value>inverted</value>
     </param>
     <param>
       <key>vlen</key>
@@ -1752,7 +1737,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(520, 852)</value>
+      <value>(344, 860)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1851,6 +1836,65 @@
     </param>
   </block>
   <block>
+    <key>tempest_normalize_flow</key>
+    <param>
+      <key>alpha_avg</key>
+      <value>1e-2</value>
+    </param>
+    <param>
+      <key>alias</key>
+      <value></value>
+    </param>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>affinity</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(504, 756)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>180</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>tempest_normalize_flow_0</value>
+    </param>
+    <param>
+      <key>maxoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>max</key>
+      <value>245</value>
+    </param>
+    <param>
+      <key>minoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>min</key>
+      <value>10</value>
+    </param>
+    <param>
+      <key>update_proba</key>
+      <value>0.1</value>
+    </param>
+    <param>
+      <key>window</key>
+      <value>interpolatedHsize</value>
+    </param>
+  </block>
+  <block>
     <key>tempest_sampling_synchronization</key>
     <param>
       <key>alias</key>
@@ -1870,7 +1914,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1040, 772)</value>
+      <value>(1056, 780)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1935,7 +1979,7 @@ on run-time. Then, enable the other path.</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(80, 844)</value>
+      <value>(16, 852)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1951,7 +1995,7 @@ on run-time. Then, enable the other path.</value>
     </param>
     <param>
       <key>type</key>
-      <value>byte</value>
+      <value>short</value>
     </param>
     <param>
       <key>width</key>
@@ -2012,7 +2056,7 @@ the chooser).</value>
     </param>
     <param>
       <key>type</key>
-      <value>byte</value>
+      <value>short</value>
     </param>
     <param>
       <key>width</key>
@@ -2027,7 +2071,7 @@ the chooser).</value>
   </connection>
   <connection>
     <source_block_id>blocks_complex_to_mag_0</source_block_id>
-    <sink_block_id>blocks_multiply_const_vxx_0</sink_block_id>
+    <sink_block_id>tempest_normalize_flow_0</sink_block_id>
     <source_key>0</source_key>
     <sink_key>0</sink_key>
   </connection>
@@ -2038,26 +2082,14 @@ the chooser).</value>
     <sink_key>0</sink_key>
   </connection>
   <connection>
-    <source_block_id>blocks_float_to_char_0_0</source_block_id>
-    <sink_block_id>video_sdl_sink_0_0</sink_block_id>
-    <source_key>0</source_key>
-    <sink_key>0</sink_key>
-  </connection>
-  <connection>
-    <source_block_id>blocks_float_to_char_0_0_0</source_block_id>
+    <source_block_id>blocks_float_to_short_0</source_block_id>
     <sink_block_id>video_sdl_sink_0_0_0</sink_block_id>
     <source_key>0</source_key>
     <sink_key>0</sink_key>
   </connection>
   <connection>
-    <source_block_id>blocks_multiply_const_vxx_0</source_block_id>
-    <sink_block_id>blocks_float_to_char_0_0_0</sink_block_id>
-    <source_key>0</source_key>
-    <sink_key>0</sink_key>
-  </connection>
-  <connection>
-    <source_block_id>blocks_multiply_const_vxx_0</source_block_id>
-    <sink_block_id>tempest_framing_0</sink_block_id>
+    <source_block_id>blocks_float_to_short_0_0</source_block_id>
+    <sink_block_id>video_sdl_sink_0_0</sink_block_id>
     <source_key>0</source_key>
     <sink_key>0</sink_key>
   </connection>
@@ -2093,13 +2125,25 @@ the chooser).</value>
   </connection>
   <connection>
     <source_block_id>tempest_framing_0</source_block_id>
-    <sink_block_id>blocks_float_to_char_0_0</sink_block_id>
+    <sink_block_id>blocks_float_to_short_0_0</sink_block_id>
     <source_key>0</source_key>
     <sink_key>0</sink_key>
   </connection>
   <connection>
     <source_block_id>tempest_image_source_0</source_block_id>
     <sink_block_id>interp_fir_filter_xxx_0</sink_block_id>
+    <source_key>0</source_key>
+    <sink_key>0</sink_key>
+  </connection>
+  <connection>
+    <source_block_id>tempest_normalize_flow_0</source_block_id>
+    <sink_block_id>blocks_float_to_short_0</sink_block_id>
+    <source_key>0</source_key>
+    <sink_key>0</sink_key>
+  </connection>
+  <connection>
+    <source_block_id>tempest_normalize_flow_0</source_block_id>
+    <sink_block_id>tempest_framing_0</sink_block_id>
     <source_key>0</source_key>
     <sink_key>0</sink_key>
   </connection>
