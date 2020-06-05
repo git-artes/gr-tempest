@@ -3,12 +3,17 @@
   <key>tempest_sampling_synchronization</key>
   <category>[TEMPEST]</category>
   <import>import tempest</import>
-  <make>tempest.sampling_synchronization($Htotal, $manual_correction)</make>
+  <make>tempest.sampling_synchronization($Htotal, $Vtotal, $manual_correction, $decimation, $max_deviation, $update_proba)</make>
   <callback>set_Htotal($Htotal)</callback>
   <callback>set_manual_correction($manual_correction)</callback>
   <param>
     <name>Htotal</name>
     <key>Htotal</key>
+    <type>int</type>
+</param>
+  <param>
+    <name>Vtotal</name>
+    <key>Vtotal</key>
     <type>int</type>
   </param>
   <param>
@@ -16,7 +21,26 @@
     <key>manual_correction</key>
     <value>0</value>
     <type>real</type>
+</param>
+  <param>
+    <name>Decimation</name>
+    <key>decimation</key>
+    <value>1</value>
+    <type>int</type>
   </param>
+  <param>
+    <name>Max deviation</name>
+    <key>max_deviation</key>
+    <value>0.1</value>
+    <type>float</type>
+</param>
+  <param>
+    <name>Update proba</name>
+    <key>update_proba</key>
+    <value>0.01</value>
+    <type>float</type>
+</param>
+
   <sink>
     <name>in</name>
     <type>complex</type>

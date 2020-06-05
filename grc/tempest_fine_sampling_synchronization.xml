@@ -1,0 +1,48 @@
+<block>
+  <name>Fine sampling synchronization</name>
+  <key>tempest_fine_sampling_synchronization</key>
+  <category>[TEMPEST]</category>
+  <import>import tempest</import>
+  <make>tempest.fine_sampling_synchronization($Htotal, $Vtotal, $correct_sampling, $max_deviation, $update_proba)</make>
+  <param>
+    <name>Htotal</name>
+    <key>Htotal</key>
+    <type>int</type>
+  </param>
+  <param>
+    <name>Vtotal</name>
+    <key>Vtotal</key>
+    <type>int</type>
+  </param>
+  <param>
+    <name>Correct_sampling</name>
+    <key>correct_sampling</key>
+    <type>enum</type>
+      <option>
+	    <name>Yes</name>
+	    <key>1</key>
+      </option>
+	  <option>
+	    <name>No</name>
+	    <key>0</key>
+	  </option>
+  </param>
+  <param>
+    <name>Max_deviation</name>
+    <key>max_deviation</key>
+    <type>float</type>
+  </param>
+  <param>
+    <name>Update_proba</name>
+    <key>update_proba</key>
+    <type>float</type>
+  </param>
+  <sink>
+    <name>in</name>
+    <type>complex</type>
+  </sink>
+  <source>
+    <name>out</name>
+    <type>complex</type>
+  </source>
+</block>

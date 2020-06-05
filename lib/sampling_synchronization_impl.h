@@ -35,6 +35,14 @@ namespace gr {
     {
      private:
          int d_Htotal;
+         int d_Vtotal;
+
+         // how many frames rate i'll drop (for performance)
+         int d_decimation;
+
+         // to keep count of how many pixels we've generated
+         long d_generated_pixels;
+
          //the number of lines to consider for correlation
          int d_no_of_lines_for_corr; 
          // the maximum number of pixels I'll search for the peak 
@@ -70,9 +78,11 @@ namespace gr {
         void update_interpolation_ratio(const float * datain, const int datain_length);
 
         int interpolate_input(const gr_complex * in, gr_complex * out, int size);
+        
+        int compute_ninput(int size);
 
      public:
-      sampling_synchronization_impl(int Htotal, double manual_correction);
+      sampling_synchronization_impl(int Htotal, int Vtotal, double manual_correction, int decimation, float max_deviation, float proba_of_updating);
       ~sampling_synchronization_impl();
 
       void set_Htotal(int Htotal);

@@ -13,6 +13,7 @@
 #include "tempest/Vsync.h"
 #include "tempest/framing.h"
 #include "tempest/normalize_flow.h"
+#include "tempest/fine_sampling_synchronization.h"
 %}
 
 
@@ -26,3 +27,5 @@ GR_SWIG_BLOCK_MAGIC2(tempest, Vsync);
 GR_SWIG_BLOCK_MAGIC2(tempest, framing);
 %include "tempest/normalize_flow.h"
 GR_SWIG_BLOCK_MAGIC2(tempest, normalize_flow);
+%include "tempest/fine_sampling_synchronization.h"
+GR_SWIG_BLOCK_MAGIC2(tempest, fine_sampling_synchronization);

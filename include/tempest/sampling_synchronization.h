@@ -48,7 +48,7 @@ namespace gr {
        * class. tempest::sampling_synchronization::make is the public interface for
        * creating new instances.
        */
-      static sptr make(int Htotal, double manual_correction);
+      static sptr make(int Htotal, int Vtotal, double manual_correction, int decimation, float max_deviation, float proba_of_updating);
 
       virtual void set_Htotal(int Htotal) = 0;
 

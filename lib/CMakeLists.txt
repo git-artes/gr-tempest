@@ -31,6 +31,7 @@ list(APPEND tempest_sources
     Vsync_impl.cc
     framing_impl.cc
     normalize_flow_impl.cc
+    fine_sampling_synchronization_impl.cc
 )
 
 set(tempest_sources "${tempest_sources}" PARENT_SCOPE)

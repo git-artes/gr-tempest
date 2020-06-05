@@ -35,16 +35,16 @@ namespace gr {
   namespace tempest {
 
     sampling_synchronization::sptr
-    sampling_synchronization::make(int Htotal, double manual_correction)
+    sampling_synchronization::make(int Htotal, int Vtotal, double manual_correction, int decimation, float max_deviation, float proba_of_updating)
     {
       return gnuradio::get_initial_sptr
-        (new sampling_synchronization_impl(Htotal, manual_correction));
+        (new sampling_synchronization_impl(Htotal, Vtotal, manual_correction, decimation, max_deviation, proba_of_updating));
     }
 
     /*
      * The private constructor
      */
-    sampling_synchronization_impl::sampling_synchronization_impl(int Htotal, double manual_correction)
+    sampling_synchronization_impl::sampling_synchronization_impl(int Htotal, int Vtotal, double manual_correction, int decimation, float max_deviation, float proba_of_updating)
       : gr::block("sampling_synchronization",
               gr::io_signature::make(1, 1, sizeof(gr_complex)),
               gr::io_signature::make(1, 1, sizeof(gr_complex))), 
@@ -55,6 +55,10 @@ namespace gr {
     
         set_relative_rate(1);
         d_Htotal = Htotal;
+        d_Vtotal = Vtotal;
+
+        d_generated_pixels = 0;
+        d_decimation = decimation;
 
         //VOLK alignment as recommended by GNU Radio's Manual. It has a similar effect 
         //than set_output_multiple(), thus we will generally get multiples of this value
@@ -62,7 +66,9 @@ namespace gr {
         const int alignment_multiple = volk_get_alignment() / sizeof(gr_complex);
         set_alignment(std::max(1, alignment_multiple));
 
-        d_max_deviation = 0.10;
+        //d_max_deviation = 0.10;
+        d_max_deviation = max_deviation;
+
         d_max_deviation_px = (int)std::ceil(Htotal*d_max_deviation);
         d_samp_inc_remainder = 0;
         d_samp_inc_correction = manual_correction;
@@ -79,7 +85,8 @@ namespace gr {
         }
         d_alpha_corr = 1e-6; 
 
-        d_proba_of_updating = 0.01;
+        //d_proba_of_updating = 0.01;
+        d_proba_of_updating = proba_of_updating;
     }
 
     /*
@@ -161,6 +168,23 @@ namespace gr {
         return ii;
     }
 
+    int sampling_synchronization_impl::compute_ninput(int size){
+        int ii = 0; // input index
+        int oo = 0; // output index
+
+        double s, f; 
+        int incr; 
+        while(oo < size) {
+            oo++;
+            s = d_samp_phase + d_samp_inc_remainder + d_samp_inc_correction + 1;
+            f = floor(s);
+            incr = (int)f;
+            d_samp_phase = s - f;
+            ii += incr;
+        }
+
+        return ii;
+    }
 
     int
     sampling_synchronization_impl::general_work (int noutput_items,
@@ -171,48 +195,60 @@ namespace gr {
         const gr_complex *in = (const gr_complex *) input_items[0];
         gr_complex *out = (gr_complex *) output_items[0];
 
-        d_in_conj = new gr_complex[noutput_items]; 
-        volk_32fc_conjugate_32fc(&d_in_conj[0], &in[0], noutput_items);
-        
-        if(d_dist(d_gen)<d_proba_of_updating){
-            for (int i=0; i<noutput_items; i++){
-                // I calculate the correlation between the current sample and the past samples, 
-                // and update the historic values
-                volk_32fc_s32fc_multiply_32fc(&d_current_corr[0], &in[i+d_Htotal-d_max_deviation_px], d_in_conj[i]*d_alpha_corr, 2*d_max_deviation_px+1);
+        int required_for_interpolation = 0;
+        int generated_pixels = 0;
+        int d_out = 0;
 
-                volk_32fc_s32fc_multiply_32fc(&d_historic_corr[0], &d_historic_corr[0], (1-d_alpha_corr), 2*d_max_deviation_px+1);
+        if(d_generated_pixels<d_Htotal*d_Vtotal){
+            // I have to process a batch of samples
+            d_in_conj = new gr_complex[noutput_items]; 
+            volk_32fc_conjugate_32fc(&d_in_conj[0], &in[0], noutput_items);
+
+            if(d_dist(d_gen)<d_proba_of_updating){
+                for (int i=0; i<noutput_items; i++){
+                    // I calculate the correlation between the current sample and the past samples, 
+                    // and update the historic values
+                    volk_32fc_s32fc_multiply_32fc(&d_current_corr[0], &in[i+d_Htotal-d_max_deviation_px], d_in_conj[i]*d_alpha_corr, 2*d_max_deviation_px+1);
+
+                    volk_32fc_s32fc_multiply_32fc(&d_historic_corr[0], &d_historic_corr[0], (1-d_alpha_corr), 2*d_max_deviation_px+1);
 #if VOLK_GT_14
-                volk_32fc_x2_add_32fc(&d_historic_corr[0], &d_historic_corr[0], &d_current_corr[0], 2*d_max_deviation_px+1);
+                    volk_32fc_x2_add_32fc(&d_historic_corr[0], &d_historic_corr[0], &d_current_corr[0], 2*d_max_deviation_px+1);
 #else
-                for(int j=0; j<2*d_max_deviation_px+1; j++){
-                    d_historic_corr[j] = d_historic_corr[j] + d_current_corr[j];
-                }
+                    for(int j=0; j<2*d_max_deviation_px+1; j++){
+                        d_historic_corr[j] = d_historic_corr[j] + d_current_corr[j];
+                    }
 #endif
 
-                volk_32fc_magnitude_squared_32f(&d_abs_historic_corr[0], &d_historic_corr[0], 2*d_max_deviation_px+1);
-
-                //    
-                //    
+                    volk_32fc_magnitude_squared_32f(&d_abs_historic_corr[0], &d_historic_corr[0], 2*d_max_deviation_px+1);
 
 
-                //for (int dev=0; dev<2*d_max_deviation_px+1; dev++)
-                //    printf("d_current_corr[%i]=%f+j %f\n", dev, std::real(d_current_corr[dev]), std::imag(d_current_corr[dev]));
-                update_interpolation_ratio(d_abs_historic_corr, 2*d_max_deviation_px+1);
+                    //for (int dev=0; dev<2*d_max_deviation_px+1; dev++)
+                    //    printf("d_current_corr[%i]=%f+j %f\n", dev, std::real(d_current_corr[dev]), std::imag(d_current_corr[dev]));
+                    update_interpolation_ratio(d_abs_historic_corr, 2*d_max_deviation_px+1);
+                }
             }
+
+            //printf("d_samp_inc: %f\n", d_samp_inc);
+
+            generated_pixels = noutput_items - (int)std::max((long)0,d_generated_pixels+(long)(noutput_items-d_Htotal*d_Vtotal));
+            d_out = generated_pixels;
+            required_for_interpolation = interpolate_input(&in[0], &out[0],generated_pixels);
+        }
+        else{
+            // I don't have to process the batch
+            generated_pixels = noutput_items - (int)std::max((long)0,d_generated_pixels+((long)noutput_items-d_decimation*(long)d_Htotal*d_Vtotal));
+            d_out = 0;
+            required_for_interpolation = compute_ninput(generated_pixels);
         }
 
-        //printf("d_samp_inc: %f\n", d_samp_inc);
+        d_generated_pixels = (d_generated_pixels +(long) generated_pixels) % ((long)d_decimation*(long)d_Htotal*d_Vtotal);
 
-
-        int required_for_interpolation = 0;
-        required_for_interpolation = interpolate_input(&in[0], &out[0],noutput_items);
-        
         // Tell runtime system how many input items we consumed on
         // each input stream.
         consume_each (required_for_interpolation);
 
         // Tell runtime system how many output items we produced.
-        return noutput_items;
+        return d_out;
     }
 
   } /* namespace tempest */
