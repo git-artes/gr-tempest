@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<?grc format='1' created='3.7.11'?>
+<?grc format='1' created='3.7.13'?>
 <flow_graph>
   <timestamp>Wed Oct 11 15:27:02 2017</timestamp>
   <block>
@@ -73,12 +73,20 @@
       <value>True</value>
     </param>
     <param>
+      <key>sizing_mode</key>
+      <value>fixed</value>
+    </param>
+    <param>
       <key>thread_safe_setters</key>
       <value></value>
     </param>
     <param>
       <key>title</key>
       <value></value>
+    </param>
+    <param>
+      <key>placement</key>
+      <value>(0,0)</value>
     </param>
   </block>
   <block>
@@ -93,7 +101,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1184, 44)</value>
+      <value>(992, 12)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -124,7 +132,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(632, 12)</value>
+      <value>(544, 12)</value>
     </param>
     <param>
       <key>gui_hint</key>
@@ -183,7 +191,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1184, 108)</value>
+      <value>(992, 76)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -259,69 +267,6 @@
     <param>
       <key>widget</key>
       <value>counter</value>
-    </param>
-  </block>
-  <block>
-    <key>variable_qtgui_range</key>
-    <param>
-      <key>comment</key>
-      <value></value>
-    </param>
-    <param>
-      <key>value</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>True</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(1000, 84)</value>
-    </param>
-    <param>
-      <key>gui_hint</key>
-      <value></value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>id</key>
-      <value>epsilon</value>
-    </param>
-    <param>
-      <key>label</key>
-      <value>Fine sampling correction</value>
-    </param>
-    <param>
-      <key>min_len</key>
-      <value>200</value>
-    </param>
-    <param>
-      <key>orient</key>
-      <value>Qt.Horizontal</value>
-    </param>
-    <param>
-      <key>start</key>
-      <value>(interpolatedHsize-1)/float(interpolatedHsize)-1</value>
-    </param>
-    <param>
-      <key>step</key>
-      <value>1e-7</value>
-    </param>
-    <param>
-      <key>stop</key>
-      <value>(interpolatedHsize+1)/float(interpolatedHsize)-1</value>
-    </param>
-    <param>
-      <key>rangeType</key>
-      <value>float</value>
-    </param>
-    <param>
-      <key>widget</key>
-      <value>counter_slider</value>
     </param>
   </block>
   <block>
@@ -462,7 +407,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(936, 12)</value>
+      <value>(848, 12)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -592,7 +537,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(800, 12)</value>
+      <value>(712, 12)</value>
     </param>
     <param>
       <key>gui_hint</key>
@@ -776,7 +721,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(808, 328)</value>
+      <value>(872, 424)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -823,7 +768,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(624, 324)</value>
+      <value>(712, 420)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -857,6 +802,10 @@
   <block>
     <key>blocks_file_source</key>
     <param>
+      <key>begin_tag</key>
+      <value>pmt.PMT_NIL</value>
+    </param>
+    <param>
       <key>alias</key>
       <value></value>
     </param>
@@ -878,7 +827,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(0, 308)</value>
+      <value>(16, 404)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -925,11 +874,11 @@
     </param>
     <param>
       <key>_enabled</key>
-      <value>True</value>
+      <value>0</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1000, 564)</value>
+      <value>(1016, 692)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -972,11 +921,11 @@
     </param>
     <param>
       <key>_enabled</key>
-      <value>0</value>
+      <value>1</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(744, 436)</value>
+      <value>(760, 564)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1023,7 +972,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(216, 316)</value>
+      <value>(240, 420)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1059,6 +1008,65 @@
     </param>
   </block>
   <block>
+    <key>tempest_fine_sampling_synchronization</key>
+    <param>
+      <key>alias</key>
+      <value></value>
+    </param>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>affinity</key>
+      <value></value>
+    </param>
+    <param>
+      <key>correct_sampling</key>
+      <value>1</value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(440, 388)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>Htotal</key>
+      <value>interpolatedHsize</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>tempest_fine_sampling_synchronization_0</value>
+    </param>
+    <param>
+      <key>maxoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>max_deviation</key>
+      <value>1</value>
+    </param>
+    <param>
+      <key>minoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>update_proba</key>
+      <value>1e-2/(Hsize*Vsize)</value>
+    </param>
+    <param>
+      <key>Vtotal</key>
+      <value>Vsize</value>
+    </param>
+  </block>
+  <block>
     <key>tempest_framing</key>
     <param>
       <key>alias</key>
@@ -1074,11 +1082,11 @@
     </param>
     <param>
       <key>_enabled</key>
-      <value>0</value>
+      <value>1</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(944, 412)</value>
+      <value>(960, 540)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1137,7 +1145,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1040, 300)</value>
+      <value>(1088, 388)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1170,53 +1178,6 @@
     <param>
       <key>window</key>
       <value>interpolatedHsize</value>
-    </param>
-  </block>
-  <block>
-    <key>tempest_sampling_synchronization</key>
-    <param>
-      <key>alias</key>
-      <value></value>
-    </param>
-    <param>
-      <key>comment</key>
-      <value></value>
-    </param>
-    <param>
-      <key>affinity</key>
-      <value></value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>1</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(392, 316)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>Htotal</key>
-      <value>interpolatedHsize</value>
-    </param>
-    <param>
-      <key>id</key>
-      <value>tempest_sampling_synchronization_0</value>
-    </param>
-    <param>
-      <key>manual_correction</key>
-      <value>epsilon</value>
-    </param>
-    <param>
-      <key>maxoutbuf</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>minoutbuf</key>
-      <value>0</value>
     </param>
   </block>
   <block>
@@ -2403,7 +2364,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(16, 412)</value>
+      <value>(184, 540)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -2588,7 +2549,7 @@ on run-time. Then, enable the other path.</value>
     </param>
     <param>
       <key>_enabled</key>
-      <value>0</value>
+      <value>1</value>
     </param>
     <param>
       <key>fps</key>
@@ -2596,7 +2557,7 @@ on run-time. Then, enable the other path.</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(496, 404)</value>
+      <value>(512, 532)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -2649,7 +2610,7 @@ the chooser).</value>
     </param>
     <param>
       <key>_enabled</key>
-      <value>1</value>
+      <value>0</value>
     </param>
     <param>
       <key>fps</key>
@@ -2657,7 +2618,7 @@ the chooser).</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(776, 532)</value>
+      <value>(792, 660)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -2712,7 +2673,13 @@ the chooser).</value>
   </connection>
   <connection>
     <source_block_id>blocks_throttle_0</source_block_id>
-    <sink_block_id>tempest_sampling_synchronization_0</sink_block_id>
+    <sink_block_id>tempest_fine_sampling_synchronization_0</sink_block_id>
+    <source_key>0</source_key>
+    <sink_key>0</sink_key>
+  </connection>
+  <connection>
+    <source_block_id>tempest_fine_sampling_synchronization_0</source_block_id>
+    <sink_block_id>blocks_delay_0</sink_block_id>
     <source_key>0</source_key>
     <sink_key>0</sink_key>
   </connection>
@@ -2735,14 +2702,8 @@ the chooser).</value>
     <sink_key>0</sink_key>
   </connection>
   <connection>
-    <source_block_id>tempest_sampling_synchronization_0</source_block_id>
-    <sink_block_id>blocks_delay_0</sink_block_id>
-    <source_key>0</source_key>
-    <sink_key>0</sink_key>
-  </connection>
-  <connection>
     <source_block_id>uhd_usrp_source_0</source_block_id>
-    <sink_block_id>tempest_sampling_synchronization_0</sink_block_id>
+    <sink_block_id>tempest_fine_sampling_synchronization_0</sink_block_id>
     <source_key>0</source_key>
     <sink_key>0</sink_key>
   </connection>

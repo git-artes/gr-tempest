@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<?grc format='1' created='3.7.11'?>
+<?grc format='1' created='3.7.13'?>
 <flow_graph>
   <timestamp>Wed Oct 11 15:27:02 2017</timestamp>
   <block>
@@ -73,12 +73,20 @@
       <value>True</value>
     </param>
     <param>
+      <key>sizing_mode</key>
+      <value>fixed</value>
+    </param>
+    <param>
       <key>thread_safe_setters</key>
       <value></value>
     </param>
     <param>
       <key>title</key>
       <value></value>
+    </param>
+    <param>
+      <key>placement</key>
+      <value>(0,0)</value>
     </param>
   </block>
   <block>
@@ -920,7 +928,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1120, 320)</value>
+      <value>(1120, 392)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -967,7 +975,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(864, 316)</value>
+      <value>(864, 388)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1001,6 +1009,10 @@
   <block>
     <key>blocks_file_source</key>
     <param>
+      <key>begin_tag</key>
+      <value>pmt.PMT_NIL</value>
+    </param>
+    <param>
       <key>alias</key>
       <value></value>
     </param>
@@ -1022,7 +1034,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(0, 308)</value>
+      <value>(0, 380)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1073,7 +1085,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(856, 492)</value>
+      <value>(856, 564)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1120,7 +1132,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(216, 316)</value>
+      <value>(216, 388)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1179,7 +1191,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(640, 308)</value>
+      <value>(640, 380)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1200,6 +1212,65 @@
     <param>
       <key>minoutbuf</key>
       <value>0</value>
+    </param>
+  </block>
+  <block>
+    <key>tempest_fine_sampling_synchronization</key>
+    <param>
+      <key>alias</key>
+      <value></value>
+    </param>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>affinity</key>
+      <value></value>
+    </param>
+    <param>
+      <key>correct_sampling</key>
+      <value>1</value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(384, 372)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>Htotal</key>
+      <value>interpolatedHsize</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>tempest_fine_sampling_synchronization_0</value>
+    </param>
+    <param>
+      <key>maxoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>max_deviation</key>
+      <value>1</value>
+    </param>
+    <param>
+      <key>minoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>update_proba</key>
+      <value>1e-2/(Hsize*Vsize)</value>
+    </param>
+    <param>
+      <key>Vtotal</key>
+      <value>Vsize</value>
     </param>
   </block>
   <block>
@@ -1226,7 +1297,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1056, 468)</value>
+      <value>(1056, 540)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1259,53 +1330,6 @@
     <param>
       <key>window</key>
       <value>interpolatedHsize</value>
-    </param>
-  </block>
-  <block>
-    <key>tempest_sampling_synchronization</key>
-    <param>
-      <key>alias</key>
-      <value></value>
-    </param>
-    <param>
-      <key>comment</key>
-      <value></value>
-    </param>
-    <param>
-      <key>affinity</key>
-      <value></value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>1</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(400, 308)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>Htotal</key>
-      <value>interpolatedHsize</value>
-    </param>
-    <param>
-      <key>id</key>
-      <value>tempest_sampling_synchronization_0</value>
-    </param>
-    <param>
-      <key>manual_correction</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>maxoutbuf</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>minoutbuf</key>
-      <value>0</value>
     </param>
   </block>
   <block>
@@ -2492,7 +2516,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(16, 412)</value>
+      <value>(16, 484)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -2683,7 +2707,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(584, 460)</value>
+      <value>(584, 532)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -2732,7 +2756,7 @@
   </connection>
   <connection>
     <source_block_id>blocks_throttle_0</source_block_id>
-    <sink_block_id>tempest_sampling_synchronization_0</sink_block_id>
+    <sink_block_id>tempest_fine_sampling_synchronization_0</sink_block_id>
     <source_key>0</source_key>
     <sink_key>0</sink_key>
   </connection>
@@ -2743,20 +2767,14 @@
     <sink_key>0</sink_key>
   </connection>
   <connection>
-    <source_block_id>tempest_normalize_flow_0</source_block_id>
-    <sink_block_id>blocks_float_to_short_0</sink_block_id>
-    <source_key>0</source_key>
-    <sink_key>0</sink_key>
-  </connection>
-  <connection>
-    <source_block_id>tempest_sampling_synchronization_0</source_block_id>
+    <source_block_id>tempest_fine_sampling_synchronization_0</source_block_id>
     <sink_block_id>tempest_Hsync_0</sink_block_id>
     <source_key>0</source_key>
     <sink_key>0</sink_key>
   </connection>
   <connection>
-    <source_block_id>uhd_usrp_source_0</source_block_id>
-    <sink_block_id>tempest_sampling_synchronization_0</sink_block_id>
+    <source_block_id>tempest_normalize_flow_0</source_block_id>
+    <sink_block_id>blocks_float_to_short_0</sink_block_id>
     <source_key>0</source_key>
     <sink_key>0</sink_key>
   </connection>

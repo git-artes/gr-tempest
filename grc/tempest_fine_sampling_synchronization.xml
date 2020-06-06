@@ -4,6 +4,7 @@
   <category>[TEMPEST]</category>
   <import>import tempest</import>
   <make>tempest.fine_sampling_synchronization($Htotal, $Vtotal, $correct_sampling, $max_deviation, $update_proba)</make>
+  <callback>set_Htotal_Vtotal($Htotal,$Vtotal)</callback>
   <param>
     <name>Htotal</name>
     <key>Htotal</key>

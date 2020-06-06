@@ -50,22 +50,21 @@ namespace gr {
                     gr::io_signature::make(1, 1, sizeof(gr_complex)),
                     gr::io_signature::make(1, 1, sizeof(gr_complex))),
             d_inter(gr::filter::mmse_fir_interpolator_cc()),
-            d_dist(0, 1),
+            d_dist(update_proba),
             d_gen(std::random_device{}())
         {
             set_relative_rate(1);
-            d_Htotal = Htotal; 
-            d_Vtotal = Vtotal; 
-            //d_max_deviation = max_deviation; 
-            d_max_deviation_px = (int)std::ceil(d_Vtotal*d_Htotal*max_deviation);
-            set_history(d_Vtotal*d_Htotal*(1+max_deviation));
 
             d_correct_sampling = correct_sampling; 
             d_proba_of_updating = update_proba;
 
+            d_max_deviation = max_deviation;
+            set_Htotal_Vtotal(Htotal, Vtotal);
+
             d_alpha_samp_inc = 1e-1;
-            d_samp_inc_rem = 0;
-            d_new_interpolation_ratio_rem = 0;
+            
+            d_samp_phase = 0; 
+            d_alpha_corr = 1e-6; 
 
             //VOLK alignment as recommended by GNU Radio's Manual. It has a similar effect 
             //than set_output_multiple(), thus we will generally get multiples of this value
@@ -73,16 +72,7 @@ namespace gr {
             const int alignment_multiple = volk_get_alignment() / sizeof(gr_complex);
             set_alignment(std::max(1, alignment_multiple));
 
-            d_current_corr = new gr_complex[2*d_max_deviation_px + 1];
-            d_historic_corr = new gr_complex[2*d_max_deviation_px + 1];
-            d_abs_historic_corr = new float[2*d_max_deviation_px + 1];
-            d_samp_phase = 0; 
-            d_alpha_corr = 1e-6; 
-
-            for (int i = 0; i<2*d_max_deviation_px+1; i++){
-                d_historic_corr[i] = 0;
-                d_abs_historic_corr[i] = 0;
-            }
+            //set_output_multiple(d_Htotal);
 
         }
 
@@ -108,6 +98,33 @@ namespace gr {
                 }
 
             }
+
+        void fine_sampling_synchronization_impl::set_Htotal_Vtotal(int Htotal, int Vtotal){
+            // If the resolution's changed, I reset the whole block
+            
+            d_Htotal = Htotal; 
+            d_Vtotal = Vtotal; 
+            //d_max_deviation = max_deviation; 
+            d_max_deviation_px = (int)std::ceil(d_Htotal*d_max_deviation);
+            set_history(d_Vtotal*d_Htotal+2*d_max_deviation_px+2);
+
+            d_samp_inc_rem = 0;
+            d_new_interpolation_ratio_rem = 0;
+
+            d_current_corr = new gr_complex[2*d_max_deviation_px + 1];
+            d_historic_corr = new gr_complex[2*d_max_deviation_px + 1];
+            d_abs_historic_corr = new float[2*d_max_deviation_px + 1];
+            //I'll estimate the new sampling synchronization asap
+            d_next_update = 0;
+
+            for (int i = 0; i<2*d_max_deviation_px+1; i++){
+                d_historic_corr[i] = 0;
+                d_abs_historic_corr[i] = 0;
+            }
+
+            printf("[TEMPEST] Setting Htotal to %i and Vtotal to %i in fine sampling synchronization block.\n", Htotal, Vtotal);
+
+        }
 
         int fine_sampling_synchronization_impl::interpolate_input(const gr_complex * in, gr_complex * out, int size){
             int ii = 0; // input index
@@ -162,6 +179,10 @@ namespace gr {
             //double new_interpolation_ratio = ((double)(peak_index-d_max_deviation_px + d_Vtotal*d_Htotal))/(double)(d_Vtotal*d_Htotal);
             d_new_interpolation_ratio_rem = ((double)(peak_index-d_max_deviation_px))/(double)(d_Vtotal*d_Htotal);
 
+            printf("peak: %i\n", peak_index-d_max_deviation_px);
+            printf("peak_index: %i\n", peak_index);
+            printf("peak_value: %e\n", d_abs_historic_corr[peak_index]);
+
         }
 
         int
@@ -174,10 +195,26 @@ namespace gr {
                 gr_complex *out = (gr_complex *) output_items[0];
 
 
-                if(d_dist(d_gen)<d_proba_of_updating){
+                //if(d_dist(d_gen)<d_proba_of_updating){
+                d_next_update -= noutput_items;
+                if(d_next_update <= 0){
+                    // If noutput_items is too big, I only use a single line
+                    //update_interpolation_ratio(in, std::min(noutput_items,d_Htotal));
                     update_interpolation_ratio(in, noutput_items);
+
+                    if (d_next_update<=-10*d_Htotal){
+                        d_next_update = d_dist(d_gen);
+                    }
+                    printf("d_new_interpolation_ratio_rem: %e\n", d_new_interpolation_ratio_rem);
+                    printf("d_samp_inc_rem: %e\n", d_samp_inc_rem);
+                    printf("noutput_items: %i\n",noutput_items);
+                    printf("ninput_items: %i y debería haber: %i\n",ninput_items[0], d_Vtotal*d_Htotal+2*d_max_deviation_px+1 + (int)ceil((noutput_items + 1) * (2+d_samp_inc_rem)) + d_inter.ntaps());
+                    printf("forecast da: %i\n",(int)ceil((noutput_items + 1) * (2+d_samp_inc_rem)) + d_inter.ntaps());
+                    printf("d_next_updates: %i\n",d_next_update);
                 }
                 int required_for_interpolation = noutput_items; 
+                
+                //printf("d_next_update: %i\n",d_next_update);
                 if (d_correct_sampling){
                     d_samp_inc_rem = (1-d_alpha_samp_inc)*d_samp_inc_rem + d_alpha_samp_inc*d_new_interpolation_ratio_rem;
                     // d_samp_inc_rem = d_samp_inc_rem - d_alpha_samp_inc*(d_samp_inc_rem+1 - new_interpolation_ratio);
