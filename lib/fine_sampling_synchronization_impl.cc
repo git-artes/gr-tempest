@@ -72,6 +72,7 @@ namespace gr {
             const int alignment_multiple = volk_get_alignment() / sizeof(gr_complex);
             set_alignment(std::max(1, alignment_multiple));
 
+
             //set_output_multiple(d_Htotal);
 
         }
@@ -81,9 +82,12 @@ namespace gr {
          */
         fine_sampling_synchronization_impl::~fine_sampling_synchronization_impl()
         {
-            delete [] d_current_corr;
-            delete [] d_historic_corr;
-            delete [] d_abs_historic_corr;
+            delete [] d_current_line_corr;
+            delete [] d_historic_line_corr;
+            delete [] d_abs_historic_line_corr;
+            delete [] d_current_frame_corr;
+            delete [] d_historic_frame_corr;
+            delete [] d_abs_historic_frame_corr;
         }
 
         void
@@ -106,20 +110,38 @@ namespace gr {
             d_Vtotal = Vtotal; 
             //d_max_deviation = max_deviation; 
             d_max_deviation_px = (int)std::ceil(d_Htotal*d_max_deviation);
-            set_history(d_Vtotal*d_Htotal+2*d_max_deviation_px+2);
+            printf("d_max_deviation_px: %i\n", d_max_deviation_px);
+            //set_history(d_Vtotal*d_Htotal+2*d_max_deviation_px+2);
+            set_history(d_Vtotal*(d_Htotal+d_max_deviation_px)+1);
 
+            d_peak_line_index = 0;
             d_samp_inc_rem = 0;
             d_new_interpolation_ratio_rem = 0;
 
-            d_current_corr = new gr_complex[2*d_max_deviation_px + 1];
-            d_historic_corr = new gr_complex[2*d_max_deviation_px + 1];
-            d_abs_historic_corr = new float[2*d_max_deviation_px + 1];
+            // d_current_line_corr[i] and derivatives will keep the correlation between pixels 
+            // px[t] and px[t+Htotal+i]
+            d_current_line_corr = new gr_complex[2*d_max_deviation_px + 1];
+            d_historic_line_corr = new gr_complex[2*d_max_deviation_px + 1];
+            d_abs_historic_line_corr = new float[2*d_max_deviation_px + 1];
+
+            // d_current_frame_corr[i] and derivatives will keep the correlation between pixels 
+            // px[t] and px[t+Htotal*Vtotal+i]. Since a single pixel de-alignment with the next line will 
+            // mean d_Vtotal pixels de-alignments with the next frame, these arrays are much bigger. 
+            // However, instead of always calculating the whole of them, I'll only calculate around those
+            // indicated by the max in the d_abs_historic_line_corr. 
+            d_current_frame_corr = new gr_complex[2*(d_max_deviation_px+1)*d_Vtotal + 1];
+            d_historic_frame_corr = new gr_complex[2*(d_max_deviation_px+1)*d_Vtotal + 1];
+            d_abs_historic_frame_corr = new float[2*(d_max_deviation_px+1)*d_Vtotal + 1];
             //I'll estimate the new sampling synchronization asap
             d_next_update = 0;
 
             for (int i = 0; i<2*d_max_deviation_px+1; i++){
-                d_historic_corr[i] = 0;
-                d_abs_historic_corr[i] = 0;
+                d_historic_line_corr[i] = 0;
+                d_abs_historic_line_corr[i] = 0;
+            }
+            for (int i = 0; i<2*d_max_deviation_px*d_Vtotal+1; i++){
+                d_historic_frame_corr[i] = 0;
+                d_abs_historic_frame_corr[i] = 0;
             }
 
             printf("[TEMPEST] Setting Htotal to %i and Vtotal to %i in fine sampling synchronization block.\n", Htotal, Vtotal);
@@ -147,24 +169,25 @@ namespace gr {
         }
 
 
-
-        void fine_sampling_synchronization_impl::update_interpolation_ratio(const gr_complex * in, int in_size)
+        void fine_sampling_synchronization_impl::estimate_peak_line_index(const gr_complex * in, int in_size)
         {
+
+            // TODO a proper programmer would have done this repeated piece of code in a separate function. too lazy...
             gr_complex * d_in_conj = new gr_complex[in_size]; 
             volk_32fc_conjugate_32fc(&d_in_conj[0], &in[0], in_size);
 
             for (int i=0; i<in_size; i++){
                 //d_current_corr[:] = in[i+H*V-max : i+H*V+max]*conj(in[i])
-                volk_32fc_s32fc_multiply_32fc(&d_current_corr[0], &in[i+d_Htotal*d_Vtotal-d_max_deviation_px], d_in_conj[i], 2*d_max_deviation_px+1);
-                volk_32fc_s32fc_multiply_32fc(&d_historic_corr[0], &d_historic_corr[0], (1-d_alpha_corr), 2*d_max_deviation_px+1);
+                volk_32fc_s32fc_multiply_32fc(&d_current_line_corr[0], &in[i+d_Htotal-d_max_deviation_px], d_in_conj[i], 2*d_max_deviation_px+1);
+                volk_32fc_s32fc_multiply_32fc(&d_historic_line_corr[0], &d_historic_line_corr[0], (1-d_alpha_corr), 2*d_max_deviation_px+1);
 #if VOLK_GT_14
-                volk_32fc_x2_add_32fc(&d_historic_corr[0], &d_historic_corr[0], &d_current_corr[0], 2*d_max_deviation_px+1);
+                volk_32fc_x2_add_32fc(&d_historic_line_corr[0], &d_historic_line_corr[0], &d_current_line_corr[0], 2*d_max_deviation_px+1);
 #else
                 for(int j=0; j<2*d_max_deviation_px+1; j++){
-                    d_historic_corr[j] = d_historic_corr[j] + d_current_corr[j];
+                    d_historic_line_corr[j] = d_historic_line_corr[j] + d_current_line_corr[j];
                 }
 #endif
-                volk_32fc_magnitude_squared_32f(&d_abs_historic_corr[0], &d_historic_corr[0], 2*d_max_deviation_px+1);
+                volk_32fc_magnitude_squared_32f(&d_abs_historic_line_corr[0], &d_historic_line_corr[0], 2*d_max_deviation_px+1);
             }
 #if VOLK_GT_122
             uint16_t peak_index = 0;
@@ -173,16 +196,50 @@ namespace gr {
             unsigned int peak_index = 0;
             int d_datain_length = 2*d_max_deviation_px+1;
 #endif
-            volk_32f_index_max_16u(&peak_index, d_abs_historic_corr, 2*d_max_deviation_px+1); 
+            volk_32f_index_max_16u(&peak_index, d_abs_historic_line_corr, 2*d_max_deviation_px+1); 
+
+            d_peak_line_index = (peak_index-d_max_deviation_px);
+            delete [] d_in_conj;
+
+        }
+
+
+        void fine_sampling_synchronization_impl::update_interpolation_ratio(const gr_complex * in, int in_size)
+        {
+            gr_complex * d_in_conj = new gr_complex[in_size]; 
+            volk_32fc_conjugate_32fc(&d_in_conj[0], &in[0], in_size);
+
+            int corrsize = 2*d_Vtotal+1;
+            int offset = (d_max_deviation_px+d_peak_line_index)*d_Vtotal;
+            int offset_in = d_peak_line_index*d_Vtotal;
+            for (int i=0; i<in_size; i++){
+                //d_current_corr[offset:offset+corrsize] = in[i+H*V+d_peak_line_index*V - V: i+H*V+d_peak_line_index*V + V]*conj(in[i])
+                volk_32fc_s32fc_multiply_32fc(&d_current_frame_corr[offset], &in[i+d_Htotal*d_Vtotal+offset_in-d_Vtotal], d_in_conj[i], corrsize);
+                volk_32fc_s32fc_multiply_32fc(&d_historic_frame_corr[offset], &d_historic_frame_corr[offset], (1-d_alpha_corr), corrsize);
+#if VOLK_GT_14
+                volk_32fc_x2_add_32fc(&d_historic_frame_corr[offset], &d_historic_frame_corr[offset], &d_current_frame_corr[offset], corrsize);
+#else
+                for(int j=offset; j<corrsize; j++){
+                    d_historic_frame_corr[j] = d_historic_frame_corr[j] + d_current_frame_corr[j];
+                }
+#endif
+                volk_32fc_magnitude_squared_32f(&d_abs_historic_frame_corr[offset], &d_historic_frame_corr[offset], corrsize);
+            }
+#if VOLK_GT_122
+            uint16_t peak_index = 0;
+            uint32_t d_datain_length = (uint32_t)(corrsize);
+#else
+            unsigned int peak_index = 0;
+            int d_datain_length = corrsize;
+#endif
+            volk_32f_index_max_16u(&peak_index, &d_abs_historic_frame_corr[offset], corrsize); 
 
             // the new interpolation ratio is how far the peak is from d_Vtotal*d_Htotal.
-            //double new_interpolation_ratio = ((double)(peak_index-d_max_deviation_px + d_Vtotal*d_Htotal))/(double)(d_Vtotal*d_Htotal);
-            d_new_interpolation_ratio_rem = ((double)(peak_index-d_max_deviation_px))/(double)(d_Vtotal*d_Htotal);
+            d_new_interpolation_ratio_rem = ((double)(peak_index+offset_in-d_Vtotal))/(double)(d_Vtotal*d_Htotal);
 
-            printf("peak: %i\n", peak_index-d_max_deviation_px);
-            printf("peak_index: %i\n", peak_index);
-            printf("peak_value: %e\n", d_abs_historic_corr[peak_index]);
-
+            //printf("d_peak_line_index: %i, peak_index: %i\n", d_peak_line_index, peak_index-d_Vtotal);
+            delete [] d_in_conj;
+            
         }
 
         int
@@ -198,6 +255,7 @@ namespace gr {
                 //if(d_dist(d_gen)<d_proba_of_updating){
                 d_next_update -= noutput_items;
                 if(d_next_update <= 0){
+                    estimate_peak_line_index(in, noutput_items);
                     // If noutput_items is too big, I only use a single line
                     //update_interpolation_ratio(in, std::min(noutput_items,d_Htotal));
                     update_interpolation_ratio(in, noutput_items);
@@ -205,12 +263,6 @@ namespace gr {
                     if (d_next_update<=-10*d_Htotal){
                         d_next_update = d_dist(d_gen);
                     }
-                    printf("d_new_interpolation_ratio_rem: %e\n", d_new_interpolation_ratio_rem);
-                    printf("d_samp_inc_rem: %e\n", d_samp_inc_rem);
-                    printf("noutput_items: %i\n",noutput_items);
-                    printf("ninput_items: %i y debería haber: %i\n",ninput_items[0], d_Vtotal*d_Htotal+2*d_max_deviation_px+1 + (int)ceil((noutput_items + 1) * (2+d_samp_inc_rem)) + d_inter.ntaps());
-                    printf("forecast da: %i\n",(int)ceil((noutput_items + 1) * (2+d_samp_inc_rem)) + d_inter.ntaps());
-                    printf("d_next_updates: %i\n",d_next_update);
                 }
                 int required_for_interpolation = noutput_items; 
                 

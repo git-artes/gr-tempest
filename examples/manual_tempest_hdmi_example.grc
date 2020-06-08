@@ -46,7 +46,7 @@
     </param>
     <param>
       <key>id</key>
-      <value>manual_tempest_example</value>
+      <value>manual_tempest_hdmi_example</value>
     </param>
     <param>
       <key>max_nouts</key>
@@ -874,7 +874,7 @@
     </param>
     <param>
       <key>_enabled</key>
-      <value>0</value>
+      <value>1</value>
     </param>
     <param>
       <key>_coordinate</key>
@@ -921,7 +921,7 @@
     </param>
     <param>
       <key>_enabled</key>
-      <value>1</value>
+      <value>0</value>
     </param>
     <param>
       <key>_coordinate</key>
@@ -1027,7 +1027,7 @@
     </param>
     <param>
       <key>_enabled</key>
-      <value>True</value>
+      <value>1</value>
     </param>
     <param>
       <key>_coordinate</key>
@@ -1051,7 +1051,7 @@
     </param>
     <param>
       <key>max_deviation</key>
-      <value>1</value>
+      <value>20.0/interpolatedHsize</value>
     </param>
     <param>
       <key>minoutbuf</key>
@@ -1082,7 +1082,7 @@
     </param>
     <param>
       <key>_enabled</key>
-      <value>1</value>
+      <value>0</value>
     </param>
     <param>
       <key>_coordinate</key>
@@ -2549,7 +2549,7 @@ on run-time. Then, enable the other path.</value>
     </param>
     <param>
       <key>_enabled</key>
-      <value>1</value>
+      <value>0</value>
     </param>
     <param>
       <key>fps</key>
@@ -2610,7 +2610,7 @@ the chooser).</value>
     </param>
     <param>
       <key>_enabled</key>
-      <value>0</value>
+      <value>1</value>
     </param>
     <param>
       <key>fps</key>

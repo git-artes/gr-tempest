@@ -124,7 +124,7 @@
     </param>
     <param>
       <key>value</key>
-      <value>16</value>
+      <value>0</value>
     </param>
     <param>
       <key>_enabled</key>
@@ -1438,7 +1438,7 @@
     </param>
     <param>
       <key>max_deviation</key>
-      <value>1</value>
+      <value>20.0/interpolatedHsize</value>
     </param>
     <param>
       <key>minoutbuf</key>

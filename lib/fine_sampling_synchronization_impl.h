@@ -54,10 +54,19 @@ namespace gr {
 
          float d_alpha_samp_inc; 
          int d_max_deviation_px; 
-       
-         gr_complex * d_current_corr;  
-         gr_complex * d_historic_corr;  
-         float * d_abs_historic_corr;  
+      
+        // correlation with the last line 
+         gr_complex * d_current_line_corr;  
+         gr_complex * d_historic_line_corr;  
+         float * d_abs_historic_line_corr;  
+        // correlation with the last frame 
+         gr_complex * d_current_frame_corr;  
+         gr_complex * d_historic_frame_corr;  
+         float * d_abs_historic_frame_corr;  
+      
+        // where is the line correlation peak  
+         int d_peak_line_index;
+
          float d_alpha_corr;
 
          // the interpolating filter        
@@ -66,6 +75,8 @@ namespace gr {
         int interpolate_input(const gr_complex * in, gr_complex * out, int size);
       
         void update_interpolation_ratio(const gr_complex * in, int in_size);
+
+        void estimate_peak_line_index(const gr_complex * in, int in_size);
 
      public:
       fine_sampling_synchronization_impl(int Htotal, int Vtotal, int correct_sampling, float max_deviation, float update_proba);
