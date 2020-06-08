@@ -26,5 +26,6 @@ install(FILES
     sampling_synchronization.h
     framing.h
     Hsync.h
-    normalize_flow.h DESTINATION include/tempest
+    normalize_flow.h
+    fine_sampling_synchronization.h DESTINATION include/tempest
 )

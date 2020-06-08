@@ -62,7 +62,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [472, 12]
+    coordinate: [680, 12]
     rotation: 0
     state: enabled
 - name: Vdisplay
@@ -95,35 +95,14 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [567, 159]
-    rotation: 0
-    state: enabled
-- name: epsilon
-  id: variable_qtgui_range
-  parameters:
-    comment: ''
-    gui_hint: 4,0,1,2
-    label: Fine sampling correction
-    min_len: '200'
-    orient: Qt.Horizontal
-    rangeType: float
-    start: (interpolatedHsize-1)/float(interpolatedHsize)-1
-    step: 1e-7
-    stop: (interpolatedHsize+1)/float(interpolatedHsize)-1
-    value: '0'
-    widget: counter_slider
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [1000, 84]
+    coordinate: [568, 148]
     rotation: 0
     state: enabled
 - name: harmonic
   id: variable_qtgui_range
   parameters:
     comment: ''
-    gui_hint: 5,0,1,1
+    gui_hint: 3,1,1,1
     label: Harmonic
     min_len: '200'
     orient: Qt.Horizontal
@@ -137,14 +116,14 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [727, 156]
+    coordinate: [728, 148]
     rotation: 0
     state: enabled
 - name: horizontal_offset
   id: variable_qtgui_range
   parameters:
     comment: ''
-    gui_hint: 2,0,1,2
+    gui_hint: 1,0,1,2
     label: Horizontal offset
     min_len: '200'
     orient: Qt.Horizontal
@@ -158,7 +137,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [844, 158]
+    coordinate: [848, 148]
     rotation: 0
     state: enabled
 - name: interpolatedHsize
@@ -170,15 +149,15 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [936, 12]
+    coordinate: [1040, 12]
     rotation: 0
     state: enabled
 - name: inverted
   id: variable_qtgui_chooser
   parameters:
     comment: ''
-    gui_hint: 6,0,1,2
-    label: Inverted Color?
+    gui_hint: 4,0,1,1
+    label: Inverted colors?
     label0: 'Yes'
     label1: 'No'
     label2: ''
@@ -193,20 +172,20 @@ blocks:
     options: '[0, 1, 2]'
     orient: Qt.QHBoxLayout
     type: real
-    value: '-1'
+    value: '1'
     widget: radio_buttons
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [644, 9]
+    coordinate: [384, 12]
     rotation: 0
-    state: true
+    state: enabled
 - name: lines_offset
   id: variable_qtgui_range
   parameters:
     comment: ''
-    gui_hint: 1,0,1,2
+    gui_hint: 2,0,1,2
     label: Vertical offset
     min_len: '200'
     orient: Qt.Horizontal
@@ -220,7 +199,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [800, 12]
+    coordinate: [848, 12]
     rotation: 0
     state: enabled
 - name: px_rate
@@ -239,7 +218,7 @@ blocks:
   id: variable_qtgui_range
   parameters:
     comment: ''
-    gui_hint: 5,1,1,1
+    gui_hint: 3,0,1,1
     label: Refresh Rate (Hz)
     min_len: '200'
     orient: Qt.Horizontal
@@ -253,7 +232,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [240, 12]
+    coordinate: [536, 12]
     rotation: 0
     state: enabled
 - name: samp_rate
@@ -281,7 +260,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1053, 340]
+    coordinate: [1008, 354]
     rotation: 0
     state: enabled
 - name: blocks_delay_0
@@ -300,7 +279,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [815, 336]
+    coordinate: [762, 351]
     rotation: 0
     state: enabled
 - name: blocks_file_source_0
@@ -322,9 +301,26 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [78, 301]
+    coordinate: [22, 310]
     rotation: 0
     state: enabled
+- name: blocks_float_to_short_0
+  id: blocks_float_to_short
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    scale: inverted
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [811, 486]
+    rotation: 180
+    state: disabled
 - name: blocks_float_to_short_0_0
   id: blocks_float_to_short
   parameters:
@@ -339,26 +335,9 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1248, 575]
+    coordinate: [1348, 643]
     rotation: 180
     state: enabled
-- name: blocks_float_to_short_0_0_0
-  id: blocks_float_to_short
-  parameters:
-    affinity: ''
-    alias: ''
-    comment: ''
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    scale: inverted
-    vlen: '1'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [905, 439]
-    rotation: 180
-    state: disabled
 - name: blocks_throttle_0
   id: blocks_throttle
   parameters:
@@ -375,7 +354,27 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [327, 336]
+    coordinate: [283, 350]
+    rotation: 0
+    state: enabled
+- name: tempest_fine_sampling_synchronization_0
+  id: tempest_fine_sampling_synchronization
+  parameters:
+    Htotal: interpolatedHsize
+    Vtotal: Vsize
+    affinity: ''
+    alias: ''
+    comment: ''
+    correct_sampling: '1'
+    max_deviation: 10.0/interpolatedHsize
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    update_proba: 1e-2/(Hsize*Vsize)
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [459, 318]
     rotation: 0
     state: enabled
 - name: tempest_framing_0
@@ -394,7 +393,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1097, 419]
+    coordinate: [1152, 454]
     rotation: 180
     state: disabled
 - name: tempest_normalize_flow_0
@@ -414,24 +413,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1290, 295]
-    rotation: 0
-    state: true
-- name: tempest_sampling_synchronization_0
-  id: tempest_sampling_synchronization
-  parameters:
-    Htotal: interpolatedHsize
-    affinity: ''
-    alias: ''
-    comment: ''
-    manual_correction: epsilon
-    maxoutbuf: '0'
-    minoutbuf: '0'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [533, 328]
+    coordinate: [1208, 326]
     rotation: 0
     state: enabled
 - name: uhd_usrp_source_0
@@ -802,7 +784,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [184, 425]
+    coordinate: [83, 446]
     rotation: 0
     state: disabled
 - name: video_sdl_sink_0_0
@@ -823,7 +805,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [656, 401]
+    coordinate: [571, 454]
     rotation: 180
     state: disabled
 - name: video_sdl_sink_0_0_0
@@ -844,7 +826,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [936, 529]
+    coordinate: [1156, 611]
     rotation: 180
     state: enabled
 
@@ -852,14 +834,14 @@ connections:
 - [blocks_complex_to_mag_0, '0', tempest_normalize_flow_0, '0']
 - [blocks_delay_0, '0', blocks_complex_to_mag_0, '0']
 - [blocks_file_source_0, '0', blocks_throttle_0, '0']
+- [blocks_float_to_short_0, '0', video_sdl_sink_0_0, '0']
 - [blocks_float_to_short_0_0, '0', video_sdl_sink_0_0_0, '0']
-- [blocks_float_to_short_0_0_0, '0', video_sdl_sink_0_0, '0']
-- [blocks_throttle_0, '0', tempest_sampling_synchronization_0, '0']
-- [tempest_framing_0, '0', blocks_float_to_short_0_0_0, '0']
+- [blocks_throttle_0, '0', tempest_fine_sampling_synchronization_0, '0']
+- [tempest_fine_sampling_synchronization_0, '0', blocks_delay_0, '0']
+- [tempest_framing_0, '0', blocks_float_to_short_0, '0']
 - [tempest_normalize_flow_0, '0', blocks_float_to_short_0_0, '0']
 - [tempest_normalize_flow_0, '0', tempest_framing_0, '0']
-- [tempest_sampling_synchronization_0, '0', blocks_delay_0, '0']
-- [uhd_usrp_source_0, '0', tempest_sampling_synchronization_0, '0']
+- [uhd_usrp_source_0, '0', tempest_fine_sampling_synchronization_0, '0']
 
 metadata:
   file_format: 1

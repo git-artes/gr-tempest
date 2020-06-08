@@ -47,3 +47,4 @@ GR_ADD_TEST(qa_framing ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/qa_frami
 GR_ADD_TEST(qa_Hsync ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/qa_Hsync.py)
 GR_ADD_TEST(qa_image_source ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/qa_image_source.py)
 GR_ADD_TEST(qa_normalize_flow ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/qa_normalize_flow.py)
+GR_ADD_TEST(qa_fine_sampling_synchronization ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/qa_fine_sampling_synchronization.py)
