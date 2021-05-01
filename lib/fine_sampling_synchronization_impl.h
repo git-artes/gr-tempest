@@ -40,6 +40,14 @@ namespace gr {
          int d_Vtotal; 
          int d_correct_sampling;
          float d_max_deviation; 
+        //Counters
+        int d_frame_height_counter;
+        int d_frames_counter;
+
+        //Fixed parameter
+        int d_discarded_amount_per_frame;
+
+
 
          // to accelerate the process, I'll only update the interpolation
          // once every a random number of iterations with probability d_proba_of_updating
@@ -47,6 +55,7 @@ namespace gr {
          std::minstd_rand d_gen;
          float d_proba_of_updating;
          int d_next_update;
+         int d_required_for_interpolation;
 
          double d_samp_inc_rem;
          double d_new_interpolation_ratio_rem;

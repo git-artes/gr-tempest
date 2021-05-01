@@ -114,6 +114,7 @@ namespace gr {
             //set_history(d_Vtotal*d_Htotal+2*d_max_deviation_px+2);
             set_history(d_Vtotal*(d_Htotal+d_max_deviation_px)+1);
 
+            d_required_for_interpolation = 0;
             d_peak_line_index = 0;
             d_samp_inc_rem = 0;
             d_new_interpolation_ratio_rem = 0;
@@ -145,7 +146,12 @@ namespace gr {
             }
 
             printf("[TEMPEST] Setting Htotal to %i and Vtotal to %i in fine sampling synchronization block.\n", Htotal, Vtotal);
+                        //-----------------------------------------------------
+            // PMT TEST
 
+            message_port_register_out(pmt::mp("rate"));
+
+            //-----------------------------------------------------
         }
 
         int fine_sampling_synchronization_impl::interpolate_input(const gr_complex * in, gr_complex * out, int size){
@@ -214,7 +220,6 @@ namespace gr {
 
             // the new interpolation ratio is how far the peak is from d_Vtotal*d_Htotal.
             d_new_interpolation_ratio_rem = ((double)(peak_index+offset_in-d_Vtotal))/(double)(d_Vtotal*d_Htotal);
-
             //printf("d_peak_line_index: %i, peak_index: %i\n", d_peak_line_index, peak_index-d_Vtotal);
             delete [] d_in_conj;
             
@@ -229,40 +234,76 @@ namespace gr {
                 const gr_complex *in = (const gr_complex *) input_items[0];
                 gr_complex *out = (gr_complex *) output_items[0];
 
+                // if(d_dist(d_gen)<=d_proba_of_updating)
+                // {
+                //     d_next_update -= noutput_items;
 
-                //if(d_dist(d_gen)<d_proba_of_updating){
-                d_next_update -= noutput_items;
-                if(d_next_update <= 0){
-                    estimate_peak_line_index(in, noutput_items);
-                    // If noutput_items is too big, I only use a single line
-                    //update_interpolation_ratio(in, std::min(noutput_items,d_Htotal));
-                    update_interpolation_ratio(in, noutput_items);
+                //     if(d_next_update <= 0)
+                //     {
+                        estimate_peak_line_index(in, noutput_items);
+                        // If noutput_items is too big, I only use a single line
+                        //update_interpolation_ratio(in, std::min(noutput_items,d_Htotal));
+                        update_interpolation_ratio(in, noutput_items);
 
-                    if (d_next_update<=-10*d_Htotal){
-                        d_next_update = d_dist(d_gen);
-                    }
-                }
-                int required_for_interpolation = noutput_items; 
+                //     }
+                // }
+                  //One out of four frames will be discarded to optimize interpolation
+                  //without losing noticeable quality in the video
+                int consumed = 0, out_amount = 0;
+                for (int line = 0; line < noutput_items/d_Htotal; line++) 
+                { 
+
+                    //If we are in one of the n discarded frames
+                    if (d_frames_counter < 6)
+                    {
+                        //lines are counted and consumed to see them all through
+                        d_frame_height_counter ++;
+                        consumed += d_required_for_interpolation;                                                      //TODO: ADD INTERPOLATE nTAPS??
+
+                        //and three frames are counted without any output
+                        if (d_frame_height_counter % d_Vtotal == 0)
+                        {
+                            d_frame_height_counter = 0;
+                            d_frames_counter++;
+                        }
+
+                        //If we are in the one frame we wish to keep
+                    } else if (d_frames_counter == 6 )
+
+                    {
+
+                        d_samp_inc_rem = (1-d_alpha_samp_inc)*d_samp_inc_rem + d_alpha_samp_inc*d_new_interpolation_ratio_rem;  //INTERPOLATE 1 FRAME
+                        d_required_for_interpolation = interpolate_input(&in[line*d_Htotal], &out[line*d_Htotal], d_Htotal);                         //INTERPOLATE 1 FRAME
+
+                        //the data is copied in the output, consuming accordingly
+                        out_amount += d_Htotal;                                                   //INTERPOLATE 1 FRAME
+                        consumed += d_required_for_interpolation;                                                      //INTERPOLATE 1 FRAME
+                        d_frame_height_counter ++;
                 
-                //printf("d_next_update: %i\n",d_next_update);
-                if (d_correct_sampling){
-                    d_samp_inc_rem = (1-d_alpha_samp_inc)*d_samp_inc_rem + d_alpha_samp_inc*d_new_interpolation_ratio_rem;
-                    // d_samp_inc_rem = d_samp_inc_rem - d_alpha_samp_inc*(d_samp_inc_rem+1 - new_interpolation_ratio);
-                    required_for_interpolation = interpolate_input(&in[0], &out[0], noutput_items);
-                }
-                else
-                {
-                    memcpy(&out[0], &in[0], noutput_items*sizeof(gr_complex));
-                }
+                        printf("\nVariables TESTING: d_samp_inc_rem%f\t line\t%d\t noutput_items/d_Htotal\t%d\t out_amount\t%d\t consumed \t%d\t d_required_for_interpolation \t%d", 
+                            d_samp_inc_rem, line, noutput_items/d_Htotal, out_amount, consumed, d_required_for_interpolation);
 
-                //memcpy(out, in, noutput_items*sizeof(gr_complex));
+                        //until the frame is over, so we begin again
+                        if (d_frame_height_counter % d_Vtotal == 0)
+                        {
+                            d_frame_height_counter = 0;
+                            d_frames_counter = 0;
+                        }
+                    }
+                    //memcpy(&out[line*d_Htotal], &in[line*d_Htotal], d_Htotal*sizeof(gr_complex));
 
-                // Tell runtime system how many input items we consumed on
-                // each input stream.
-                consume_each (required_for_interpolation);
+                }	
 
-                // Tell runtime system how many output items we produced.
-                return noutput_items;
+
+	            // Tell runtime system how many input items we consumed on
+	            // each input stream.
+	            consume_each (consumed);
+
+	            // Tell runtime system how many output items we produced.
+	            return out_amount;
+                
+
+
             }
 
     } /* namespace tempest */
