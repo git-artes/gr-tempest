@@ -69,11 +69,11 @@ namespace gr {
             //VOLK alignment as recommended by GNU Radio's Manual. It has a similar effect 
             //than set_output_multiple(), thus we will generally get multiples of this value
             //as noutput_items. 
+            set_output_multiple(d_Htotal);
+
             const int alignment_multiple = volk_get_alignment() / sizeof(gr_complex);
             set_alignment(std::max(1, alignment_multiple));
-
-
-            //set_output_multiple(d_Htotal);
+         
 
         }
 
@@ -114,7 +114,7 @@ namespace gr {
             //set_history(d_Vtotal*d_Htotal+2*d_max_deviation_px+2);
             set_history(d_Vtotal*(d_Htotal+d_max_deviation_px)+1);
 
-            d_required_for_interpolation = 0;
+            d_required_for_interpolation = d_Htotal;
             d_peak_line_index = 0;
             d_samp_inc_rem = 0;
             d_new_interpolation_ratio_rem = 0;
@@ -240,17 +240,17 @@ namespace gr {
 
                 //     if(d_next_update <= 0)
                 //     {
-                        estimate_peak_line_index(in, noutput_items);
+                //        estimate_peak_line_index(in, noutput_items);
                         // If noutput_items is too big, I only use a single line
                         //update_interpolation_ratio(in, std::min(noutput_items,d_Htotal));
-                        update_interpolation_ratio(in, noutput_items);
+                //        update_interpolation_ratio(in, noutput_items);
 
                 //     }
                 // }
-                  //One out of four frames will be discarded to optimize interpolation
+                  //Three out of four frames will be discarded to optimize interpolation
                   //without losing noticeable quality in the video
                 int consumed = 0, out_amount = 0;
-                for (int line = 0; line < noutput_items/d_Htotal; line++) 
+                for (int line = 0; line < noutput_items/d_required_for_interpolation; line++) 
                 { 
 
                     //If we are in one of the n discarded frames
@@ -268,20 +268,23 @@ namespace gr {
                         }
 
                         //If we are in the one frame we wish to keep
-                    } else if (d_frames_counter == 6 )
+                    } else if (d_frames_counter == 6)
 
                     {
 
-                        d_samp_inc_rem = (1-d_alpha_samp_inc)*d_samp_inc_rem + d_alpha_samp_inc*d_new_interpolation_ratio_rem;  //INTERPOLATE 1 FRAME
-                        d_required_for_interpolation = interpolate_input(&in[line*d_Htotal], &out[line*d_Htotal], d_Htotal);                         //INTERPOLATE 1 FRAME
+                        //d_samp_inc_rem = (1-d_alpha_samp_inc)*d_samp_inc_rem + d_alpha_samp_inc*d_new_interpolation_ratio_rem;  //INTERPOLATE 1 FRAME
+                        
+                        d_samp_inc_rem = 0;
+                        
+                        d_required_for_interpolation = interpolate_input(&in[line*d_required_for_interpolation], &out[line*d_Htotal], d_Htotal);                         //INTERPOLATE 1 FRAME
 
                         //the data is copied in the output, consuming accordingly
                         out_amount += d_Htotal;                                                   //INTERPOLATE 1 FRAME
                         consumed += d_required_for_interpolation;                                                      //INTERPOLATE 1 FRAME
                         d_frame_height_counter ++;
                 
-                        printf("\nVariables TESTING: d_samp_inc_rem%f\t line\t%d\t noutput_items/d_Htotal\t%d\t out_amount\t%d\t consumed \t%d\t d_required_for_interpolation \t%d", 
-                            d_samp_inc_rem, line, noutput_items/d_Htotal, out_amount, consumed, d_required_for_interpolation);
+                        //printf("\nVariables TESTING: d_samp_inc_rem%f\t line\t%d\t noutput_items/d_Htotal\t%d\t out_amount\t%d\t consumed \t%d\t d_required_for_interpolation \t%d", 
+                        //    d_samp_inc_rem, line, noutput_items/d_Htotal, out_amount, consumed, d_required_for_interpolation);
 
                         //until the frame is over, so we begin again
                         if (d_frame_height_counter % d_Vtotal == 0)
