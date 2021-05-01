@@ -27,7 +27,7 @@ options:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [8, 8]
+    coordinate: [635, 98]
     rotation: 0
     state: enabled
 
@@ -41,7 +41,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [480, 28]
+    coordinate: [521, 33]
     rotation: 0
     state: enabled
 - name: Hsize
@@ -53,7 +53,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [560, 28]
+    coordinate: [601, 33]
     rotation: 0
     state: enabled
 - name: Hsizes
@@ -71,7 +71,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [624, 164]
+    coordinate: [642, 161]
     rotation: 0
     state: enabled
 - name: Hvisible
@@ -83,7 +83,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [656, 28]
+    coordinate: [697, 33]
     rotation: 0
     state: enabled
 - name: Hvisibles
@@ -100,7 +100,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [304, 228]
+    coordinate: [306, 223]
     rotation: 0
     state: enabled
 - name: Vblank
@@ -112,7 +112,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [480, 92]
+    coordinate: [485, 98]
     rotation: 0
     state: enabled
 - name: Vsize
@@ -124,7 +124,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [560, 92]
+    coordinate: [557, 98]
     rotation: 0
     state: enabled
 - name: Vsizes
@@ -141,7 +141,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [624, 228]
+    coordinate: [642, 225]
     rotation: 0
     state: enabled
 - name: Vvisible
@@ -153,7 +153,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [656, 92]
+    coordinate: [402, 99]
     rotation: 0
     state: enabled
 - name: Vvisibles
@@ -170,7 +170,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [464, 228]
+    coordinate: [482, 225]
     rotation: 0
     state: enabled
 - name: delay
@@ -191,7 +191,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1088, 84]
+    coordinate: [944, 163]
     rotation: 0
     state: enabled
 - name: harmonic
@@ -212,7 +212,31 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [976, 156]
+    coordinate: [1068, 92]
+    rotation: 0
+    state: enabled
+- name: interpolatedHblank
+  id: variable
+  parameters:
+    comment: ''
+    value: int(Hblank/float(px_rate)*samp_rate)
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [803, 235]
+    rotation: 0
+    state: enabled
+- name: interpolatedHscreen
+  id: variable
+  parameters:
+    comment: ''
+    value: int(Hvisible/float(px_rate)*samp_rate)
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [804, 174]
     rotation: 0
     state: enabled
 - name: interpolatedHsize
@@ -224,7 +248,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1088, 20]
+    coordinate: [1068, 31]
     rotation: 0
     state: enabled
 - name: inverted
@@ -253,7 +277,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [816, 28]
+    coordinate: [803, 33]
     rotation: 0
     state: enabled
 - name: lines_offset
@@ -274,7 +298,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [960, 28]
+    coordinate: [941, 33]
     rotation: 0
     state: enabled
 - name: mode
@@ -303,7 +327,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [112, 164]
+    coordinate: [1064, 216]
     rotation: 0
     state: enabled
 - name: modes
@@ -335,7 +359,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [288, 164]
+    coordinate: [306, 161]
     rotation: 0
     state: enabled
 - name: px_rate
@@ -347,7 +371,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [264, 28]
+    coordinate: [305, 33]
     rotation: 0
     state: enabled
 - name: refresh_rate
@@ -359,7 +383,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [376, 28]
+    coordinate: [417, 33]
     rotation: 0
     state: enabled
 - name: refresh_rates
@@ -374,19 +398,19 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [464, 164]
+    coordinate: [482, 161]
     rotation: 0
     state: enabled
 - name: samp_rate
   id: variable
   parameters:
     comment: ''
-    value: int(30e6)
+    value: int(50e6)
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [280, 92]
+    coordinate: [308, 98]
     rotation: 0
     state: enabled
 - name: blocks_complex_to_mag_0
@@ -402,26 +426,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1356, 402]
-    rotation: 0
-    state: enabled
-- name: blocks_delay_0
-  id: blocks_delay
-  parameters:
-    affinity: ''
-    alias: ''
-    comment: ''
-    delay: interpolatedHsize*lines_offset
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    num_ports: '1'
-    type: complex
-    vlen: '1'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [1100, 398]
+    coordinate: [1124, 366]
     rotation: 0
     state: enabled
 - name: blocks_file_source_0
@@ -431,7 +436,7 @@ blocks:
     alias: ''
     begin_tag: pmt.PMT_NIL
     comment: ''
-    file: /home/gnuradio/persistent/30M_tv_g50_v2.dat
+    file: /home/pablo/fing/proyecto/grabaciones/grabacion_splitter_50M_1344_806_px_freq_64995840.dat
     length: '0'
     maxoutbuf: '0'
     minoutbuf: '0'
@@ -443,7 +448,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [0, 380]
+    coordinate: [214, 330]
     rotation: 0
     state: enabled
 - name: blocks_float_to_short_0
@@ -460,7 +465,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1092, 574]
+    coordinate: [936, 527]
     rotation: 180
     state: enabled
 - name: blocks_throttle_0
@@ -479,24 +484,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [358, 404]
-    rotation: 0
-    state: enabled
-- name: tempest_Hsync_0
-  id: tempest_Hsync
-  parameters:
-    Htotal: interpolatedHsize
-    affinity: ''
-    alias: ''
-    comment: ''
-    delay: delay
-    maxoutbuf: '0'
-    minoutbuf: '0'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [876, 390]
+    coordinate: [459, 362]
     rotation: 0
     state: enabled
 - name: tempest_fine_sampling_synchronization_0
@@ -516,7 +504,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [620, 382]
+    coordinate: [658, 330]
     rotation: 0
     state: enabled
 - name: tempest_normalize_flow_0
@@ -536,9 +524,28 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1292, 550]
+    coordinate: [1118, 495]
     rotation: 180
     state: enabled
+- name: tempest_sync_detector_0
+  id: tempest_sync_detector
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    hblanking: interpolatedHblank
+    hscreen: interpolatedHscreen
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    vblanking: Vblank
+    vscreen: Vvisible
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [944, 338]
+    rotation: 0
+    state: true
 - name: uhd_usrp_source_0
   id: uhd_usrp_source
   parameters:
@@ -907,7 +914,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [183, 496]
+    coordinate: [370, 468]
     rotation: 0
     state: disabled
 - name: video_sdl_sink_0
@@ -927,19 +934,18 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [820, 542]
+    coordinate: [717, 495]
     rotation: 180
     state: enabled
 
 connections:
 - [blocks_complex_to_mag_0, '0', tempest_normalize_flow_0, '0']
-- [blocks_delay_0, '0', blocks_complex_to_mag_0, '0']
 - [blocks_file_source_0, '0', blocks_throttle_0, '0']
 - [blocks_float_to_short_0, '0', video_sdl_sink_0, '0']
 - [blocks_throttle_0, '0', tempest_fine_sampling_synchronization_0, '0']
-- [tempest_Hsync_0, '0', blocks_delay_0, '0']
-- [tempest_fine_sampling_synchronization_0, '0', tempest_Hsync_0, '0']
+- [tempest_fine_sampling_synchronization_0, '0', tempest_sync_detector_0, '0']
 - [tempest_normalize_flow_0, '0', blocks_float_to_short_0, '0']
+- [tempest_sync_detector_0, '0', blocks_complex_to_mag_0, '0']
 - [uhd_usrp_source_0, '0', tempest_fine_sampling_synchronization_0, '0']
 
 metadata:
