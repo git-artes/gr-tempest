@@ -34,7 +34,5 @@ outputs:
 - label: out
   domain: stream
   dtype: complex
-- label: rate
-  domain: message
-  optional: true
+
 file_format: 1

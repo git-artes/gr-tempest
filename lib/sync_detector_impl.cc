@@ -276,7 +276,7 @@ namespace gr {
       const int half_line_size = total_line_size / 2;
 
       //Here is defined what would be the shift location (position found plus half of the blanking)
-      int raw_index = (beta_index + (d_hblanking /2) % total_line_size;
+      int raw_index = (beta_index + (d_hblanking) /2) % total_line_size;
 
       //Checking if the new shift differs excessively from the previous one
       const int raw_diff = raw_index - *blanking_index;
