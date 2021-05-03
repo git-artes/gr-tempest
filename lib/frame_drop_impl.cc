@@ -199,7 +199,7 @@ namespace gr
       const gr_complex *in = (const gr_complex *) input_items[0];
       gr_complex *out = (gr_complex *) output_items[0];
 
-      int consumed = 0, out_amount = 0, required_for_interpolation = noutput_items, ii = 0, oo = 0, incr;
+      int consumed = 0, out_amount = 0, required_for_interpolation = d_Htotal, ii = 0, oo = 0, incr;
       double s, f;
 
       d_next_update -= noutput_items;
@@ -218,7 +218,7 @@ namespace gr
         
         d_samp_inc_rem = (1-d_alpha_samp_inc)*d_samp_inc_rem + d_alpha_samp_inc*d_new_interpolation_ratio_rem;
         
-        while(oo < noutput_items) {
+        while(oo < d_Htotal) {
           s = d_samp_phase + d_samp_inc_rem + 1;
           f = floor(s);
           incr = (int)f;
@@ -230,7 +230,7 @@ namespace gr
         required_for_interpolation = ii;
       }
 
-      for (int line = 0; line < required_for_interpolation/d_Htotal; line++) 
+      for (int line = 0; line < noutput_items/required_for_interpolation; line++) 
       { 
 
         //If we are in one of the n discarded frames
@@ -238,7 +238,7 @@ namespace gr
         {
           //lines are counted and consumed to see them all through
           d_frame_height_counter ++;
-          consumed += d_Htotal;                                             
+          consumed += required_for_interpolation;                                             
 
           //and three frames are counted without any output
           if (d_frame_height_counter % d_Vtotal == 0)
@@ -251,9 +251,9 @@ namespace gr
         } else if (d_frames_counter == d_discarded_amount_per_frame){
 
           //the data is copied in the output, consuming accordingly
-          memcpy(&out[line*d_Htotal], &in[line*d_Htotal], d_Htotal*sizeof(gr_complex));
-          out_amount += d_Htotal;
-          consumed += d_Htotal;
+          memcpy(&out[line*required_for_interpolation], &in[line*required_for_interpolation], required_for_interpolation*sizeof(gr_complex));
+          out_amount += required_for_interpolation;
+          consumed += required_for_interpolation;
           d_frame_height_counter ++;
 
           //until the frame is over, so we begin again
