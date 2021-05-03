@@ -65,7 +65,7 @@ namespace gr
       d_frames_counter = 0;
 
       //Fixed values
-      d_discarded_amount_per_frame = 3;
+      d_discarded_amount_per_frame = 1;
 
       d_correct_sampling = correct_sampling; 
       d_proba_of_updating = update_proba;
@@ -85,6 +85,7 @@ namespace gr
       
       d_Htotal = Htotal; 
       d_Vtotal = Vtotal; 
+      d_required_for_interpolation = d_Htotal*d_Vtotal;
       //d_max_deviation = max_deviation; 
       d_max_deviation_px = (int)std::ceil(d_Htotal*d_max_deviation);
 
@@ -186,7 +187,28 @@ namespace gr
       volk_32f_index_max_16u(&peak_index, &d_abs_historic_frame_corr[offset], corrsize); 
 
       d_new_interpolation_ratio_rem = ((double)(peak_index+offset_in-d_Vtotal))/(double)(d_Vtotal*d_Htotal);
+      //printf("Some historics: %f\t %f\t %f\t %f\t \n",d_abs_historic_frame_corr[200],d_abs_historic_frame_corr[300],d_abs_historic_frame_corr[400],d_abs_historic_frame_corr[500]);
       delete [] d_in_conj;
+    }
+
+
+    void 
+    frame_drop_impl::get_required_samples()
+    {
+      int ii = 0, oo = 0, incr;
+      double s, f;
+      
+      d_samp_inc_rem = (1-d_alpha_samp_inc)*d_samp_inc_rem + d_alpha_samp_inc*d_new_interpolation_ratio_rem;
+
+      while(oo < d_Htotal*d_Vtotal) {
+        s = d_samp_phase + d_samp_inc_rem + 1;
+        f = floor(s);
+        incr = (int)f;
+        d_samp_phase = s - f;
+        ii += incr;
+        oo++;
+      }
+      d_required_for_interpolation = ii;
     }
 
 
@@ -199,38 +221,23 @@ namespace gr
       const gr_complex *in = (const gr_complex *) input_items[0];
       gr_complex *out = (gr_complex *) output_items[0];
 
-      int consumed = 0, out_amount = 0, required_for_interpolation = d_Htotal, ii = 0, oo = 0, incr;
-      double s, f;
+      int consumed = 0, out_amount = 0;
 
       d_next_update -= noutput_items;
 
       if(d_next_update <= 0){
 
-        estimate_peak_line_index(in, noutput_items);
-        update_interpolation_ratio(in, noutput_items);
+        estimate_peak_line_index(&in[0], noutput_items);
+        update_interpolation_ratio(&in[0], noutput_items);
 
         if (d_next_update <= -10 * d_Htotal){
           d_next_update = d_dist(d_gen);
         }
       }
 
-      if (d_correct_sampling){
-        
-        d_samp_inc_rem = (1-d_alpha_samp_inc)*d_samp_inc_rem + d_alpha_samp_inc*d_new_interpolation_ratio_rem;
-        
-        while(oo < d_Htotal) {
-          s = d_samp_phase + d_samp_inc_rem + 1;
-          f = floor(s);
-          incr = (int)f;
-          d_samp_phase = s - f;
-          ii += incr;
-          oo++;
-        }
+      int one_line = d_required_for_interpolation/d_Vtotal;
 
-        required_for_interpolation = ii;
-      }
-
-      for (int line = 0; line < noutput_items/required_for_interpolation; line++) 
+      for (int line = 0; line < noutput_items/one_line; line++) 
       { 
 
         //If we are in one of the n discarded frames
@@ -238,7 +245,7 @@ namespace gr
         {
           //lines are counted and consumed to see them all through
           d_frame_height_counter ++;
-          consumed += required_for_interpolation;                                             
+          consumed += one_line;                                             
 
           //and three frames are counted without any output
           if (d_frame_height_counter % d_Vtotal == 0)
@@ -251,9 +258,9 @@ namespace gr
         } else if (d_frames_counter == d_discarded_amount_per_frame){
 
           //the data is copied in the output, consuming accordingly
-          memcpy(&out[line*required_for_interpolation], &in[line*required_for_interpolation], required_for_interpolation*sizeof(gr_complex));
-          out_amount += required_for_interpolation;
-          consumed += required_for_interpolation;
+          memcpy(&out[line*one_line], &in[line*one_line], one_line*sizeof(gr_complex));
+          out_amount += one_line;
+          consumed += one_line;
           d_frame_height_counter ++;
 
           //until the frame is over, so we begin again
@@ -261,9 +268,15 @@ namespace gr
           {
               d_frame_height_counter = 0;
               d_frames_counter = 0;
+              get_required_samples();
           }
-        }
+        } 
       }
+
+      /*if (d_frame_height_counter % d_Vtotal == 0 && ){
+        //printf("Required frame samples:%i\t Desired frame samples: %i\n",d_required_for_interpolation,(d_Htotal*d_Vtotal));
+        get_required_samples();       
+      }*/
 
       // Tell runtime system how many input items we consumed on
       // each input stream.

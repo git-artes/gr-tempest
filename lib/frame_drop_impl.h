@@ -51,6 +51,7 @@ namespace gr {
       int d_Htotal; 
       int d_Vtotal; 
       int d_correct_sampling;
+      int d_required_for_interpolation;
       float d_max_deviation;
 
       std::geometric_distribution<int> d_dist;
@@ -91,6 +92,7 @@ namespace gr {
       ~frame_drop_impl();
 
       void forecast (int noutput_items, gr_vector_int &ninput_items_required);
+      void get_required_samples();
 
       int general_work(int noutput_items,
            gr_vector_int &ninput_items,
