@@ -390,26 +390,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [923, 797]
-    rotation: 180
-    state: enabled
-- name: blocks_delay_0
-  id: blocks_delay
-  parameters:
-    affinity: ''
-    alias: ''
-    comment: ''
-    delay: interpolatedHsize*lines_offset+horizontal_offset
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    num_ports: '1'
-    type: complex
-    vlen: '1'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [1091, 793]
+    coordinate: [832, 771]
     rotation: 180
     state: enabled
 - name: blocks_float_to_short_0
@@ -560,9 +541,9 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1243, 761]
+    coordinate: [1239, 751]
     rotation: 180
-    state: enabled
+    state: disabled
 - name: tempest_framing_0
   id: tempest_framing
   parameters:
@@ -592,7 +573,7 @@ blocks:
     affinity: ''
     alias: ''
     comment: ''
-    image_file: /home/gnuradio/persistent/gr-tempest/Imagen_800_600.png
+    image_file: /home/pablo/fing/proyecto/grabaciones/prueba2.800x600.jpg
     maxoutbuf: '0'
     minoutbuf: '0'
     repeatmode: '1'
@@ -600,7 +581,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [0, 460]
+    coordinate: [24, 458]
     rotation: 0
     state: enabled
 - name: tempest_normalize_flow_0
@@ -623,6 +604,25 @@ blocks:
     coordinate: [620, 762]
     rotation: 180
     state: enabled
+- name: tempest_sync_detector_0
+  id: tempest_sync_detector
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    hblanking: ''
+    hscreen: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    vblanking: ''
+    vscreen: ''
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1032, 836]
+    rotation: 180
+    state: disabled
 - name: video_sdl_sink_0_0
   id: video_sdl_sink
   parameters:
@@ -669,15 +669,15 @@ blocks:
 connections:
 - [analog_sig_source_x_0, '0', blocks_multiply_xx_0, '1']
 - [blocks_complex_to_mag_0, '0', tempest_normalize_flow_0, '0']
-- [blocks_delay_0, '0', blocks_complex_to_mag_0, '0']
 - [blocks_float_to_short_0, '0', video_sdl_sink_0_0_0, '0']
 - [blocks_float_to_short_0_0, '0', video_sdl_sink_0_0, '0']
 - [blocks_multiply_xx_0, '0', rational_resampler_xxx_0, '0']
 - [blocks_throttle_0_0, '0', blocks_multiply_xx_0, '0']
+- [channels_channel_model_0, '0', blocks_complex_to_mag_0, '0']
 - [channels_channel_model_0, '0', tempest_fine_sampling_synchronization_0, '0']
 - [interp_fir_filter_xxx_0, '0', blocks_throttle_0_0, '0']
 - [rational_resampler_xxx_0, '0', channels_channel_model_0, '0']
-- [tempest_fine_sampling_synchronization_0, '0', blocks_delay_0, '0']
+- [tempest_fine_sampling_synchronization_0, '0', blocks_complex_to_mag_0, '0']
 - [tempest_framing_0, '0', blocks_float_to_short_0_0, '0']
 - [tempest_image_source_0, '0', interp_fir_filter_xxx_0, '0']
 - [tempest_normalize_flow_0, '0', blocks_float_to_short_0, '0']
