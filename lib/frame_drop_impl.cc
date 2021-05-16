@@ -65,10 +65,10 @@ namespace gr
       d_frames_counter = 0;
 
       //Fixed values
-      d_discarded_amount_per_frame = 1;
+      d_discarded_amount_per_frame = 3;
 
-      d_correct_sampling = correct_sampling; 
-      d_proba_of_updating = update_proba;
+      //d_correct_sampling = correct_sampling; 
+      //d_proba_of_updating = update_proba;
 
       d_max_deviation = max_deviation;
 
@@ -229,13 +229,68 @@ namespace gr
 
         estimate_peak_line_index(&in[0], noutput_items);
         update_interpolation_ratio(&in[0], noutput_items);
+        get_required_samples();
 
         if (d_next_update <= -10 * d_Htotal){
           d_next_update = d_dist(d_gen);
         }
       }
 
-      int one_line = d_required_for_interpolation/d_Vtotal;
+
+      //CASO 1: Todos mis elementos caen en un frame que descarto
+      if(
+          (d_frame_height_counter + noutput_items <= d_required_for_interpolation) 
+          && (d_frames_counter < d_discarded_amount_per_frame)
+        ){
+        consumed += noutput_items;
+        d_frame_height_counter += noutput_items;
+      }
+
+      //CASO 2: Todos mis elementos caen en un frame que dejo pasar
+      if(
+          (d_frame_height_counter + noutput_items <= d_required_for_interpolation) 
+          && (d_frames_counter == d_discarded_amount_per_frame)
+        ){
+        consumed += noutput_items;
+        out_amount += noutput_items;
+        memcpy(&out[0], &in[0], noutput_items*sizeof(gr_complex));
+        d_frame_height_counter += noutput_items;
+      }
+
+      //CASO 3: Cambio de frame. El previo pasa y el siguiente se descarta.
+      if(
+          (d_frame_height_counter + noutput_items >= d_required_for_interpolation) 
+          && (d_frames_counter < d_discarded_amount_per_frame)
+        ){
+
+        //Procesamiento
+
+        consumed += noutput_items;
+      }
+      
+      //CASO 4: Cambio de frame. El previo se descarta y el siguiente se descarta.
+      if(
+          (d_frame_height_counter + noutput_items >= d_required_for_interpolation) 
+          && (d_frames_counter == d_discarded_amount_per_frame)
+        ){
+        
+        //Procesamiento
+
+        consumed += noutput_items;
+      }
+
+      //CASO 5: Cambio de frame. El previo se descarta y el siguiente pasa.
+      if(
+          (d_frame_height_counter + noutput_items >= d_required_for_interpolation) 
+          && (d_frames_counter == d_discarded_amount_per_frame)
+        ){
+        
+        //Procesamiento
+
+        consumed += noutput_items;
+      }
+
+      /*int one_line = d_required_for_interpolation/d_Vtotal;
 
       for (int line = 0; line < noutput_items/one_line; line++) 
       { 
@@ -268,16 +323,10 @@ namespace gr
           {
               d_frame_height_counter = 0;
               d_frames_counter = 0;
-              get_required_samples();
           }
         } 
-      }
-
-      /*if (d_frame_height_counter % d_Vtotal == 0 && ){
-        //printf("Required frame samples:%i\t Desired frame samples: %i\n",d_required_for_interpolation,(d_Htotal*d_Vtotal));
-        get_required_samples();       
       }*/
-
+      
       // Tell runtime system how many input items we consumed on
       // each input stream.
       consume_each (consumed);

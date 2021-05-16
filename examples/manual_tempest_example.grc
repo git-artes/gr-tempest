@@ -27,7 +27,7 @@ options:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [8, 8]
+    coordinate: [22, 15]
     rotation: 0
     state: enabled
 
@@ -41,7 +41,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1176, 28]
+    coordinate: [16, 76]
     rotation: 0
     state: enabled
 - name: Hsize
@@ -62,7 +62,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [680, 12]
+    coordinate: [592, 14]
     rotation: 0
     state: enabled
 - name: Vdisplay
@@ -74,7 +74,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1176, 92]
+    coordinate: [110, 77]
     rotation: 0
     state: enabled
 - name: Vsize
@@ -95,7 +95,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [568, 148]
+    coordinate: [878, 14]
     rotation: 0
     state: enabled
 - name: harmonic
@@ -110,13 +110,13 @@ blocks:
     start: '1'
     step: '1'
     stop: '10'
-    value: '1'
+    value: '3'
     widget: counter_slider
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [728, 148]
+    coordinate: [1028, 14]
     rotation: 0
     state: enabled
 - name: horizontal_offset
@@ -137,7 +137,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [848, 148]
+    coordinate: [1139, 14]
     rotation: 0
     state: enabled
 - name: interpolatedHsize
@@ -149,7 +149,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1040, 12]
+    coordinate: [323, 16]
     rotation: 0
     state: enabled
 - name: inverted
@@ -178,7 +178,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [384, 12]
+    coordinate: [187, 15]
     rotation: 0
     state: enabled
 - name: lines_offset
@@ -199,7 +199,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [848, 12]
+    coordinate: [751, 13]
     rotation: 0
     state: enabled
 - name: px_rate
@@ -211,7 +211,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [0, 76]
+    coordinate: [324, 77]
     rotation: 0
     state: enabled
 - name: refresh_rate
@@ -232,19 +232,19 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [536, 12]
+    coordinate: [448, 15]
     rotation: 0
     state: enabled
 - name: samp_rate
   id: variable
   parameters:
     comment: ''
-    value: int(30e6)
+    value: int(20e6)
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [8, 140]
+    coordinate: [130, 336]
     rotation: 0
     state: enabled
 - name: blocks_complex_to_mag_0
@@ -260,7 +260,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1008, 354]
+    coordinate: [1016, 215]
     rotation: 0
     state: enabled
 - name: blocks_delay_0
@@ -279,9 +279,27 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [762, 351]
+    coordinate: [846, 211]
     rotation: 0
     state: enabled
+- name: blocks_file_sink_0
+  id: blocks_file_sink
+  parameters:
+    affinity: ''
+    alias: ''
+    append: 'False'
+    comment: ''
+    file: /home/pablo/fing/proyecto/grabaciones/test20210515
+    type: complex
+    unbuffered: 'False'
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [795, 312]
+    rotation: 0
+    state: disabled
 - name: blocks_file_source_0
   id: blocks_file_source
   parameters:
@@ -289,7 +307,7 @@ blocks:
     alias: ''
     begin_tag: pmt.PMT_NIL
     comment: ''
-    file: /home/gnuradio/persistent/30M_tv_g50_v2.dat
+    file: /home/pablo/fing/proyecto/grabaciones/test20210515
     length: '0'
     maxoutbuf: '0'
     minoutbuf: '0'
@@ -301,26 +319,9 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [22, 310]
+    coordinate: [125, 179]
     rotation: 0
     state: enabled
-- name: blocks_float_to_short_0
-  id: blocks_float_to_short
-  parameters:
-    affinity: ''
-    alias: ''
-    comment: ''
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    scale: inverted
-    vlen: '1'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [811, 486]
-    rotation: 180
-    state: disabled
 - name: blocks_float_to_short_0_0
   id: blocks_float_to_short
   parameters:
@@ -335,7 +336,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1348, 643]
+    coordinate: [819, 439]
     rotation: 180
     state: enabled
 - name: blocks_throttle_0
@@ -354,7 +355,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [283, 350]
+    coordinate: [370, 211]
     rotation: 0
     state: enabled
 - name: tempest_fine_sampling_synchronization_0
@@ -374,28 +375,9 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [459, 318]
+    coordinate: [563, 179]
     rotation: 0
     state: enabled
-- name: tempest_framing_0
-  id: tempest_framing
-  parameters:
-    Hdisplay: Hdisplay
-    Htotal: interpolatedHsize
-    Vdisplay: Vdisplay
-    Vtotal: Vsize
-    affinity: ''
-    alias: ''
-    comment: ''
-    maxoutbuf: '0'
-    minoutbuf: '0'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [1152, 454]
-    rotation: 180
-    state: disabled
 - name: tempest_normalize_flow_0
   id: tempest_normalize_flow
   parameters:
@@ -413,8 +395,8 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1208, 326]
-    rotation: 0
+    coordinate: [1016, 407]
+    rotation: 180
     state: enabled
 - name: uhd_usrp_source_0
   id: uhd_usrp_source
@@ -453,7 +435,7 @@ blocks:
     ant7: ''
     ant8: ''
     ant9: ''
-    bw0: '0'
+    bw0: 15e6
     bw1: '0'
     bw10: '0'
     bw11: '0'
@@ -561,7 +543,7 @@ blocks:
     dc_offs_enb9: '""'
     dev_addr: '""'
     dev_args: '""'
-    gain0: '50'
+    gain0: '40'
     gain1: '0'
     gain10: '0'
     gain11: '0'
@@ -770,7 +752,7 @@ blocks:
     show_lo_controls: 'False'
     stream_args: ''
     stream_chans: '[]'
-    sync: sync
+    sync: none
     time_source0: ''
     time_source1: ''
     time_source2: ''
@@ -784,29 +766,8 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [83, 446]
+    coordinate: [331, 280]
     rotation: 0
-    state: disabled
-- name: video_sdl_sink_0_0
-  id: video_sdl_sink
-  parameters:
-    affinity: ''
-    alias: ''
-    comment: "Enable this path when you are not sure what the \nresolution is and\
-      \ you want to try several ones \non run-time. Then, enable the other path."
-    display_height: Vdisplay
-    display_width: Hdisplay
-    fps: '0'
-    height: Vdisplay
-    num_channels: '1'
-    type: short
-    width: Hdisplay
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [571, 454]
-    rotation: 180
     state: disabled
 - name: video_sdl_sink_0_0_0
   id: video_sdl_sink
@@ -826,7 +787,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1156, 611]
+    coordinate: [602, 407]
     rotation: 180
     state: enabled
 
@@ -834,13 +795,11 @@ connections:
 - [blocks_complex_to_mag_0, '0', tempest_normalize_flow_0, '0']
 - [blocks_delay_0, '0', blocks_complex_to_mag_0, '0']
 - [blocks_file_source_0, '0', blocks_throttle_0, '0']
-- [blocks_float_to_short_0, '0', video_sdl_sink_0_0, '0']
 - [blocks_float_to_short_0_0, '0', video_sdl_sink_0_0_0, '0']
 - [blocks_throttle_0, '0', tempest_fine_sampling_synchronization_0, '0']
 - [tempest_fine_sampling_synchronization_0, '0', blocks_delay_0, '0']
-- [tempest_framing_0, '0', blocks_float_to_short_0, '0']
 - [tempest_normalize_flow_0, '0', blocks_float_to_short_0_0, '0']
-- [tempest_normalize_flow_0, '0', tempest_framing_0, '0']
+- [uhd_usrp_source_0, '0', blocks_file_sink_0, '0']
 - [uhd_usrp_source_0, '0', tempest_fine_sampling_synchronization_0, '0']
 
 metadata:

@@ -612,7 +612,7 @@ blocks:
     bus_structure: null
     coordinate: [1329, 354]
     rotation: 270
-    state: true
+    state: bypassed
 - name: tempest_framing_0
   id: tempest_framing
   parameters:

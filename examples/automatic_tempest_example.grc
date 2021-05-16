@@ -410,7 +410,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [308, 98]
+    coordinate: [307, 99]
     rotation: 0
     state: enabled
 - name: blocks_complex_to_mag_0
@@ -436,7 +436,7 @@ blocks:
     alias: ''
     begin_tag: pmt.PMT_NIL
     comment: ''
-    file: /home/pablo/fing/proyecto/grabaciones/grabacion_splitter_50M_1344_806_px_freq_64995840.dat
+    file: /home/pablo/fing/proyecto/grabaciones/test20210515
     length: '0'
     maxoutbuf: '0'
     minoutbuf: '0'
@@ -448,7 +448,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [255, 337]
+    coordinate: [189, 337]
     rotation: 0
     state: enabled
 - name: blocks_float_to_short_0
@@ -465,7 +465,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [759, 502]
+    coordinate: [761, 502]
     rotation: 180
     state: enabled
 - name: blocks_throttle_0
@@ -484,7 +484,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [484, 369]
+    coordinate: [417, 369]
     rotation: 0
     state: enabled
 - name: tempest_fine_sampling_synchronization_0
@@ -504,7 +504,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [878, 337]
+    coordinate: [885, 337]
     rotation: 0
     state: enabled
 - name: tempest_frame_drop_0
@@ -525,9 +525,9 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [666, 329]
+    coordinate: [664, 329]
     rotation: 0
-    state: enabled
+    state: bypassed
 - name: tempest_normalize_flow_0
   id: tempest_normalize_flow
   parameters:
@@ -545,7 +545,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [932, 470]
+    coordinate: [929, 470]
     rotation: 180
     state: enabled
 - name: tempest_sync_detector_0
@@ -935,7 +935,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [285, 454]
+    coordinate: [286, 457]
     rotation: 0
     state: disabled
 - name: video_sdl_sink_0
