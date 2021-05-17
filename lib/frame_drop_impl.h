@@ -44,6 +44,23 @@ namespace gr {
       //Counters
       int d_frame_height_counter;
       int d_frames_counter;
+      int d_sample_counter;
+
+      /**
+       * @brief Enum to hold the posible states of the 
+       * frame_drop output StateMachine.
+       * 
+       */
+      enum State_e: int
+      {
+          idle,
+          case_discard, 
+          case_display, 
+          case_frame_end_from_display_to_discard, 
+          case_frame_end_from_discard_to_discard, 
+          case_frame_end_from_discard_to_display, 
+      };
+      State_e d_state;
 
       //Fixed parameter
       int d_discarded_amount_per_frame;
@@ -87,6 +104,8 @@ namespace gr {
 
       void estimate_peak_line_index(const gr_complex * in, int in_size);
 
+      frame_drop_impl::State_e get_state(int noutput_items);
+     
      public:
       frame_drop_impl(int Htotal, int Vtotal, int correct_sampling, float max_deviation, float update_proba, double actual_samp_rate);
       ~frame_drop_impl();

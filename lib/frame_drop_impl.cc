@@ -222,7 +222,7 @@ namespace gr
       gr_complex *out = (gr_complex *) output_items[0];
 
       int consumed = 0, out_amount = 0;
-
+      ////////////////////////////////////////////////////////////
       d_next_update -= noutput_items;
 
       if(d_next_update <= 0){
@@ -235,97 +235,101 @@ namespace gr
           d_next_update = d_dist(d_gen);
         }
       }
+      ///////////////////////////////////////////////////////////
+      d_state = get_state(noutput_items);
 
-
-      //CASO 1: Todos mis elementos caen en un frame que descarto
-      if(
-          (d_frame_height_counter + noutput_items <= d_required_for_interpolation) 
-          && (d_frames_counter < d_discarded_amount_per_frame)
-        ){
-        consumed += noutput_items;
-        d_frame_height_counter += noutput_items;
-      }
-
-      //CASO 2: Todos mis elementos caen en un frame que dejo pasar
-      if(
-          (d_frame_height_counter + noutput_items <= d_required_for_interpolation) 
-          && (d_frames_counter == d_discarded_amount_per_frame)
-        ){
-        consumed += noutput_items;
-        out_amount += noutput_items;
-        memcpy(&out[0], &in[0], noutput_items*sizeof(gr_complex));
-        d_frame_height_counter += noutput_items;
-      }
-
-      //CASO 3: Cambio de frame. El previo pasa y el siguiente se descarta.
-      if(
-          (d_frame_height_counter + noutput_items >= d_required_for_interpolation) 
-          && (d_frames_counter < d_discarded_amount_per_frame)
-        ){
-
-        //Procesamiento
-
-        consumed += noutput_items;
-      }
-      
-      //CASO 4: Cambio de frame. El previo se descarta y el siguiente se descarta.
-      if(
-          (d_frame_height_counter + noutput_items >= d_required_for_interpolation) 
-          && (d_frames_counter == d_discarded_amount_per_frame)
-        ){
-        
-        //Procesamiento
-
-        consumed += noutput_items;
-      }
-
-      //CASO 5: Cambio de frame. El previo se descarta y el siguiente pasa.
-      if(
-          (d_frame_height_counter + noutput_items >= d_required_for_interpolation) 
-          && (d_frames_counter == d_discarded_amount_per_frame)
-        ){
-        
-        //Procesamiento
-
-        consumed += noutput_items;
-      }
-
-      /*int one_line = d_required_for_interpolation/d_Vtotal;
-
-      for (int line = 0; line < noutput_items/one_line; line++) 
-      { 
-
-        //If we are in one of the n discarded frames
-        if (d_frames_counter < d_discarded_amount_per_frame)
-        {
-          //lines are counted and consumed to see them all through
-          d_frame_height_counter ++;
-          consumed += one_line;                                             
-
-          //and three frames are counted without any output
-          if (d_frame_height_counter % d_Vtotal == 0)
+      switch (d_state)
+      {
+        case State_e::idle:
+        case State_e::case_discard:
           {
-              d_frame_height_counter = 0;
-              d_frames_counter++;
+            consumed += noutput_items;
+            d_sample_counter += noutput_items;
           }
+          break;
 
-          //If we are in the one frame we wish to keep
-        } else if (d_frames_counter == d_discarded_amount_per_frame){
-
-          //the data is copied in the output, consuming accordingly
-          memcpy(&out[line*one_line], &in[line*one_line], one_line*sizeof(gr_complex));
-          out_amount += one_line;
-          consumed += one_line;
-          d_frame_height_counter ++;
-
-          //until the frame is over, so we begin again
-          if (d_frame_height_counter % d_Vtotal == 0)
+        case State_e::case_display:
           {
-              d_frame_height_counter = 0;
+            consumed += noutput_items;
+            out_amount += noutput_items;
+            memcpy(&out[0], &in[0], noutput_items*sizeof(gr_complex));
+            d_sample_counter += noutput_items;
+          }
+          break;
+
+        case State_e::case_frame_end_from_display_to_discard:
+          { 
+            //In this case:
+            // display_frame_end_samples = d_sample_counter + noutput_items - d_required_for_interpolation  
+            //Process, finish displaying until d_required_for_interpolation then reset counter 
+            int display_frame_end_samples = d_required_for_interpolation - d_sample_counter;
+
+            memcpy(&out[0], &in[0], display_frame_end_samples*sizeof(gr_complex));   
+            d_sample_counter += display_frame_end_samples;    
+            
+            consumed += noutput_items;
+            out_amount += display_frame_end_samples;
+
+            // End state:
+            if(d_sample_counter == d_required_for_interpolation)
+            {
+              d_sample_counter = d_sample_counter + noutput_items - display_frame_end_samples - d_required_for_interpolation ;
               d_frames_counter = 0;
+            }
           }
-        } 
-      }*/
+          break;
+
+        case State_e::case_frame_end_from_discard_to_discard:
+          {
+            
+            //  Process, finish discarding elements 
+            //until d_required_for_interpolation 
+            int discard_frame_end_samples = d_required_for_interpolation - d_sample_counter;
+            d_sample_counter += discard_frame_end_samples;   
+
+            consumed += noutput_items;
+
+            // End state:
+            if(d_sample_counter == d_required_for_interpolation)
+            {
+              d_sample_counter = d_sample_counter + noutput_items - discard_frame_end_samples - d_required_for_interpolation ;
+              d_frames_counter ++;
+            }
+
+          }
+          break;
+
+        case State_e::case_frame_end_from_discard_to_display:
+          {
+            
+            //  Process, finish discarding elements
+            //start displaying elements until d_required_for_interpolation
+            int discard_frame_end_samples = d_required_for_interpolation - d_sample_counter;
+            d_sample_counter += discard_frame_end_samples;   
+
+            consumed += noutput_items;
+
+            // End state:
+            if(d_sample_counter == d_required_for_interpolation)
+            {
+              d_sample_counter = d_sample_counter + noutput_items - discard_frame_end_samples - d_required_for_interpolation ;
+
+              int display_frame_start_samples = d_sample_counter;
+              memcpy(&out[0], &in[0], display_frame_start_samples*sizeof(gr_complex));   
+
+              d_sample_counter += display_frame_start_samples; 
+
+              out_amount += display_frame_start_samples;  
+
+              d_frames_counter ++;
+            }
+            
+          }
+          break;
+
+        default:
+          break;
+      }
       
       // Tell runtime system how many input items we consumed on
       // each input stream.
@@ -335,7 +339,53 @@ namespace gr
       return out_amount;
     
     }    
+    frame_drop_impl::State_e frame_drop_impl::get_state(int noutput_items)
+    {
+        if(
+            (d_sample_counter + noutput_items <= d_required_for_interpolation) 
+            && (d_frames_counter < d_discarded_amount_per_frame)
+          )
+        {
+          return State_e::case_discard;
+        }
+
+        if(
+            (d_sample_counter + noutput_items <= d_required_for_interpolation) 
+            && (d_frames_counter == d_discarded_amount_per_frame)
+          )
+        {
+          return State_e::case_display;
+        }
+
+        if(
+            (d_sample_counter + noutput_items >= d_required_for_interpolation) 
+            && (d_frames_counter == d_discarded_amount_per_frame)
+          )
+        {
+          return State_e::case_frame_end_from_display_to_discard;
+        }
+
+        if(
+            (d_sample_counter + noutput_items >= d_required_for_interpolation) 
+            && (d_frames_counter < d_discarded_amount_per_frame - 1)
+          )
+        {
+          return State_e::case_frame_end_from_discard_to_discard;
+        }
+
+        if(
+            (d_sample_counter + noutput_items >= d_required_for_interpolation) 
+            && (d_frames_counter == d_discarded_amount_per_frame - 1)
+          )
+        {
+          return State_e::case_frame_end_from_discard_to_display;
+        }
+        
+        //Not intended state. Something is wrong.   
+        return State_e::idle;
+    }
 
   } /* namespace tempest */
 } /* namespace gr */
+
 
