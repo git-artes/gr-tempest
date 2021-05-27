@@ -61,20 +61,20 @@ namespace gr
       set_relative_rate(1);
 
       //Counters
-      d_frame_height_counter = 0; 
+      d_sample_counter = 0; 
       d_frames_counter = 0;
 
       //Fixed values
       d_discarded_amount_per_frame = 3;
 
       //d_correct_sampling = correct_sampling; 
-      //d_proba_of_updating = update_proba;
+      d_proba_of_updating = update_proba;
 
       d_max_deviation = max_deviation;
 
       d_alpha_samp_inc = 1e-1;
       d_last_freq = 0;
-      d_actual_samp_rate = actual_samp_rate;
+      //d_actual_samp_rate = actual_samp_rate;
       d_samp_phase = 0; 
       d_alpha_corr = 1e-6; 
 
@@ -222,7 +222,9 @@ namespace gr
       gr_complex *out = (gr_complex *) output_items[0];
 
       int consumed = 0, out_amount = 0;
+      
       ////////////////////////////////////////////////////////////
+     
       d_next_update -= noutput_items;
 
       if(d_next_update <= 0){
@@ -235,8 +237,26 @@ namespace gr
           d_next_update = d_dist(d_gen);
         }
       }
+     
       ///////////////////////////////////////////////////////////
-      d_state = get_state(noutput_items);
+
+      for (int i=0; i<noutput_items; i++){
+
+        d_sample_counter++;
+
+        if (d_sample_counter < d_required_for_interpolation){
+
+          out[i]=in[i];
+          out_amount++;
+
+        } else if (d_sample_counter == (d_discarded_amount_per_frame*d_required_for_interpolation-1))
+          d_sample_counter = 0;
+      }
+
+      consumed += noutput_items;
+
+      ///////////////////////////////////////////////////////////
+      /*d_state = get_state(noutput_items);
 
       switch (d_state)
       {
@@ -259,8 +279,6 @@ namespace gr
 
         case State_e::case_frame_end_from_display_to_discard:
           { 
-            //In this case:
-            // display_frame_end_samples = d_sample_counter + noutput_items - d_required_for_interpolation  
             //Process, finish displaying until d_required_for_interpolation then reset counter 
             int display_frame_end_samples = d_required_for_interpolation - d_sample_counter;
 
@@ -282,8 +300,7 @@ namespace gr
         case State_e::case_frame_end_from_discard_to_discard:
           {
             
-            //  Process, finish discarding elements 
-            //until d_required_for_interpolation 
+            // Process, finish discarding elements until d_required_for_interpolation 
             int discard_frame_end_samples = d_required_for_interpolation - d_sample_counter;
             d_sample_counter += discard_frame_end_samples;   
 
@@ -302,8 +319,7 @@ namespace gr
         case State_e::case_frame_end_from_discard_to_display:
           {
             
-            //  Process, finish discarding elements
-            //start displaying elements until d_required_for_interpolation
+            //  Process, finish discarding elements start displaying elements until d_required_for_interpolation
             int discard_frame_end_samples = d_required_for_interpolation - d_sample_counter;
             d_sample_counter += discard_frame_end_samples;   
 
@@ -329,7 +345,7 @@ namespace gr
 
         default:
           break;
-      }
+      }*/
       
       // Tell runtime system how many input items we consumed on
       // each input stream.
@@ -339,7 +355,8 @@ namespace gr
       return out_amount;
     
     }    
-    frame_drop_impl::State_e frame_drop_impl::get_state(int noutput_items)
+    
+    /*frame_drop_impl::State_e frame_drop_impl::get_state(int noutput_items)
     {
         if(
             (d_sample_counter + noutput_items <= d_required_for_interpolation) 
@@ -384,7 +401,7 @@ namespace gr
         //Not intended state. Something is wrong.   
         return State_e::idle;
     }
-
+    */
   } /* namespace tempest */
 } /* namespace gr */
 

@@ -42,7 +42,7 @@ namespace gr {
      private:
 
       //Counters
-      int d_frame_height_counter;
+      //int d_frame_height_counter;
       int d_frames_counter;
       int d_sample_counter;
 
