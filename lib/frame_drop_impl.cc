@@ -243,12 +243,12 @@ namespace gr
 
         d_sample_counter++;
 
-        if (d_sample_counter < d_required_for_interpolation){
+        if (d_sample_counter <= d_required_for_interpolation){
 
           out[i]=in[i];
           out_amount++;
 
-        } else if (d_sample_counter == (d_discarded_amount_per_frame*d_required_for_interpolation-1)){
+        } else if (d_sample_counter == (d_discarded_amount_per_frame*d_required_for_interpolation)){
 
           d_sample_counter = 0;
           get_required_samples();
