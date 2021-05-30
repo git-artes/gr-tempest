@@ -426,7 +426,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1072, 517]
+    coordinate: [1072, 542]
     rotation: 180
     state: enabled
 - name: blocks_file_source_0
@@ -448,7 +448,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [184, 332]
+    coordinate: [139, 338]
     rotation: 0
     state: enabled
 - name: blocks_float_to_short_0
@@ -465,7 +465,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [712, 513]
+    coordinate: [712, 538]
     rotation: 180
     state: enabled
 - name: blocks_throttle_0
@@ -484,7 +484,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [413, 364]
+    coordinate: [368, 370]
     rotation: 0
     state: enabled
 - name: tempest_fine_sampling_synchronization_0
@@ -504,7 +504,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [824, 332]
+    coordinate: [811, 338]
     rotation: 0
     state: enabled
 - name: tempest_frame_drop_0
@@ -525,7 +525,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [606, 324]
+    coordinate: [561, 330]
     rotation: 0
     state: enabled
 - name: tempest_normalize_flow_0
@@ -545,7 +545,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [874, 481]
+    coordinate: [874, 506]
     rotation: 180
     state: enabled
 - name: tempest_sync_detector_0
@@ -564,7 +564,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1094, 340]
+    coordinate: [1094, 346]
     rotation: 0
     state: enabled
 - name: uhd_usrp_source_0
@@ -935,7 +935,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [232, 462]
+    coordinate: [165, 459]
     rotation: 0
     state: disabled
 - name: video_sdl_sink_0
@@ -955,7 +955,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [517, 481]
+    coordinate: [517, 506]
     rotation: 180
     state: enabled
 
@@ -966,6 +966,7 @@ connections:
 - [blocks_throttle_0, '0', tempest_frame_drop_0, '0']
 - [tempest_fine_sampling_synchronization_0, '0', tempest_sync_detector_0, '0']
 - [tempest_frame_drop_0, '0', tempest_fine_sampling_synchronization_0, '0']
+- [tempest_frame_drop_0, ratio, tempest_fine_sampling_synchronization_0, ratio]
 - [tempest_normalize_flow_0, '0', blocks_float_to_short_0, '0']
 - [tempest_sync_detector_0, '0', blocks_complex_to_mag_0, '0']
 - [uhd_usrp_source_0, '0', tempest_frame_drop_0, '0']

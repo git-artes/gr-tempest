@@ -43,7 +43,7 @@ namespace gr {
 
       //Counters
       //int d_frame_height_counter;
-      int d_frames_counter;
+      int d_display_counter;
       int d_sample_counter;
 
       /**
@@ -68,7 +68,7 @@ namespace gr {
       int d_Htotal; 
       int d_Vtotal; 
       int d_correct_sampling;
-      int d_required_for_interpolation;
+      uint32_t d_required_for_interpolation;
       float d_max_deviation;
 
       std::geometric_distribution<int> d_dist;
@@ -77,7 +77,7 @@ namespace gr {
       float d_proba_of_updating;
       int d_next_update;
 
-      double d_actual_samp_rate;
+      //double d_actual_samp_rate;
       double d_samp_inc_rem;
       double d_new_interpolation_ratio_rem;
       double d_samp_phase;
@@ -99,6 +99,11 @@ namespace gr {
       float d_alpha_corr;
       double d_last_freq ;
 
+      uint32_t * d_input_index;
+      double * d_historic_samp_phase;
+
+      // the interpolating filter        
+      gr::filter::mmse_fir_interpolator_cc d_inter; 
 
       void update_interpolation_ratio(const gr_complex * in, int in_size);
 
@@ -111,7 +116,7 @@ namespace gr {
       ~frame_drop_impl();
 
       void forecast (int noutput_items, gr_vector_int &ninput_items_required);
-      void get_required_samples();
+      void get_required_samples(int size);
 
       int general_work(int noutput_items,
            gr_vector_int &ninput_items,

@@ -146,6 +146,10 @@ namespace gr {
 
             printf("[TEMPEST] Setting Htotal to %i and Vtotal to %i in fine sampling synchronization block.\n", Htotal, Vtotal);
 
+            // PMT port
+            message_port_register_in(pmt::mp("ratio"));
+            //set_msg_handler(pmt::mp("ratio"), boost::bind(&trigger_tag_impl::set_nivel_msg, this, _1));
+            set_msg_handler(pmt::mp("ratio"), [this](const pmt::pmt_t& msg) {fine_sampling_synchronization_impl::set_ratio_msg(msg); });
         }
 
         int fine_sampling_synchronization_impl::interpolate_input(const gr_complex * in, gr_complex * out, int size){
@@ -168,6 +172,20 @@ namespace gr {
             return ii;
         }
 
+        void fine_sampling_synchronization_impl::set_ratio_msg(pmt::pmt_t msg){
+
+            if(pmt::is_pair(msg)) {
+                // saca el primero de la pareja
+                pmt::pmt_t key = pmt::car(msg);
+                // saca el segundo
+                pmt::pmt_t val = pmt::cdr(msg);
+                if(pmt::eq(key, pmt::string_to_symbol("ratio"))) {
+                    if(pmt::is_number(val)) {
+                        d_new_interpolation_ratio_rem = pmt::to_double(val);
+                    }
+                }
+            }
+        }
 
         void fine_sampling_synchronization_impl::estimate_peak_line_index(const gr_complex * in, int in_size)
         {
@@ -231,7 +249,7 @@ namespace gr {
 
 
                 //if(d_dist(d_gen)<d_proba_of_updating){
-                d_next_update -= noutput_items;
+                /*d_next_update -= noutput_items;
                 if(d_next_update <= 0){
                     estimate_peak_line_index(in, noutput_items);
                     // If noutput_items is too big, I only use a single line
@@ -241,7 +259,7 @@ namespace gr {
                     if (d_next_update<=-10*d_Htotal){
                         d_next_update = d_dist(d_gen);
                     }
-                }
+                }*/
                 int required_for_interpolation = noutput_items; 
                 
                 //printf("d_next_update: %i\n",d_next_update);

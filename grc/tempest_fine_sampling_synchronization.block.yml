@@ -30,6 +30,9 @@ inputs:
 - label: in
   domain: stream
   dtype: complex
+- label: ratio
+  domain: message
+  optional: true
 outputs:
 - label: out
   domain: stream

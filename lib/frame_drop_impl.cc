@@ -35,6 +35,7 @@
 #include "frame_drop_impl.h"
 #include <volk/volk.h>
 #include <random>
+#include <vector>
 
 namespace gr 
 {
@@ -55,6 +56,7 @@ namespace gr
       : gr::block("frame_drop",
               gr::io_signature::make(1, 1, sizeof(gr_complex)),
               gr::io_signature::make(1, 1, sizeof(gr_complex))),
+      d_inter(gr::filter::mmse_fir_interpolator_cc()),
       d_dist(update_proba),
       d_gen(std::random_device{}()) 
     {
@@ -62,7 +64,7 @@ namespace gr
 
       //Counters
       d_sample_counter = 0; 
-      d_frames_counter = 0;
+      d_display_counter = 0;
 
       //Fixed values
       d_discarded_amount_per_frame = 3;
@@ -105,6 +107,12 @@ namespace gr
 
       d_next_update = 0;
 
+      d_input_index = new uint32_t[d_Htotal*d_Vtotal];
+      memset(&d_input_index[0], 0, d_Htotal*d_Vtotal);
+
+      d_historic_samp_phase = new double[d_Htotal*d_Vtotal];
+      memset(&d_historic_samp_phase[0], 0, d_Htotal*d_Vtotal);
+
       for (int i = 0; i<2*d_max_deviation_px+1; i++)
       {
         d_historic_line_corr[i] = 0;
@@ -115,6 +123,9 @@ namespace gr
         d_historic_frame_corr[i] = 0;
         d_abs_historic_frame_corr[i] = 0;
       }
+
+      // PMT port
+      message_port_register_out(pmt::mp("ratio"));
 
     }
 
@@ -128,7 +139,8 @@ namespace gr
       delete [] d_abs_historic_line_corr;
       delete [] d_current_frame_corr;
       delete [] d_historic_frame_corr;
-      delete [] d_abs_historic_frame_corr;  
+      delete [] d_abs_historic_frame_corr;
+      delete [] d_input_index;
     }
 
 
@@ -193,19 +205,24 @@ namespace gr
 
 
     void 
-    frame_drop_impl::get_required_samples()
+    frame_drop_impl::get_required_samples(int size)
     {
-      int ii = 0, oo = 0, incr;
+      uint32_t ii = 0, incr;
+      int oo = 0;
       double s, f;
       
       d_samp_inc_rem = (1-d_alpha_samp_inc)*d_samp_inc_rem + d_alpha_samp_inc*d_new_interpolation_ratio_rem;
 
-      while(oo < d_Htotal*d_Vtotal) {
+      while(oo < size) {
         s = d_samp_phase + d_samp_inc_rem + 1;
         f = floor(s);
-        incr = (int)f;
+        incr = (uint32_t)f;
         d_samp_phase = s - f;
         ii += incr;
+
+        d_input_index[oo] = ii;
+        d_historic_samp_phase[oo] = d_samp_phase;
+
         oo++;
       }
       d_required_for_interpolation = ii;
@@ -221,7 +238,7 @@ namespace gr
       const gr_complex *in = (const gr_complex *) input_items[0];
       gr_complex *out = (gr_complex *) output_items[0];
 
-      int consumed = 0, out_amount = 0;
+      int consumed = 0, out_amount = 0, aux;
       
       ////////////////////////////////////////////////////////////
      
@@ -232,6 +249,16 @@ namespace gr
         estimate_peak_line_index(&in[0], noutput_items);
         update_interpolation_ratio(&in[0], noutput_items);
 
+        double new_freq = d_new_interpolation_ratio_rem;
+
+        message_port_pub(
+          pmt::mp("ratio"), 
+          pmt::cons(
+            pmt::mp("ratio"), 
+            pmt::from_double(new_freq)
+          )
+        );
+
         if (d_next_update <= -10 * d_Htotal){
           d_next_update = d_dist(d_gen);
         }
@@ -239,27 +266,32 @@ namespace gr
      
       ///////////////////////////////////////////////////////////
 
-      /*for (int i=0; i<noutput_items; i++){
+      for (int i=0; i<noutput_items; i++){
 
         d_sample_counter++;
 
         if (d_sample_counter <= d_required_for_interpolation){
 
           out[i]=in[i];
+
+          //d_display_counter = d_input_index[d_sample_counter-1];
+
+          //out[i] = d_inter.interpolate(&in[d_display_counter], d_historic_samp_phase[d_sample_counter-1]);
+
           out_amount++;
 
         } else if (d_sample_counter == (d_discarded_amount_per_frame*d_required_for_interpolation)){
 
           d_sample_counter = 0;
-          get_required_samples();
+          get_required_samples(d_Htotal*d_Vtotal);
 
         }  
       }
 
-      consumed += noutput_items;*/
+      consumed += noutput_items;
 
       ///////////////////////////////////////////////////////////
-      d_state = get_state(noutput_items);
+      /*d_state = get_state(noutput_items);
 
       switch (d_state)
       {
@@ -347,7 +379,7 @@ namespace gr
 
         default:
           break;
-      }
+      }*/
       // Tell runtime system how many input items we consumed on
       // each input stream.
       consume_each (consumed);
@@ -356,7 +388,7 @@ namespace gr
       return out_amount;
     
     }    
-        frame_drop_impl::State_e frame_drop_impl::get_state(int noutput_items)
+        /*frame_drop_impl::State_e frame_drop_impl::get_state(int noutput_items)
     {
         if(
             (d_sample_counter + noutput_items <= d_required_for_interpolation) 
@@ -400,7 +432,7 @@ namespace gr
         
         //Not intended state. Something is wrong.   
         return State_e::idle;
-    }
+    }*/
     
   } /* namespace tempest */
 } /* namespace gr */

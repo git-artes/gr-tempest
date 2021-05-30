@@ -35,4 +35,7 @@ outputs:
 - label: out
   domain: stream
   dtype: complex
+- label: ratio
+  domain: message
+  optional: true
 file_format: 1
