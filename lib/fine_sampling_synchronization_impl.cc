@@ -82,13 +82,14 @@ namespace gr {
          */
         fine_sampling_synchronization_impl::~fine_sampling_synchronization_impl()
         {
-            delete [] d_current_line_corr;
-            delete [] d_historic_line_corr;
-            delete [] d_abs_historic_line_corr;
-            delete [] d_current_frame_corr;
-            delete [] d_historic_frame_corr;
-            delete [] d_abs_historic_frame_corr;
+          volk_free(d_current_line_corr);
+          volk_free(d_historic_line_corr);
+          volk_free(d_abs_historic_line_corr);
+          volk_free(d_current_frame_corr);
+          volk_free(d_historic_frame_corr);
+          volk_free(d_abs_historic_frame_corr);
         }
+
 
         void
             fine_sampling_synchronization_impl::forecast (int noutput_items, gr_vector_int &ninput_items_required)
@@ -117,32 +118,43 @@ namespace gr {
             d_peak_line_index = 0;
             d_samp_inc_rem = 0;
             d_new_interpolation_ratio_rem = 0;
+            //I'll estimate the new sampling synchronization asap
+            d_next_update = 0;
 
             // d_current_line_corr[i] and derivatives will keep the correlation between pixels 
             // px[t] and px[t+Htotal+i]
-            d_current_line_corr = new gr_complex[2*d_max_deviation_px + 1];
-            d_historic_line_corr = new gr_complex[2*d_max_deviation_px + 1];
-            d_abs_historic_line_corr = new float[2*d_max_deviation_px + 1];
+            //d_current_line_corr = new gr_complex[2*d_max_deviation_px + 1];
+            //d_historic_line_corr = new gr_complex[2*d_max_deviation_px + 1];
+            //d_abs_historic_line_corr = new float[2*d_max_deviation_px + 1];
 
             // d_current_frame_corr[i] and derivatives will keep the correlation between pixels 
             // px[t] and px[t+Htotal*Vtotal+i]. Since a single pixel de-alignment with the next line will 
             // mean d_Vtotal pixels de-alignments with the next frame, these arrays are much bigger. 
             // However, instead of always calculating the whole of them, I'll only calculate around those
             // indicated by the max in the d_abs_historic_line_corr. 
-            d_current_frame_corr = new gr_complex[2*(d_max_deviation_px+1)*d_Vtotal + 1];
-            d_historic_frame_corr = new gr_complex[2*(d_max_deviation_px+1)*d_Vtotal + 1];
-            d_abs_historic_frame_corr = new float[2*(d_max_deviation_px+1)*d_Vtotal + 1];
-            //I'll estimate the new sampling synchronization asap
-            d_next_update = 0;
+            //d_current_frame_corr = new gr_complex[2*(d_max_deviation_px+1)*d_Vtotal + 1];
+            //d_historic_frame_corr = new gr_complex[2*(d_max_deviation_px+1)*d_Vtotal + 1];
+            //d_abs_historic_frame_corr = new float[2*(d_max_deviation_px+1)*d_Vtotal + 1];
+            d_current_line_corr =       volk_malloc((2*d_max_deviation_px + 1)              *sizeof(gr_complex), alignment_multiple);
+            d_historic_line_corr =      volk_malloc((2*d_max_deviation_px + 1)              *sizeof(gr_complex), alignment_multiple);
+            d_current_frame_corr =      volk_malloc((2*(d_max_deviation_px+1)*d_Vtotal + 1) *sizeof(gr_complex), alignment_multiple);
+            d_historic_frame_corr =     volk_malloc((2*(d_max_deviation_px+1)*d_Vtotal + 1) *sizeof(gr_complex), alignment_multiple);
 
-            for (int i = 0; i<2*d_max_deviation_px+1; i++){
-                d_historic_line_corr[i] = 0;
-                d_abs_historic_line_corr[i] = 0;
-            }
-            for (int i = 0; i<2*d_max_deviation_px*d_Vtotal+1; i++){
-                d_historic_frame_corr[i] = 0;
-                d_abs_historic_frame_corr[i] = 0;
-            }
+            /* 
+            Alignment per Block of malloc / type necessary? Floats
+            const int float_alignment = volk_get_alignment() / sizeof(float);
+            set_alignment(std::max(1, float_alignment));
+            */      
+            d_abs_historic_line_corr =  volk_malloc((2*d_max_deviation_px + 1)              *sizeof(float),     alignment_multiple);
+            d_abs_historic_frame_corr = volk_malloc((2*(d_max_deviation_px+1)*d_Vtotal + 1) *sizeof(float),     alignment_multiple);
+
+            memset(&d_current_line_corr[0],         0,  2*d_max_deviation_px+1);
+            memset(&d_historic_line_corr[0],        0,  2*d_max_deviation_px+1);
+            memset(&d_abs_historic_line_corr[0],    0,  2*d_max_deviation_px+1);
+            memset(&d_current_frame_corr[0],        0,  2*d_max_deviation_px*d_Vtotal+1);
+            memset(&d_historic_frame_corr[0],       0,  2*d_max_deviation_px*d_Vtotal+1);
+            memset(&d_abs_historic_frame_corr[0],   0,  2*d_max_deviation_px*d_Vtotal+1);
+
 
             printf("[TEMPEST] Setting Htotal to %i and Vtotal to %i in fine sampling synchronization block.\n", Htotal, Vtotal);
 
