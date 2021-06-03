@@ -610,9 +610,9 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1329, 354]
+    coordinate: [1382, 346]
     rotation: 270
-    state: bypassed
+    state: enabled
 - name: tempest_framing_0
   id: tempest_framing
   parameters:
@@ -747,6 +747,7 @@ connections:
 - [rational_resampler_xxx_0, '0', channels_channel_model_0, '0']
 - [tempest_fine_sampling_synchronization_0, '0', tempest_sync_detector_0, '0']
 - [tempest_frame_drop_0, '0', tempest_fine_sampling_synchronization_0, '0']
+- [tempest_frame_drop_0, ratio, tempest_fine_sampling_synchronization_0, ratio]
 - [tempest_framing_0, '0', blocks_float_to_short_0_0, '0']
 - [tempest_image_source_0, '0', interp_fir_filter_xxx_0, '0']
 - [tempest_normalize_flow_0, '0', blocks_float_to_short_0, '0']

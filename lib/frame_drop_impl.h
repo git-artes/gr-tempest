@@ -44,6 +44,7 @@ namespace gr {
       //Counters
       //int d_frame_height_counter;
       int d_display_counter;
+      int d_frames_counter;
       int d_sample_counter;
 
       /**

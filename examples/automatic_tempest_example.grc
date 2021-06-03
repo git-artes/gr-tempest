@@ -184,9 +184,9 @@ blocks:
     rangeType: int
     start: '0'
     step: '1'
-    stop: int(Hblank/float(px_rate)*samp_rate)*2
-    value: int(136/float(px_rate)*samp_rate)
-    widget: counter
+    stop: interpolatedHsize*Vsize
+    value: interpolatedHsize*753
+    widget: slider
   states:
     bus_sink: false
     bus_source: false
@@ -248,7 +248,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [997, 144]
+    coordinate: [1026, 144]
     rotation: 0
     state: enabled
 - name: inverted
@@ -327,7 +327,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [996, 204]
+    coordinate: [1025, 204]
     rotation: 0
     state: enabled
 - name: modes
@@ -426,9 +426,28 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1072, 542]
+    coordinate: [1149, 512]
     rotation: 180
     state: enabled
+- name: blocks_delay_0
+  id: blocks_delay
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    delay: delay
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    num_ports: '1'
+    type: complex
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1168, 366]
+    rotation: 0
+    state: true
 - name: blocks_file_source_0
   id: blocks_file_source
   parameters:
@@ -448,7 +467,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [139, 338]
+    coordinate: [102, 483]
     rotation: 0
     state: enabled
 - name: blocks_float_to_short_0
@@ -465,7 +484,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [712, 538]
+    coordinate: [764, 508]
     rotation: 180
     state: enabled
 - name: blocks_throttle_0
@@ -484,7 +503,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [368, 370]
+    coordinate: [328, 515]
     rotation: 0
     state: enabled
 - name: tempest_fine_sampling_synchronization_0
@@ -504,7 +523,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [811, 338]
+    coordinate: [733, 334]
     rotation: 0
     state: enabled
 - name: tempest_frame_drop_0
@@ -525,7 +544,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [561, 330]
+    coordinate: [477, 326]
     rotation: 0
     state: enabled
 - name: tempest_normalize_flow_0
@@ -545,7 +564,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [874, 506]
+    coordinate: [942, 476]
     rotation: 180
     state: enabled
 - name: tempest_sync_detector_0
@@ -564,7 +583,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1094, 346]
+    coordinate: [1002, 342]
     rotation: 0
     state: enabled
 - name: uhd_usrp_source_0
@@ -935,7 +954,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [165, 459]
+    coordinate: [178, 326]
     rotation: 0
     state: disabled
 - name: video_sdl_sink_0
@@ -955,12 +974,13 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [517, 506]
+    coordinate: [560, 476]
     rotation: 180
     state: enabled
 
 connections:
 - [blocks_complex_to_mag_0, '0', tempest_normalize_flow_0, '0']
+- [blocks_delay_0, '0', blocks_complex_to_mag_0, '0']
 - [blocks_file_source_0, '0', blocks_throttle_0, '0']
 - [blocks_float_to_short_0, '0', video_sdl_sink_0, '0']
 - [blocks_throttle_0, '0', tempest_frame_drop_0, '0']
@@ -968,7 +988,7 @@ connections:
 - [tempest_frame_drop_0, '0', tempest_fine_sampling_synchronization_0, '0']
 - [tempest_frame_drop_0, ratio, tempest_fine_sampling_synchronization_0, ratio]
 - [tempest_normalize_flow_0, '0', blocks_float_to_short_0, '0']
-- [tempest_sync_detector_0, '0', blocks_complex_to_mag_0, '0']
+- [tempest_sync_detector_0, '0', blocks_delay_0, '0']
 - [uhd_usrp_source_0, '0', tempest_frame_drop_0, '0']
 
 metadata:

@@ -65,6 +65,7 @@ namespace gr
       //Counters
       d_sample_counter = 0; 
       d_display_counter = 0;
+      d_frames_counter = 0;
 
       //Fixed values
       d_discarded_amount_per_frame = 3;
@@ -147,10 +148,11 @@ namespace gr
     void
     frame_drop_impl::forecast (int noutput_items, gr_vector_int &ninput_items_required)
     {
-      int ninputs = ninput_items_required.size ();
-      for (int i = 0; i < ninputs; i++){
-        ninput_items_required[i] = (2*d_Htotal + 1)*(noutput_items/(2*d_Htotal) +1);
-      }
+        int ninputs = ninput_items_required.size ();
+        for (int i = 0; i < ninputs; i++)
+        {
+            ninput_items_required[i] = (int)ceil((noutput_items + 1) * (2+d_samp_inc_rem)) + d_inter.ntaps() ;
+        }
     }
 
 
@@ -199,7 +201,6 @@ namespace gr
       volk_32f_index_max_16u(&peak_index, &d_abs_historic_frame_corr[offset], corrsize); 
 
       d_new_interpolation_ratio_rem = ((double)(peak_index+offset_in-d_Vtotal))/(double)(d_Vtotal*d_Htotal);
-      //printf("Some historics: %f\t %f\t %f\t %f\t \n",d_abs_historic_frame_corr[200],d_abs_historic_frame_corr[300],d_abs_historic_frame_corr[400],d_abs_historic_frame_corr[500]);
       delete [] d_in_conj;
     }
 
@@ -220,8 +221,8 @@ namespace gr
         d_samp_phase = s - f;
         ii += incr;
 
-        d_input_index[oo] = ii;
-        d_historic_samp_phase[oo] = d_samp_phase;
+        //d_input_index[oo] = ii;
+        //d_historic_samp_phase[oo] = d_samp_phase;
 
         oo++;
       }
@@ -273,24 +274,24 @@ namespace gr
         if (d_sample_counter <= d_required_for_interpolation){
 
           out[i]=in[i];
-
-          //d_display_counter = d_input_index[d_sample_counter-1];
-
-          //out[i] = d_inter.interpolate(&in[d_display_counter], d_historic_samp_phase[d_sample_counter-1]);
-
           out_amount++;
+
+          //aux = d_input_index[d_sample_counter-1] % noutput_items;
+          //out[i] = d_inter.interpolate(&in[aux], d_historic_samp_phase[d_sample_counter-1]);
+          //consumed += aux - i;
 
         } else if (d_sample_counter == (d_discarded_amount_per_frame*d_required_for_interpolation)){
 
           d_sample_counter = 0;
           get_required_samples(d_Htotal*d_Vtotal);
 
-        }  
+        }
       }
 
       consumed += noutput_items;
 
       ///////////////////////////////////////////////////////////
+      
       /*d_state = get_state(noutput_items);
 
       switch (d_state)
@@ -388,7 +389,7 @@ namespace gr
       return out_amount;
     
     }    
-        /*frame_drop_impl::State_e frame_drop_impl::get_state(int noutput_items)
+    /*frame_drop_impl::State_e frame_drop_impl::get_state(int noutput_items)
     {
         if(
             (d_sample_counter + noutput_items <= d_required_for_interpolation) 
