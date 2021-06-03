@@ -80,11 +80,6 @@ namespace gr
       //d_actual_samp_rate = actual_samp_rate;
       d_samp_phase = 0; 
       d_alpha_corr = 1e-6; 
-
-      const int alignment_multiple = volk_get_alignment() / sizeof(gr_complex);
-      set_alignment(std::max(1, alignment_multiple));
-
-      //set_output_multiple(d_Htotal);
       
       d_Htotal = Htotal; 
       d_Vtotal = Vtotal; 
@@ -97,33 +92,49 @@ namespace gr
       d_peak_line_index = 0;
       d_samp_inc_rem = 0;
       d_new_interpolation_ratio_rem = 0;
-
-      d_current_line_corr = new gr_complex[2*d_max_deviation_px + 1];
-      d_historic_line_corr = new gr_complex[2*d_max_deviation_px + 1];
-      d_abs_historic_line_corr = new float[2*d_max_deviation_px + 1];
-
-      d_current_frame_corr = new gr_complex[2*(d_max_deviation_px+1)*d_Vtotal + 1];
-      d_historic_frame_corr = new gr_complex[2*(d_max_deviation_px+1)*d_Vtotal + 1];
-      d_abs_historic_frame_corr = new float[2*(d_max_deviation_px+1)*d_Vtotal + 1];
-
       d_next_update = 0;
 
+      /* Volk_Malloc
+        https://github.com/gnuradio/volk/blob/master/lib/volk_malloc.c
+      */
+
+      const int alignment_multiple = volk_get_alignment() / sizeof(gr_complex);
+      set_alignment(std::max(1, alignment_multiple));
+
+      //set_output_multiple(d_Htotal);
+
+      /* 
+        Complex type arrays aligned memory allocations:
+      */
+      d_current_line_corr =       volk_malloc((2*d_max_deviation_px + 1)              *sizeof(gr_complex), alignment_multiple);
+      d_historic_line_corr =      volk_malloc((2*d_max_deviation_px + 1)              *sizeof(gr_complex), alignment_multiple);
+      d_current_frame_corr =      volk_malloc((2*(d_max_deviation_px+1)*d_Vtotal + 1) *sizeof(gr_complex), alignment_multiple);
+      d_historic_frame_corr =     volk_malloc((2*(d_max_deviation_px+1)*d_Vtotal + 1) *sizeof(gr_complex), alignment_multiple);
+
+      /* 
+        Alignment per Block of malloc / type necessary? Floats
+      const int float_alignment = volk_get_alignment() / sizeof(float);
+      set_alignment(std::max(1, float_alignment));
+      */      
+      d_abs_historic_line_corr =  volk_malloc((2*d_max_deviation_px + 1)              *sizeof(float),     alignment_multiple);
+      d_abs_historic_frame_corr = volk_malloc((2*(d_max_deviation_px+1)*d_Vtotal + 1) *sizeof(float),     alignment_multiple);
+
+      /* 
+        Alignment per Block of malloc / type necessary? Back to complex or uint32_t:
+      const int float_alignment = volk_get_alignment() / sizeof(gr_complex);
+      set_alignment(std::max(1, float_alignment));
+      */
       d_input_index = new uint32_t[d_Htotal*d_Vtotal];
-      memset(&d_input_index[0], 0, d_Htotal*d_Vtotal);
-
       d_historic_samp_phase = new double[d_Htotal*d_Vtotal];
-      memset(&d_historic_samp_phase[0], 0, d_Htotal*d_Vtotal);
 
-      for (int i = 0; i<2*d_max_deviation_px+1; i++)
-      {
-        d_historic_line_corr[i] = 0;
-        d_abs_historic_line_corr[i] = 0;
-      }
-      for (int i = 0; i<2*d_max_deviation_px*d_Vtotal+1; i++)
-      {
-        d_historic_frame_corr[i] = 0;
-        d_abs_historic_frame_corr[i] = 0;
-      }
+      memset(&d_input_index[0],               0,  d_Htotal*d_Vtotal);
+      memset(&d_historic_samp_phase[0],       0,  d_Htotal*d_Vtotal);
+      memset(&d_current_line_corr[0],         0,  2*d_max_deviation_px+1);
+      memset(&d_historic_line_corr[0],        0,  2*d_max_deviation_px+1);
+      memset(&d_abs_historic_line_corr[0],    0,  2*d_max_deviation_px+1);
+      memset(&d_current_frame_corr[0],        0,  2*d_max_deviation_px*d_Vtotal+1);
+      memset(&d_historic_frame_corr[0],       0,  2*d_max_deviation_px*d_Vtotal+1);
+      memset(&d_abs_historic_frame_corr[0],   0,  2*d_max_deviation_px*d_Vtotal+1);
 
       // PMT port
       message_port_register_out(pmt::mp("ratio"));
@@ -135,13 +146,14 @@ namespace gr
      */
     frame_drop_impl::~frame_drop_impl()
     {
-      delete [] d_current_line_corr;
-      delete [] d_historic_line_corr;
-      delete [] d_abs_historic_line_corr;
-      delete [] d_current_frame_corr;
-      delete [] d_historic_frame_corr;
-      delete [] d_abs_historic_frame_corr;
-      delete [] d_input_index;
+      volk_free(d_input_index);
+      volk_free(d_historic_samp_phase);
+      volk_free(d_current_line_corr);
+      volk_free(d_historic_line_corr);
+      volk_free(d_abs_historic_line_corr);
+      volk_free(d_current_frame_corr);
+      volk_free(d_historic_frame_corr);
+      volk_free(d_abs_historic_frame_corr);
     }
 
 
