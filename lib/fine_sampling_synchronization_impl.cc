@@ -140,18 +140,18 @@ namespace gr {
             //d_current_frame_corr = new gr_complex[2*(d_max_deviation_px+1)*d_Vtotal + 1];
             //d_historic_frame_corr = new gr_complex[2*(d_max_deviation_px+1)*d_Vtotal + 1];
             //d_abs_historic_frame_corr = new float[2*(d_max_deviation_px+1)*d_Vtotal + 1];
-            d_current_line_corr =       (gr_complex*)volk_malloc((2*d_max_deviation_px + 1)              *sizeof(gr_complex), alignment_multiple);
-            d_historic_line_corr =      (gr_complex*)volk_malloc((2*d_max_deviation_px + 1)              *sizeof(gr_complex), alignment_multiple);
-            d_current_frame_corr =      (gr_complex*)volk_malloc((2*(d_max_deviation_px+1)*d_Vtotal + 1) *sizeof(gr_complex), alignment_multiple);
-            d_historic_frame_corr =     (gr_complex*)volk_malloc((2*(d_max_deviation_px+1)*d_Vtotal + 1) *sizeof(gr_complex), alignment_multiple);
+            d_current_line_corr =       (gr_complex*)volk_malloc((2*d_max_deviation_px + 1)              *sizeof(gr_complex), volk_get_alignment() / sizeof(gr_complex));
+            d_historic_line_corr =      (gr_complex*)volk_malloc((2*d_max_deviation_px + 1)              *sizeof(gr_complex), volk_get_alignment() / sizeof(gr_complex));
+            d_current_frame_corr =      (gr_complex*)volk_malloc((2*(d_max_deviation_px+1)*d_Vtotal + 1) *sizeof(gr_complex), volk_get_alignment() / sizeof(gr_complex));
+            d_historic_frame_corr =     (gr_complex*)volk_malloc((2*(d_max_deviation_px+1)*d_Vtotal + 1) *sizeof(gr_complex), volk_get_alignment() / sizeof(gr_complex));
 
             /* 
             Alignment per Block of malloc / type necessary? Floats
             const int float_alignment = volk_get_alignment() / sizeof(float);
             set_alignment(std::max(1, float_alignment));
             */      
-            d_abs_historic_line_corr =  (float*)volk_malloc((2*d_max_deviation_px + 1)              *sizeof(float),     alignment_multiple);
-            d_abs_historic_frame_corr = (float*)volk_malloc((2*(d_max_deviation_px+1)*d_Vtotal + 1) *sizeof(float),     alignment_multiple);
+            d_abs_historic_line_corr =  (float*)volk_malloc((2*d_max_deviation_px + 1)              *sizeof(float),     volk_get_alignment() / sizeof(float));
+            d_abs_historic_frame_corr = (float*)volk_malloc((2*(d_max_deviation_px+1)*d_Vtotal + 1) *sizeof(float),     volk_get_alignment() / sizeof(float));
 
             memset(&d_current_line_corr[0],         0,  2*d_max_deviation_px+1);
             memset(&d_historic_line_corr[0],        0,  2*d_max_deviation_px+1);
