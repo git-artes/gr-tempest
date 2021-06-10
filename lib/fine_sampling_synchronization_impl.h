@@ -65,13 +65,17 @@ namespace gr {
          int d_max_deviation_px; 
       
         // correlation with the last line 
+        /*
          gr_complex * d_current_line_corr;  
          gr_complex * d_historic_line_corr;  
          float * d_abs_historic_line_corr;  
+         */
         // correlation with the last frame 
+         /*
          gr_complex * d_current_frame_corr;  
          gr_complex * d_historic_frame_corr;  
          float * d_abs_historic_frame_corr;  
+         */
       
         // where is the line correlation peak  
          int d_peak_line_index;
@@ -83,9 +87,9 @@ namespace gr {
 
         int interpolate_input(const gr_complex * in, gr_complex * out, int size);
       
-        void update_interpolation_ratio(const gr_complex * in, int in_size);
+        //void update_interpolation_ratio(const gr_complex * in, int in_size);
 
-        void estimate_peak_line_index(const gr_complex * in, int in_size);
+        //void estimate_peak_line_index(const gr_complex * in, int in_size);
 
         void set_ratio_msg(pmt::pmt_t msg);
         

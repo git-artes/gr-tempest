@@ -544,7 +544,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [477, 326]
+    coordinate: [409, 326]
     rotation: 0
     state: enabled
 - name: tempest_normalize_flow_0
@@ -954,7 +954,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [178, 326]
+    coordinate: [110, 326]
     rotation: 0
     state: disabled
 - name: video_sdl_sink_0
