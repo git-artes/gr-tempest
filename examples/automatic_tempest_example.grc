@@ -447,7 +447,7 @@ blocks:
     bus_structure: null
     coordinate: [1168, 366]
     rotation: 0
-    state: true
+    state: enabled
 - name: blocks_file_source_0
   id: blocks_file_source
   parameters:
@@ -506,6 +506,29 @@ blocks:
     coordinate: [328, 515]
     rotation: 0
     state: enabled
+- name: guiextra_AutoCorrelatorSink_0
+  id: guiextra_AutoCorrelatorSink
+  parameters:
+    affinity: ''
+    alias: ''
+    autoScale: 'False'
+    comment: ''
+    fac_decimation: '10'
+    fac_size: 4096*512
+    grid: 'True'
+    gui_hint: ''
+    sampRate: samp_rate
+    title: '""'
+    useDB: 'False'
+    yMax: '1'
+    yMin: '0'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [722, 565]
+    rotation: 0
+    state: disabled
 - name: tempest_fine_sampling_synchronization_0
   id: tempest_fine_sampling_synchronization
   parameters:
@@ -544,7 +567,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [409, 326]
+    coordinate: [453, 326]
     rotation: 0
     state: enabled
 - name: tempest_normalize_flow_0
@@ -983,6 +1006,7 @@ connections:
 - [blocks_delay_0, '0', blocks_complex_to_mag_0, '0']
 - [blocks_file_source_0, '0', blocks_throttle_0, '0']
 - [blocks_float_to_short_0, '0', video_sdl_sink_0, '0']
+- [blocks_throttle_0, '0', guiextra_AutoCorrelatorSink_0, '0']
 - [blocks_throttle_0, '0', tempest_frame_drop_0, '0']
 - [tempest_fine_sampling_synchronization_0, '0', tempest_sync_detector_0, '0']
 - [tempest_frame_drop_0, '0', tempest_fine_sampling_synchronization_0, '0']
