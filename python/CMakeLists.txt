@@ -32,7 +32,8 @@ endif()
 GR_PYTHON_INSTALL(
     FILES
     __init__.py
-    image_source.py DESTINATION ${GR_PYTHON_DIR}/tempest
+    image_source.py
+    message_to_var.py DESTINATION ${GR_PYTHON_DIR}/tempest
 )
 
 ########################################################################
