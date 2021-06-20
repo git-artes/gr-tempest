@@ -98,6 +98,18 @@ namespace gr {
       if (d_avg_v_line == NULL)
         std::cout << "cannot allocate memory: d_data_h" << std::endl;
 
+      // PMT ports
+      message_port_register_in(pmt::mp("iHsize"));
+      message_port_register_in(pmt::mp("iHblank"));
+      message_port_register_in(pmt::mp("Vsize"));
+      message_port_register_in(pmt::mp("Vblank"));
+
+      // PMT handlers
+      set_msg_handler(pmt::mp("iHsize"),  [this](const pmt::pmt_t& msg) {sync_detector_impl::set_iHsize_msg  (msg); });
+      set_msg_handler(pmt::mp("iHblank"), [this](const pmt::pmt_t& msg) {sync_detector_impl::set_iHblank_msg (msg); });
+      set_msg_handler(pmt::mp("iHsize"),  [this](const pmt::pmt_t& msg) {sync_detector_impl::set_Vsize_msg   (msg); });
+      set_msg_handler(pmt::mp("Vsize"),   [this](const pmt::pmt_t& msg) {sync_detector_impl::set_Vblank_msg  (msg); });
+
       //Complete lines per call to the block will be generated
       set_output_multiple(2*d_Htotal);
       
@@ -291,6 +303,70 @@ namespace gr {
       *blanking_index = ((int) round(raw_index * lowpasscoeff + (1.0 - lowpasscoeff) * (*blanking_index))) % ((int) total_line_size);
     }
 
+    void 
+    sync_detector_impl::set_iHsize_msg(pmt::pmt_t msg)
+    {
+        if(pmt::is_pair(msg)) {
+            // saca el primero de la pareja
+            pmt::pmt_t key = pmt::car(msg);
+            // saca el segundo
+            pmt::pmt_t val = pmt::cdr(msg);
+            if(pmt::eq(key, pmt::string_to_symbol("iHsize"))) {
+                if(pmt::is_number(val)) {
+                    d_Htotal = pmt::to_long(val);
+                }
+            }
+        }
+    }
+
+    void 
+    sync_detector_impl::set_iHblank_msg(pmt::pmt_t msg)
+    {
+        if(pmt::is_pair(msg)) {
+            // saca el primero de la pareja
+            pmt::pmt_t key = pmt::car(msg);
+            // saca el segundo
+            pmt::pmt_t val = pmt::cdr(msg);
+            if(pmt::eq(key, pmt::string_to_symbol("iHblank"))) {
+                if(pmt::is_number(val)) {
+                    d_hblanking = pmt::to_long(val);
+                }
+            }
+        }
+    }
+
+
+    void 
+    sync_detector_impl::set_Vsize_msg(pmt::pmt_t msg)
+    {
+        if(pmt::is_pair(msg)) {
+            // saca el primero de la pareja
+            pmt::pmt_t key = pmt::car(msg);
+            // saca el segundo
+            pmt::pmt_t val = pmt::cdr(msg);
+            if(pmt::eq(key, pmt::string_to_symbol("Vsize"))) {
+                if(pmt::is_number(val)) {
+                    d_Vtotal = pmt::to_long(val);
+                }
+            }
+        }
+    }
+
+    void 
+    sync_detector_impl::set_Vblank_msg(pmt::pmt_t msg)
+    {
+        if(pmt::is_pair(msg)) {
+            // saca el primero de la pareja
+            pmt::pmt_t key = pmt::car(msg);
+            // saca el segundo
+            pmt::pmt_t val = pmt::cdr(msg);
+            if(pmt::eq(key, pmt::string_to_symbol("Vblank"))) {
+                if(pmt::is_number(val)) {
+                    d_vblanking = pmt::to_long(val);
+                }
+            }
+        }
+    }
 
     void
     sync_detector_impl::forecast (int noutput_items, gr_vector_int &ninput_items_required)

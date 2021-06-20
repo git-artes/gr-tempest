@@ -94,6 +94,14 @@ namespace gr
       d_new_interpolation_ratio_rem = 0;
       d_next_update = 0;
 
+      // PMT ports
+      message_port_register_in(pmt::mp("iHsize"));
+      message_port_register_in(pmt::mp("Vsize"));
+
+      // PMT handlers
+      set_msg_handler(pmt::mp("iHsize"), [this](const pmt::pmt_t& msg) {frame_drop_impl::set_iHsize_msg(msg); });
+      set_msg_handler(pmt::mp("Vsize"),  [this](const pmt::pmt_t& msg) {frame_drop_impl::set_Vsize_msg(msg); });
+
       /* Volk_Malloc
         https://github.com/gnuradio/volk/blob/master/lib/volk_malloc.c
       */
@@ -251,6 +259,40 @@ namespace gr
         oo++;
       }
       d_required_for_interpolation = ii;
+    }
+
+
+    void 
+    frame_drop_impl::set_iHsize_msg(pmt::pmt_t msg)
+    {
+        if(pmt::is_pair(msg)) {
+            // saca el primero de la pareja
+            pmt::pmt_t key = pmt::car(msg);
+            // saca el segundo
+            pmt::pmt_t val = pmt::cdr(msg);
+            if(pmt::eq(key, pmt::string_to_symbol("iHsize"))) {
+                if(pmt::is_number(val)) {
+                    d_Htotal = pmt::to_long(val);
+                }
+            }
+        }
+    }
+
+
+    void 
+    frame_drop_impl::set_Vsize_msg(pmt::pmt_t msg)
+    {
+        if(pmt::is_pair(msg)) {
+            // saca el primero de la pareja
+            pmt::pmt_t key = pmt::car(msg);
+            // saca el segundo
+            pmt::pmt_t val = pmt::cdr(msg);
+            if(pmt::eq(key, pmt::string_to_symbol("Vsize"))) {
+                if(pmt::is_number(val)) {
+                    d_Vtotal = pmt::to_long(val);
+                }
+            }
+        }
     }
 
 

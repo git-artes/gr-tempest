@@ -33,6 +33,12 @@ inputs:
 - label: ratio
   domain: message
   optional: true
+- label: iHsize
+  domain: message
+  optional: true
+- label: Vsize
+  domain: message
+  optional: true
 outputs:
 - label: out
   domain: stream

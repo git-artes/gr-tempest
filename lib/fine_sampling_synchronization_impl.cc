@@ -61,6 +61,16 @@ namespace gr {
             //d_max_deviation = max_deviation;
             set_Htotal_Vtotal(Htotal, Vtotal);
 
+            // PMT ports
+            message_port_register_in(pmt::mp("ratio"));
+            message_port_register_in(pmt::mp("iHsize"));
+            message_port_register_in(pmt::mp("Vsize"));
+
+            // PMT handlers
+            set_msg_handler(pmt::mp("ratio"),  [this](const pmt::pmt_t& msg) {fine_sampling_synchronization_impl::set_ratio_msg(msg); });
+            set_msg_handler(pmt::mp("iHsize"), [this](const pmt::pmt_t& msg) {fine_sampling_synchronization_impl::set_iHsize_msg(msg); });
+            set_msg_handler(pmt::mp("Vsize"),  [this](const pmt::pmt_t& msg) {fine_sampling_synchronization_impl::set_Vsize_msg(msg); });
+
             d_alpha_samp_inc = 1e-1;
             
             d_samp_phase = 0; 
@@ -109,8 +119,8 @@ namespace gr {
         void fine_sampling_synchronization_impl::set_Htotal_Vtotal(int Htotal, int Vtotal){
             // If the resolution's changed, I reset the whole block
             
-            d_Htotal = Htotal; 
-            d_Vtotal = Vtotal; 
+            //d_Htotal = Htotal; 
+            //d_Vtotal = Vtotal; 
             //d_max_deviation = max_deviation; 
             //d_max_deviation_px = (int)std::ceil(d_Htotal*d_max_deviation);
             printf("d_max_deviation_px: %i\n", d_max_deviation_px);
@@ -171,10 +181,7 @@ namespace gr {
 
             printf("[TEMPEST] Setting Htotal to %i and Vtotal to %i in fine sampling synchronization block.\n", Htotal, Vtotal);
 
-            // PMT port
-            message_port_register_in(pmt::mp("ratio"));
-            //set_msg_handler(pmt::mp("ratio"), boost::bind(&trigger_tag_impl::set_nivel_msg, this, _1));
-            set_msg_handler(pmt::mp("ratio"), [this](const pmt::pmt_t& msg) {fine_sampling_synchronization_impl::set_ratio_msg(msg); });
+            
         }
 
         int fine_sampling_synchronization_impl::interpolate_input(const gr_complex * in, gr_complex * out, int size){
@@ -207,6 +214,39 @@ namespace gr {
                 if(pmt::eq(key, pmt::string_to_symbol("ratio"))) {
                     if(pmt::is_number(val)) {
                         d_new_interpolation_ratio_rem = pmt::to_double(val);
+                        set_Htotal_Vtotal(d_Htotal, d_Vtotal);
+                    }
+                }
+            }
+        }
+
+        void fine_sampling_synchronization_impl::set_iHsize_msg(pmt::pmt_t msg){
+
+            if(pmt::is_pair(msg)) {
+                // saca el primero de la pareja
+                pmt::pmt_t key = pmt::car(msg);
+                // saca el segundo
+                pmt::pmt_t val = pmt::cdr(msg);
+                if(pmt::eq(key, pmt::string_to_symbol("iHsize"))) {
+                    if(pmt::is_number(val)) {
+                        d_Htotal = pmt::to_long(val);
+                        set_Htotal_Vtotal(d_Htotal, d_Vtotal);
+                    }
+                }
+            }
+        }
+
+        void fine_sampling_synchronization_impl::set_Vsize_msg(pmt::pmt_t msg){
+
+            if(pmt::is_pair(msg)) {
+                // saca el primero de la pareja
+                pmt::pmt_t key = pmt::car(msg);
+                // saca el segundo
+                pmt::pmt_t val = pmt::cdr(msg);
+                if(pmt::eq(key, pmt::string_to_symbol("Vsize"))) {
+                    if(pmt::is_number(val)) {
+                        d_Vtotal = pmt::to_long(val);
+                        set_Htotal_Vtotal(d_Htotal, d_Vtotal);
                     }
                 }
             }

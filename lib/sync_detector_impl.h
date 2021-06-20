@@ -75,6 +75,10 @@ namespace gr {
       void find_shift (int *blanking_index, int *blanking_size, float *data, const int total_line_size, int min_blanking_size, double lowpasscoeff);
       void gaussianblur(float * data, int size);
       float calculate_gauss_coeff(float N, float i);
+      void set_iHsize_msg(pmt::pmt_t msg);
+      void set_iHblank_msg(pmt::pmt_t msg);
+      void set_Vsize_msg(pmt::pmt_t msg);
+      void set_Vblank_msg(pmt::pmt_t msg);
 
       //Fixed parameters
       float d_LOWPASS_COEFF_V;

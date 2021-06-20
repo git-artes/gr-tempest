@@ -21,6 +21,18 @@ inputs:
 - label: in
   domain: stream
   dtype: complex
+- label: iHsize
+  domain: message
+  optional: true
+- label: iHblank
+  domain: message
+  optional: true
+- label: Vsize
+  domain: message
+  optional: true
+- label: Vblank
+  domain: message
+  optional: true
 outputs:
 - label: out
   domain: stream

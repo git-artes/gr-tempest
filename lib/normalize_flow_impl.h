@@ -53,6 +53,8 @@ namespace gr {
          std::minstd_rand d_gen;
          float d_proba_of_updating;
 
+         void set_iHsize_msg(pmt::pmt_t msg);
+
      public:
       normalize_flow_impl(float min, float max, int window, float alpha_avg, float update_proba);
       ~normalize_flow_impl();

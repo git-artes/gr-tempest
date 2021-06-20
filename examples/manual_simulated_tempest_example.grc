@@ -242,7 +242,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [631, 7]
+    coordinate: [610, 3]
     rotation: 0
     state: disabled
 - name: inter
@@ -319,7 +319,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [495, 7]
+    coordinate: [474, 3]
     rotation: 0
     state: disabled
 - name: lines_offset
@@ -340,7 +340,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [775, 7]
+    coordinate: [754, 3]
     rotation: 0
     state: disabled
 - name: noise
