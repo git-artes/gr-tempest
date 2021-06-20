@@ -214,7 +214,7 @@ namespace gr {
                 if(pmt::eq(key, pmt::string_to_symbol("ratio"))) {
                     if(pmt::is_number(val)) {
                         d_new_interpolation_ratio_rem = pmt::to_double(val);
-                        set_Htotal_Vtotal(d_Htotal, d_Vtotal);
+                        //set_Htotal_Vtotal(d_Htotal, d_Vtotal);
                     }
                 }
             }
@@ -230,7 +230,7 @@ namespace gr {
                 if(pmt::eq(key, pmt::string_to_symbol("iHsize"))) {
                     if(pmt::is_number(val)) {
                         d_Htotal = pmt::to_long(val);
-                        set_Htotal_Vtotal(d_Htotal, d_Vtotal);
+                        //set_Htotal_Vtotal(d_Htotal, d_Vtotal);
                     }
                 }
             }
@@ -246,7 +246,7 @@ namespace gr {
                 if(pmt::eq(key, pmt::string_to_symbol("Vsize"))) {
                     if(pmt::is_number(val)) {
                         d_Vtotal = pmt::to_long(val);
-                        set_Htotal_Vtotal(d_Htotal, d_Vtotal);
+                        //set_Htotal_Vtotal(d_Htotal, d_Vtotal);
                     }
                 }
             }

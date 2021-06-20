@@ -29,5 +29,6 @@ install(FILES
     normalize_flow.h
     fine_sampling_synchronization.h
     sync_detector.h
-    frame_drop.h DESTINATION include/tempest
+    frame_drop.h
+    infer_resolution.h DESTINATION include/tempest
 )
