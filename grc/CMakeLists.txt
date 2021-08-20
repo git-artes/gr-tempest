@@ -26,6 +26,6 @@ install(FILES
     tempest_fine_sampling_synchronization.block.yml
     tempest_sync_detector.block.yml
     tempest_frame_drop.block.yml
-    tempest_message_to_var.block.yml DESTINATION share/gnuradio/grc/blocks
-    tempest_infer_resolution.block.yml DESTINATION share/gnuradio/grc/blocks
+    tempest_message_to_var.block.yml
+    tempest_fft_peak_fine_sampling_sync.block.yml DESTINATION share/gnuradio/grc/blocks
 )

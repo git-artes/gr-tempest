@@ -171,6 +171,11 @@ namespace gr {
 
       peak_index += d_search_skip;                                                /* Offset por indice relativo en volk */
 
+      memcpy(out, in, noutput_items*sizeof(float));
+
+      /* Add Tag. */
+      add_item_tag(0, nitems_written(0)+peak_index, pmt::mp("peak"), pmt::PMT_T);
+
       double fv = (double)d_sample_rate/(double)peak_index;
 
       d_refresh_rate = (long)fv;                                                  /* Intentar que varíe menos que fv */

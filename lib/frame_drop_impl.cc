@@ -68,7 +68,7 @@ namespace gr
       d_frames_counter = 0;
 
       //Fixed values
-      d_discarded_amount_per_frame = 3;
+      d_discarded_amount_per_frame = 30;
 
       //d_correct_sampling = correct_sampling; 
       d_proba_of_updating = update_proba;
@@ -206,7 +206,7 @@ namespace gr
       uint16_t peak_index = 0;
       uint32_t d_datain_length = (uint32_t)(2*d_max_deviation_px+1);
       volk_32f_index_max_16u(&peak_index, d_abs_historic_line_corr, 2*d_max_deviation_px+1); 
-
+//if peak index > 0:
       d_peak_line_index = (peak_index-d_max_deviation_px);
       delete [] d_in_conj;
     }
@@ -220,7 +220,9 @@ namespace gr
 
       int corrsize = 2*d_Vtotal+1;
       int offset = (d_max_deviation_px+d_peak_line_index)*d_Vtotal;
-      int offset_in = d_peak_line_index*d_Vtotal;
+      //2*d_max_deviation_px*d_Vtotal+1 //2*d_max_deviation_px*d_Vtotal+1
+      int offset_in; 
+      d_peak_line_index >= 0 ? offset_in = d_peak_line_index*d_Vtotal : offset_in = 0;
       for (int i=0; i<in_size; i++)
       {
         volk_32fc_s32fc_multiply_32fc(&d_current_frame_corr[offset], &in[i+d_Htotal*d_Vtotal+offset_in-d_Vtotal], d_in_conj[i], corrsize);
@@ -232,7 +234,10 @@ namespace gr
       uint32_t d_datain_length = (uint32_t)(corrsize);
       volk_32f_index_max_16u(&peak_index, &d_abs_historic_frame_corr[offset], corrsize); 
 
+//(d_peak_line_index - 1) * d_Vtotal fixes array center (0,0)
       d_new_interpolation_ratio_rem = ((double)(peak_index+offset_in-d_Vtotal))/(double)(d_Vtotal*d_Htotal);
+      
+      printf("peak_index %d\t corrsize %d\t offset_in %d\t \r\n", peak_index , corrsize, offset_in);
       delete [] d_in_conj;
     }
 
@@ -317,6 +322,9 @@ namespace gr
         update_interpolation_ratio(&in[0], noutput_items);
 
         double new_freq = d_new_interpolation_ratio_rem;
+        
+        /* Add Tag. */
+        add_item_tag(0, nitems_written(0), pmt::mp("update_interpolation_ratio"), pmt::PMT_T);
 
         message_port_pub(
           pmt::mp("ratio"), 
@@ -343,14 +351,19 @@ namespace gr
           out_amount++;
 
         } else if (d_sample_counter == (d_discarded_amount_per_frame*d_required_for_interpolation)){
-
+          consumed += i;
           d_sample_counter = 0;
           get_required_samples(d_Htotal*d_Vtotal);
 
+          add_item_tag(0, nitems_written(0)+i, pmt::mp("trigger"), pmt::PMT_T);
+          break;
+
+        } else {
+          // Aca los out amount deben dejar de contar y desplegar solo el ultimo valor de out_amount que se contó.
         }
       }
 
-      consumed += noutput_items;
+      consumed == 0 ? consumed += noutput_items : consumed += 0;
 
       // Tell runtime system how many input items we consumed on
       // each input stream.

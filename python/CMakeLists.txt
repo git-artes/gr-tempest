@@ -52,3 +52,4 @@ GR_ADD_TEST(qa_fine_sampling_synchronization ${PYTHON_EXECUTABLE} ${CMAKE_CURREN
 GR_ADD_TEST(qa_sync_detector ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/qa_sync_detector.py)
 GR_ADD_TEST(qa_frame_drop ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/qa_frame_drop.py)
 GR_ADD_TEST(qa_infer_resolution ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/qa_infer_resolution.py)
+GR_ADD_TEST(qa_fft_peak_fine_sampling_sync ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/qa_fft_peak_fine_sampling_sync.py)

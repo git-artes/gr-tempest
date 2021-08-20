@@ -71,7 +71,7 @@ namespace gr {
             set_msg_handler(pmt::mp("iHsize"), [this](const pmt::pmt_t& msg) {fine_sampling_synchronization_impl::set_iHsize_msg(msg); });
             set_msg_handler(pmt::mp("Vsize"),  [this](const pmt::pmt_t& msg) {fine_sampling_synchronization_impl::set_Vsize_msg(msg); });
 
-            d_alpha_samp_inc = 1e-1;
+            d_alpha_samp_inc = 1e-3;
             
             d_samp_phase = 0; 
             d_alpha_corr = 1e-6; 
@@ -128,7 +128,7 @@ namespace gr {
             set_history(d_Vtotal*(d_Htotal+d_max_deviation_px)+1);
 
             //d_peak_line_index = 0;
-            d_samp_inc_rem = 0;
+            d_samp_inc_rem = 1.0;
             d_new_interpolation_ratio_rem = 0;
             //I'll estimate the new sampling synchronization asap
             //d_next_update = 0;
@@ -214,6 +214,7 @@ namespace gr {
                 if(pmt::eq(key, pmt::string_to_symbol("ratio"))) {
                     if(pmt::is_number(val)) {
                         d_new_interpolation_ratio_rem = pmt::to_double(val);
+                        //printf("Fine Samp Received = %f ratio", d_new_interpolation_ratio_rem);
                         //set_Htotal_Vtotal(d_Htotal, d_Vtotal);
                     }
                 }
@@ -330,6 +331,7 @@ namespace gr {
                 //printf("d_next_update: %i\n",d_next_update);
                 if (d_correct_sampling){
                     d_samp_inc_rem = (1-d_alpha_samp_inc)*d_samp_inc_rem + d_alpha_samp_inc*d_new_interpolation_ratio_rem;
+                    //d_samp_inc_rem = d_new_interpolation_ratio_rem;
                     // d_samp_inc_rem = d_samp_inc_rem - d_alpha_samp_inc*(d_samp_inc_rem+1 - new_interpolation_ratio);
                     required_for_interpolation = interpolate_input(&in[0], &out[0], noutput_items);
                 }
