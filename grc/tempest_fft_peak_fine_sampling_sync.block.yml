@@ -38,7 +38,7 @@ outputs:
 - label: out
   domain: stream
   dtype: float
-- label: ratio
+- label: en
   domain: message
   optional: true
 file_format: 1

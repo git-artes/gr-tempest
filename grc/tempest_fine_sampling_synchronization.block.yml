@@ -39,6 +39,9 @@ inputs:
 - label: Vsize
   domain: message
   optional: true
+- label: en
+  domain: message
+  optional: true
 outputs:
 - label: out
   domain: stream

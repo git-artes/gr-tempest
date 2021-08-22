@@ -77,11 +77,13 @@ namespace gr {
             message_port_register_in(pmt::mp("ratio"));
             message_port_register_in(pmt::mp("iHsize"));
             message_port_register_in(pmt::mp("Vsize"));
+            message_port_register_in(pmt::mp("en"));
 
             // PMT handlers
             set_msg_handler(pmt::mp("ratio"),  [this](const pmt::pmt_t& msg) {fine_sampling_synchronization_impl::set_ratio_msg(msg); });
             set_msg_handler(pmt::mp("iHsize"), [this](const pmt::pmt_t& msg) {fine_sampling_synchronization_impl::set_iHsize_msg(msg); });
             set_msg_handler(pmt::mp("Vsize"),  [this](const pmt::pmt_t& msg) {fine_sampling_synchronization_impl::set_Vsize_msg(msg); });
+            set_msg_handler(pmt::mp("en"),  [this](const pmt::pmt_t& msg) {fine_sampling_synchronization_impl::set_ena_msg(msg); });
 
             //set_output_multiple(d_Htotal);
 
@@ -160,6 +162,20 @@ namespace gr {
         }
 
 
+        void fine_sampling_synchronization_impl::set_ena_msg(pmt::pmt_t msg){
+
+            if (pmt::is_bool(msg)) {
+                bool en = pmt::to_bool(msg);
+                gr::thread::scoped_lock l(d_mutex);
+                d_stop_fine_sampling_synch = !en;
+                printf("Fine Samp Received Sampling Stop.\n");
+            } else {
+                GR_LOG_WARN(d_logger,
+                            "Fine Samp Received : Non-PMT type received, expecting Boolean PMT\n");
+            }
+        }
+
+
         void fine_sampling_synchronization_impl::set_ratio_msg(pmt::pmt_t msg){
 
             if(pmt::is_pair(msg)) {
@@ -170,8 +186,6 @@ namespace gr {
                 if(pmt::eq(key, pmt::string_to_symbol("ratio"))) {
                     if(pmt::is_number(val)) {
                         //d_new_interpolation_ratio_rem = pmt::to_double(val);
-                        d_stop_fine_sampling_synch = 1;
-                        printf("Fine Samp Received Sampling Stop ");
                         //set_Htotal_Vtotal(d_Htotal, d_Vtotal);
                     }
                 }
@@ -294,7 +308,9 @@ namespace gr {
 
                 //if(d_dist(d_gen)<d_proba_of_updating){
                 d_next_update -= noutput_items;
+                gr::thread::scoped_lock l(d_mutex);
                 if(d_next_update <= 0 && d_stop_fine_sampling_synch==0){
+
                     estimate_peak_line_index(in, noutput_items);
                     // If noutput_items is too big, I only use a single line
                     //update_interpolation_ratio(in, std::min(noutput_items,d_Htotal));
@@ -303,7 +319,8 @@ namespace gr {
                     if (d_next_update<=-10*d_Htotal){
                         d_next_update = d_dist(d_gen);
                     }
-                    printf("Update");
+                    printf("\b\b\b\b\b\b\b\b Update \t");
+
                 }
                 int required_for_interpolation = noutput_items; 
                 

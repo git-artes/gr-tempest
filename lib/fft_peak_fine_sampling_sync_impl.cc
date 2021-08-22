@@ -83,7 +83,7 @@ namespace gr {
       d_work_counter = 1;
       
       //PMT ports
-      message_port_register_out(pmt::mp("ratio"));
+      message_port_register_out(pmt::mp("en"));
 
       set_history(d_fft_size);
     }
@@ -121,8 +121,8 @@ namespace gr {
 
       uint32_t peak_index = 0, peak_index_2 = 0, yt_index = 0, yt_aux = 0;
       
-      d_search_skip= round(d_search_margin/2);
-      volk_32f_index_max_32u(&peak_index, &in[d_search_skip], floor(d_search_margin/4) );   /* 'descartados' se elige para que de cerca del pico conocido */
+      d_search_skip= 0;
+      volk_32f_index_max_32u(&peak_index, &in[d_search_skip], floor(d_search_margin) );   /* 'descartados' se elige para que de cerca del pico conocido */
       
       //d_search_skip= round(0);
       //volk_32f_index_max_32u(&peak_index, &in[0], floor(d_search_margin) );   /* 'descartados' se elige para que de cerca del pico conocido */
@@ -132,9 +132,10 @@ namespace gr {
       add_item_tag(0, nitems_written(0) + peak_index, pmt::mp("peak_1"), pmt::PMT_T); 
 
       ////////////////////////////////////////////////////////////////////////////// Second peak
-      d_search_skip = peak_index + 150;
+      int one_full_frame_in_samples=floor((0.0166656)*d_sample_rate);
 
-      int search_range = 840 + 150;// use dHtotal
+      d_search_skip = peak_index + one_full_frame_in_samples - floor((0.001)*d_sample_rate);
+      int search_range = 200 + floor((0.001)*d_sample_rate);//floor(d_fft_size/2) - d_search_skip;// use dHtotal
       
       volk_32f_index_max_32u(&peak_index_2, &in[d_search_skip], search_range);   /* 'descartados' se elige para que de cerca del pico conocido */
 
@@ -143,7 +144,7 @@ namespace gr {
       add_item_tag(0, nitems_written(0) + peak_index_2, pmt::mp("peak_2"), pmt::PMT_T); 
       // 827 826 827 // el acumulador deberia dar 829.7053735
 
-      if( 1) //(peak_index_2-peak_index) > 500 )
+      if( (peak_index_2-peak_index) > 500 )
         d_accumulator += (long double)(peak_index_2-peak_index)/(long double)(N);
       else
         d_accumulator += (long double)(d_real_line)/(long double)(N);
@@ -151,41 +152,42 @@ namespace gr {
       if(d_work_counter%N == 0)
       {
         // Compare with:
+        printf("d_search_skip %d d_search_margin  %d \t\n", d_search_skip, d_search_margin);
 
         long double line_timing = (long double)(d_accumulator)/(long double)d_sample_rate;
-        long double ratio = (long double)(d_accumulator)/(long double)d_real_line;
+        long double ratio_timings = line_timing*1000000 / (long double)(16.6656*1000);
+        long double ratio = (long double)(d_accumulator)/(long double)(d_real_line*d_Vvisible);
 
         d_ratio = (ratio-1);
         //d_ratio = (0.01f)*((double)ratio-1.0f) + (1-0.01f)*d_ratio; 
 
         /* Add Tag. */
-        //printf("Line timing \t %Lf us. \t Ratio \t %f  \r\n ", line_timing*1000000, d_ratio);    
-        //printf("Peaks delta \t %Lf \t \t\r\n ", d_accumulator);  
-        //printf("descartados \t \t %d \r margen \t \t \t %d \r \n ", d_search_skip, d_search_margin);
 
         d_accumulator = 0;
         d_work_counter = 0;
 
-        if( ratio > 0.9998 && ratio < 1.0002 ){
+        printf("Line timing \t %Lf us. \t Ratio = \t %f  RatioTimings = \t %Lf  \r\n ", line_timing*1000000, d_ratio, ratio_timings);    
+        printf("Peaks delta \t %Lf \t \t\r\n ", d_accumulator);  
+        if( ratio_timings > 0.9999 && ratio_timings < 1.000162   ){
+        //if( ratio_timings > 0.99 && ratio_timings < 1.005   ){
+            bool bool_msg = false;
             message_port_pub(
-                      pmt::mp("ratio"), 
-                      pmt::cons(
-                        pmt::mp("ratio"), 
-                        pmt::from_double(d_ratio)
-                      )
+                      pmt::mp("en"), 
+                      pmt::from_bool(bool_msg)
                     );
             // Stop fine sampling synchronization and sleep for a long period.
-            long period_ms = (1000);
+            //long period_ms = (1000);
             //boost::this_thread::sleep(  boost::posix_time::milliseconds(static_cast<long>(period_ms)) );
+            //return WORK_DONE;
         } else{
           //Sleep for short period..
           long period_ms = (500);
-          //boost::this_thread::sleep(  boost::posix_time::milliseconds(static_cast<long>(period_ms)) );
+          boost::this_thread::sleep(  boost::posix_time::milliseconds(static_cast<long>(period_ms)) );
         }
 
         
       }
-      //memcpy(out, in, noutput_items*sizeof(float));
+      memcpy(out, in, noutput_items*sizeof(float));
       /*
       for( int i=0 ; i<noutput_items ; i++)
       {

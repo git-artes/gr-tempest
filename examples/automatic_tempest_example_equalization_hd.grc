@@ -304,12 +304,12 @@ blocks:
   id: variable
   parameters:
     comment: ''
-    value: 2**16
+    value: 4096*512
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [221, 453]
+    coordinate: [241, 667]
     rotation: 0
     state: true
 - name: filtro_ecualizador_1st
@@ -600,6 +600,42 @@ blocks:
     coordinate: [0, 140]
     rotation: 0
     state: enabled
+- name: Enable
+  id: variable_qtgui_msg_push_button
+  parameters:
+    comment: ''
+    gui_hint: ''
+    label: ''
+    msgName: en
+    relBackgroundColor: silver
+    relFontColor: default
+    type: bool
+    value: 'False'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [361, 273]
+    rotation: 0
+    state: true
+- name: FFT_autocorrelation_0
+  id: FFT_autocorrelation
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    fac_decimation: '10'
+    fft_size: int(fft_size)
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    sample_rate: samp_rate
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [858, 522]
+    rotation: 270
+    state: true
 - name: FFT_crosscorrelation_0
   id: FFT_crosscorrelation
   parameters:
@@ -616,9 +652,9 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [612, 495]
+    coordinate: [698, 505]
     rotation: 270
-    state: enabled
+    state: disabled
 - name: blocks_complex_to_mag_0
   id: blocks_complex_to_mag
   parameters:
@@ -671,7 +707,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1056, 681]
+    coordinate: [957, 628]
     rotation: 180
     state: enabled
 - name: blocks_null_sink_0
@@ -688,9 +724,9 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [384, 482]
-    rotation: 0
-    state: true
+    coordinate: [312, 595]
+    rotation: 180
+    state: enabled
 - name: blocks_throttle_0
   id: blocks_throttle
   parameters:
@@ -710,6 +746,103 @@ blocks:
     coordinate: [216, 348]
     rotation: 0
     state: enabled
+- name: qtgui_time_sink_x_0
+  id: qtgui_time_sink_x
+  parameters:
+    affinity: ''
+    alias: ''
+    alpha1: '1.0'
+    alpha10: '1.0'
+    alpha2: '1.0'
+    alpha3: '1.0'
+    alpha4: '1.0'
+    alpha5: '1.0'
+    alpha6: '1.0'
+    alpha7: '1.0'
+    alpha8: '1.0'
+    alpha9: '1.0'
+    autoscale: 'False'
+    axislabels: 'True'
+    color1: blue
+    color10: dark blue
+    color2: red
+    color3: green
+    color4: black
+    color5: cyan
+    color6: magenta
+    color7: yellow
+    color8: dark red
+    color9: dark green
+    comment: ''
+    ctrlpanel: 'False'
+    entags: 'True'
+    grid: 'False'
+    gui_hint: ''
+    label1: Signal 1
+    label10: Signal 10
+    label2: Signal 2
+    label3: Signal 3
+    label4: Signal 4
+    label5: Signal 5
+    label6: Signal 6
+    label7: Signal 7
+    label8: Signal 8
+    label9: Signal 9
+    legend: 'True'
+    marker1: '-1'
+    marker10: '-1'
+    marker2: '-1'
+    marker3: '-1'
+    marker4: '-1'
+    marker5: '-1'
+    marker6: '-1'
+    marker7: '-1'
+    marker8: '-1'
+    marker9: '-1'
+    name: '""'
+    nconnections: '1'
+    size: int(fft_size)
+    srate: samp_rate
+    stemplot: 'False'
+    style1: '1'
+    style10: '1'
+    style2: '1'
+    style3: '1'
+    style4: '1'
+    style5: '1'
+    style6: '1'
+    style7: '1'
+    style8: '1'
+    style9: '1'
+    tr_chan: '0'
+    tr_delay: '0'
+    tr_level: '0.0'
+    tr_mode: qtgui.TRIG_MODE_FREE
+    tr_slope: qtgui.TRIG_SLOPE_POS
+    tr_tag: '""'
+    type: float
+    update_time: '0.10'
+    width1: '1'
+    width10: '1'
+    width2: '1'
+    width3: '1'
+    width4: '1'
+    width5: '1'
+    width6: '1'
+    width7: '1'
+    width8: '1'
+    width9: '1'
+    ylabel: Amplitude
+    ymax: '1'
+    ymin: '-1'
+    yunit: '""'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [543, 542]
+    rotation: 0
+    state: enabled
 - name: tempest_fft_peak_fine_sampling_sync_0
   id: tempest_fft_peak_fine_sampling_sync
   parameters:
@@ -723,12 +856,12 @@ blocks:
     minoutbuf: '0'
     refresh_rate: refresh_rate
     sample_rate: samp_rate
-    size: int(fft_size/8)
+    size: int(fft_size/1)
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [351, 543]
+    coordinate: [547, 645]
     rotation: 180
     state: enabled
 - name: tempest_fine_sampling_synchronization_0
@@ -740,7 +873,7 @@ blocks:
     alias: ''
     comment: ''
     correct_sampling: '1'
-    max_deviation: 10.0/interpolatedHsize
+    max_deviation: 100.0/interpolatedHsize
     maxoutbuf: '0'
     minoutbuf: '0'
     update_proba: 1.0e-1/(interpolatedHsize*Vsize)
@@ -748,7 +881,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [496, 306]
+    coordinate: [496, 387]
     rotation: 0
     state: enabled
 - name: tempest_normalize_flow_0
@@ -768,27 +901,8 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1256, 649]
+    coordinate: [1044, 533]
     rotation: 180
-    state: enabled
-- name: tempest_sync_detector_0
-  id: tempest_sync_detector
-  parameters:
-    affinity: ''
-    alias: ''
-    comment: ''
-    hblanking: int((1344-1024)*(samp_rate/px_rate))
-    hscreen: interpolatedHsize
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    vblanking: 806-768
-    vscreen: Vsize
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [750, 394]
-    rotation: 0
     state: enabled
 - name: video_sdl_sink_0_0_0
   id: video_sdl_sink
@@ -808,24 +922,28 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [704, 649]
+    coordinate: [866, 684]
     rotation: 180
     state: enabled
 
 connections:
+- [Enable, pressed, FFT_autocorrelation_0, en]
+- [Enable, pressed, FFT_crosscorrelation_0, en]
+- [Enable, pressed, tempest_fine_sampling_synchronization_0, ratio]
+- [FFT_autocorrelation_0, '0', qtgui_time_sink_x_0, '0']
+- [FFT_autocorrelation_0, '0', tempest_fft_peak_fine_sampling_sync_0, '0']
 - [FFT_crosscorrelation_0, '0', tempest_fft_peak_fine_sampling_sync_0, '0']
 - [blocks_complex_to_mag_0, '0', tempest_normalize_flow_0, '0']
 - [blocks_file_source_0, '0', blocks_throttle_0, '0']
 - [blocks_float_to_short_0, '0', video_sdl_sink_0_0_0, '0']
 - [blocks_throttle_0, '0', tempest_fine_sampling_synchronization_0, '0']
 - [tempest_fft_peak_fine_sampling_sync_0, '0', blocks_null_sink_0, '0']
-- [tempest_fft_peak_fine_sampling_sync_0, ratio, tempest_fine_sampling_synchronization_0,
-  ratio]
-- [tempest_fine_sampling_synchronization_0, '0', FFT_crosscorrelation_0, '0']
-- [tempest_fine_sampling_synchronization_0, '0', FFT_crosscorrelation_0, '1']
-- [tempest_fine_sampling_synchronization_0, '0', tempest_sync_detector_0, '0']
+- [tempest_fft_peak_fine_sampling_sync_0, en, FFT_autocorrelation_0, en]
+- [tempest_fft_peak_fine_sampling_sync_0, en, tempest_fine_sampling_synchronization_0,
+  en]
+- [tempest_fine_sampling_synchronization_0, '0', FFT_autocorrelation_0, '0']
+- [tempest_fine_sampling_synchronization_0, '0', blocks_complex_to_mag_0, '0']
 - [tempest_normalize_flow_0, '0', blocks_float_to_short_0, '0']
-- [tempest_sync_detector_0, '0', blocks_complex_to_mag_0, '0']
 
 metadata:
   file_format: 1
