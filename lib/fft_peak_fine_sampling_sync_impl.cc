@@ -66,8 +66,8 @@ namespace gr {
       
       //Parameters to publish
       d_refresh_rate = 0;
-      d_Hvisible = 0;
-      d_Vvisible = 0;
+      d_Hvisible = Hvisible;
+      d_Vvisible = Vvisible;
       d_Hblank = 0;
       d_Vblank = 0;
 
@@ -113,13 +113,6 @@ namespace gr {
                                                              /* Work iteration counter */
       if(d_start)
       {
-          message_port_pub(
-            pmt::mp("ratio"), 
-            pmt::cons(
-              pmt::mp("ratio"), 
-              pmt::from_double(d_ratio)
-            )
-          );
           d_start = false;
       }
       /////////////////////////////
@@ -141,7 +134,7 @@ namespace gr {
       ////////////////////////////////////////////////////////////////////////////// Second peak
       d_search_skip = peak_index + 150;
 
-      int search_range = 840 + 150;
+      int search_range = 840 + 150;// use dHtotal
       
       volk_32f_index_max_32u(&peak_index_2, &in[d_search_skip], search_range);   /* 'descartados' se elige para que de cerca del pico conocido */
 
@@ -173,17 +166,26 @@ namespace gr {
         d_accumulator = 0;
         d_work_counter = 0;
 
-        //if( ratio > 0.995 && ratio < 1.005 )
-              message_port_pub(
-                pmt::mp("ratio"), 
-                pmt::cons(
-                  pmt::mp("ratio"), 
-                  pmt::from_double(d_ratio)
-                )
-              );
+        if( ratio > 0.9998 && ratio < 1.0002 ){
+            message_port_pub(
+                      pmt::mp("ratio"), 
+                      pmt::cons(
+                        pmt::mp("ratio"), 
+                        pmt::from_double(d_ratio)
+                      )
+                    );
+            // Stop fine sampling synchronization and sleep for a long period.
+            long period_ms = (1000);
+            //boost::this_thread::sleep(  boost::posix_time::milliseconds(static_cast<long>(period_ms)) );
+        } else{
+          //Sleep for short period..
+          long period_ms = (500);
+          //boost::this_thread::sleep(  boost::posix_time::milliseconds(static_cast<long>(period_ms)) );
+        }
 
+        
       }
-      memcpy(out, in, noutput_items*sizeof(float));
+      //memcpy(out, in, noutput_items*sizeof(float));
       /*
       for( int i=0 ; i<noutput_items ; i++)
       {
