@@ -84,6 +84,7 @@ namespace gr {
       
       //PMT ports
       message_port_register_out(pmt::mp("en"));
+      message_port_register_out(pmt::mp("ratio"));
 
       set_history(d_fft_size);
     }
@@ -132,7 +133,7 @@ namespace gr {
       add_item_tag(0, nitems_written(0) + peak_index, pmt::mp("peak_1"), pmt::PMT_T); 
 
       ////////////////////////////////////////////////////////////////////////////// Second peak
-      int one_full_frame_in_samples=floor((0.0166656)*d_sample_rate);
+      uint32_t one_full_frame_in_samples=floor((0.0166656)*d_sample_rate);
 
       d_search_skip = peak_index + one_full_frame_in_samples - floor((0.001)*d_sample_rate);
       int search_range = 200 + floor((0.001)*d_sample_rate);//floor(d_fft_size/2) - d_search_skip;// use dHtotal
@@ -144,10 +145,10 @@ namespace gr {
       add_item_tag(0, nitems_written(0) + peak_index_2, pmt::mp("peak_2"), pmt::PMT_T); 
       // 827 826 827 // el acumulador deberia dar 829.7053735
 
-      if( (peak_index_2-peak_index) > 500 )
+      if(1)// (peak_index_2-peak_index) > 500 )
         d_accumulator += (long double)(peak_index_2-peak_index)/(long double)(N);
       else
-        d_accumulator += (long double)(d_real_line)/(long double)(N);
+        d_accumulator += (long double)(d_real_line*d_Vvisible)/(long double)(N);
 
       if(d_work_counter%N == 0)
       {
@@ -175,26 +176,27 @@ namespace gr {
                       pmt::mp("en"), 
                       pmt::from_bool(bool_msg)
                     );
-            // Stop fine sampling synchronization and sleep for a long period.
-            //long period_ms = (1000);
-            //boost::this_thread::sleep(  boost::posix_time::milliseconds(static_cast<long>(period_ms)) );
+            message_port_pub(
+                      pmt::mp("ratio"), 
+                      pmt::cons(pmt::mp("ratio"), pmt::from_double(ratio_timings))
+                    );
+            /* 
+              Stop fine sampling synchronization and sleep for a long period.
+                  - Commented. Because this stops execution of the entire flowgraph, somehow.
+
+            */
+            long period_ms = (100000);
+            boost::this_thread::sleep(  boost::posix_time::milliseconds(static_cast<long>(period_ms)) );
             //return WORK_DONE;
         } else{
-          //Sleep for short period..
-          long period_ms = (500);
-          boost::this_thread::sleep(  boost::posix_time::milliseconds(static_cast<long>(period_ms)) );
+            //Sleep for short period of time.. this affects the entire flowgraph.
+            long period_ms = (500);
+            //boost::this_thread::sleep(  boost::posix_time::milliseconds(static_cast<long>(period_ms)) );
         }
 
         
       }
-      memcpy(out, in, noutput_items*sizeof(float));
-      /*
-      for( int i=0 ; i<noutput_items ; i++)
-      {
-          out[i] = d_accumulator;
-      }*/
-
-      // Do <+signal processing+>
+      //memcpy(out, in, noutput_items*sizeof(float));
       // Tell runtime system how many input items we consumed on
       // each input stream.
       d_work_counter++;    

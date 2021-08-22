@@ -615,7 +615,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [361, 273]
+    coordinate: [585, 285]
     rotation: 0
     state: true
 - name: FFT_autocorrelation_0
@@ -842,7 +842,7 @@ blocks:
     bus_structure: null
     coordinate: [543, 542]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: tempest_fft_peak_fine_sampling_sync_0
   id: tempest_fft_peak_fine_sampling_sync
   parameters:
@@ -876,7 +876,7 @@ blocks:
     max_deviation: 100.0/interpolatedHsize
     maxoutbuf: '0'
     minoutbuf: '0'
-    update_proba: 1.0e-1/(interpolatedHsize*Vsize)
+    update_proba: 1.2e-1/(interpolatedHsize*Vsize)
   states:
     bus_sink: false
     bus_source: false
@@ -929,7 +929,6 @@ blocks:
 connections:
 - [Enable, pressed, FFT_autocorrelation_0, en]
 - [Enable, pressed, FFT_crosscorrelation_0, en]
-- [Enable, pressed, tempest_fine_sampling_synchronization_0, ratio]
 - [FFT_autocorrelation_0, '0', qtgui_time_sink_x_0, '0']
 - [FFT_autocorrelation_0, '0', tempest_fft_peak_fine_sampling_sync_0, '0']
 - [FFT_crosscorrelation_0, '0', tempest_fft_peak_fine_sampling_sync_0, '0']
@@ -941,6 +940,8 @@ connections:
 - [tempest_fft_peak_fine_sampling_sync_0, en, FFT_autocorrelation_0, en]
 - [tempest_fft_peak_fine_sampling_sync_0, en, tempest_fine_sampling_synchronization_0,
   en]
+- [tempest_fft_peak_fine_sampling_sync_0, ratio, tempest_fine_sampling_synchronization_0,
+  ratio]
 - [tempest_fine_sampling_synchronization_0, '0', FFT_autocorrelation_0, '0']
 - [tempest_fine_sampling_synchronization_0, '0', blocks_complex_to_mag_0, '0']
 - [tempest_normalize_flow_0, '0', blocks_float_to_short_0, '0']

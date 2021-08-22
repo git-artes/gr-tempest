@@ -41,4 +41,7 @@ outputs:
 - label: en
   domain: message
   optional: true
+- label: ratio
+  domain: message
+  optional: true
 file_format: 1
