@@ -327,7 +327,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1131, 198]
+    coordinate: [1134, 200]
     rotation: 0
     state: enabled
 - name: modes
@@ -428,8 +428,8 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [427, 510]
-    rotation: 0
+    coordinate: [813, 542]
+    rotation: 180
     state: enabled
 - name: blocks_complex_to_mag_0
   id: blocks_complex_to_mag
@@ -444,7 +444,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1136, 688]
+    coordinate: [1261, 688]
     rotation: 180
     state: enabled
 - name: blocks_delay_0
@@ -463,7 +463,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1181, 316]
+    coordinate: [1279, 431]
     rotation: 0
     state: enabled
 - name: blocks_file_source_0
@@ -485,7 +485,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [11, 360]
+    coordinate: [73, 303]
     rotation: 0
     state: enabled
 - name: blocks_float_to_short_0
@@ -502,7 +502,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [740, 700]
+    coordinate: [865, 700]
     rotation: 180
     state: enabled
 - name: blocks_null_sink_0
@@ -519,9 +519,9 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1030, 530]
-    rotation: 0
-    state: true
+    coordinate: [359, 564]
+    rotation: 180
+    state: enabled
 - name: blocks_throttle_0
   id: blocks_throttle
   parameters:
@@ -538,9 +538,30 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [237, 392]
+    coordinate: [299, 335]
     rotation: 0
     state: enabled
+- name: tempest_fft_peak_fine_sampling_sync_0
+  id: tempest_fft_peak_fine_sampling_sync
+  parameters:
+    Hvisible: ''
+    Vvisible: ''
+    affinity: ''
+    alias: ''
+    automatic_mode: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    refresh_rate: ''
+    sample_rate: ''
+    size: ''
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [546, 518]
+    rotation: 180
+    state: true
 - name: tempest_fine_sampling_synchronization_0
   id: tempest_fine_sampling_synchronization
   parameters:
@@ -558,7 +579,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [720, 284]
+    coordinate: [785, 335]
     rotation: 0
     state: enabled
 - name: tempest_frame_drop_0
@@ -579,26 +600,9 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [454, 276]
+    coordinate: [536, 311]
     rotation: 0
     state: enabled
-- name: tempest_infer_resolution_0
-  id: tempest_infer_resolution
-  parameters:
-    affinity: ''
-    alias: ''
-    comment: ''
-    fft_size: int(4096*512)
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    samp_rate: samp_rate
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [643, 466]
-    rotation: 0
-    state: true
 - name: tempest_normalize_flow_0
   id: tempest_normalize_flow
   parameters:
@@ -616,7 +620,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [918, 668]
+    coordinate: [1043, 668]
     rotation: 180
     state: enabled
 - name: tempest_sync_detector_0
@@ -635,7 +639,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1003, 292]
+    coordinate: [1110, 371]
     rotation: 0
     state: enabled
 - name: uhd_usrp_source_0
@@ -1006,7 +1010,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [152, 227]
+    coordinate: [134, 449]
     rotation: 0
     state: disabled
 - name: video_sdl_sink_0
@@ -1026,31 +1030,24 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [536, 668]
+    coordinate: [661, 668]
     rotation: 180
     state: enabled
 
 connections:
-- [FFT_autocorrelation_0, '0', tempest_infer_resolution_0, '0']
+- [FFT_autocorrelation_0, '0', tempest_fft_peak_fine_sampling_sync_0, '0']
 - [blocks_complex_to_mag_0, '0', tempest_normalize_flow_0, '0']
 - [blocks_delay_0, '0', blocks_complex_to_mag_0, '0']
 - [blocks_file_source_0, '0', blocks_throttle_0, '0']
 - [blocks_float_to_short_0, '0', video_sdl_sink_0, '0']
-- [blocks_throttle_0, '0', FFT_autocorrelation_0, '0']
 - [blocks_throttle_0, '0', tempest_frame_drop_0, '0']
+- [tempest_fft_peak_fine_sampling_sync_0, '0', blocks_null_sink_0, '0']
+- [tempest_fft_peak_fine_sampling_sync_0, en, FFT_autocorrelation_0, en]
+- [tempest_fft_peak_fine_sampling_sync_0, en, tempest_frame_drop_0, en]
+- [tempest_fine_sampling_synchronization_0, '0', FFT_autocorrelation_0, '0']
 - [tempest_fine_sampling_synchronization_0, '0', tempest_sync_detector_0, '0']
 - [tempest_frame_drop_0, '0', tempest_fine_sampling_synchronization_0, '0']
 - [tempest_frame_drop_0, ratio, tempest_fine_sampling_synchronization_0, ratio]
-- [tempest_infer_resolution_0, '0', blocks_null_sink_0, '0']
-- [tempest_infer_resolution_0, Vblank, tempest_sync_detector_0, Vblank]
-- [tempest_infer_resolution_0, Vsize, tempest_fine_sampling_synchronization_0, Vsize]
-- [tempest_infer_resolution_0, Vsize, tempest_frame_drop_0, Vsize]
-- [tempest_infer_resolution_0, Vsize, tempest_sync_detector_0, Vsize]
-- [tempest_infer_resolution_0, iHblank, tempest_sync_detector_0, iHblank]
-- [tempest_infer_resolution_0, iHsize, tempest_fine_sampling_synchronization_0, iHsize]
-- [tempest_infer_resolution_0, iHsize, tempest_frame_drop_0, iHsize]
-- [tempest_infer_resolution_0, iHsize, tempest_normalize_flow_0, iHsize]
-- [tempest_infer_resolution_0, iHsize, tempest_sync_detector_0, iHsize]
 - [tempest_normalize_flow_0, '0', blocks_float_to_short_0, '0']
 - [tempest_sync_detector_0, '0', blocks_delay_0, '0']
 - [uhd_usrp_source_0, '0', tempest_frame_drop_0, '0']

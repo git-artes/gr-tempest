@@ -75,15 +75,15 @@ namespace gr {
 
             // PMT ports
             message_port_register_in(pmt::mp("ratio"));
-            message_port_register_in(pmt::mp("iHsize"));
-            message_port_register_in(pmt::mp("Vsize"));
-            message_port_register_in(pmt::mp("en"));
+            //message_port_register_in(pmt::mp("iHsize"));
+            //message_port_register_in(pmt::mp("Vsize"));
+            //message_port_register_in(pmt::mp("en"));
 
             // PMT handlers
             set_msg_handler(pmt::mp("ratio"),  [this](const pmt::pmt_t& msg) {fine_sampling_synchronization_impl::set_ratio_msg(msg); });
-            set_msg_handler(pmt::mp("iHsize"), [this](const pmt::pmt_t& msg) {fine_sampling_synchronization_impl::set_iHsize_msg(msg); });
-            set_msg_handler(pmt::mp("Vsize"),  [this](const pmt::pmt_t& msg) {fine_sampling_synchronization_impl::set_Vsize_msg(msg); });
-            set_msg_handler(pmt::mp("en"),  [this](const pmt::pmt_t& msg) {fine_sampling_synchronization_impl::set_ena_msg(msg); });
+            //set_msg_handler(pmt::mp("iHsize"), [this](const pmt::pmt_t& msg) {fine_sampling_synchronization_impl::set_iHsize_msg(msg); });
+            //set_msg_handler(pmt::mp("Vsize"),  [this](const pmt::pmt_t& msg) {fine_sampling_synchronization_impl::set_Vsize_msg(msg); });
+            //set_msg_handler(pmt::mp("en"),  [this](const pmt::pmt_t& msg) {fine_sampling_synchronization_impl::set_ena_msg(msg); });
 
             //set_output_multiple(d_Htotal);
 
@@ -161,7 +161,7 @@ namespace gr {
 
         }
 
-
+/*
         void fine_sampling_synchronization_impl::set_ena_msg(pmt::pmt_t msg){
 
             if (pmt::is_bool(msg)) {
@@ -174,7 +174,7 @@ namespace gr {
                             "Fine Samp Received : Non-PMT type received, expecting Boolean PMT\n");
             }
         }
-
+*/
 
         void fine_sampling_synchronization_impl::set_ratio_msg(pmt::pmt_t msg){
 
@@ -185,13 +185,13 @@ namespace gr {
                 pmt::pmt_t val = pmt::cdr(msg);
                 if(pmt::eq(key, pmt::string_to_symbol("ratio"))) {
                     if(pmt::is_number(val)) {
-                        //d_new_interpolation_ratio_rem = pmt::to_double(val);
-                        //set_Htotal_Vtotal(d_Htotal, d_Vtotal);
+                        d_new_interpolation_ratio_rem = pmt::to_double(val);
+                        set_Htotal_Vtotal(d_Htotal, d_Vtotal);
                     }
                 }
             }
         }
-
+/*
         void fine_sampling_synchronization_impl::set_iHsize_msg(pmt::pmt_t msg){
 
             if(pmt::is_pair(msg)) {
@@ -223,7 +223,7 @@ namespace gr {
                 }
             }
         }
-
+*/
         int fine_sampling_synchronization_impl::interpolate_input(const gr_complex * in, gr_complex * out, int size){
             int ii = 0; // input index
             int oo = 0; // output index
@@ -244,7 +244,7 @@ namespace gr {
             return ii;
         }
 
-
+/*
         void fine_sampling_synchronization_impl::estimate_peak_line_index(const gr_complex * in, int in_size)
         {
 
@@ -295,7 +295,7 @@ namespace gr {
             delete [] d_in_conj;
             
         }
-
+*/
         int
             fine_sampling_synchronization_impl::general_work (int noutput_items,
                     gr_vector_int &ninput_items,
@@ -308,7 +308,7 @@ namespace gr {
 
                 //if(d_dist(d_gen)<d_proba_of_updating){
                 d_next_update -= noutput_items;
-                gr::thread::scoped_lock l(d_mutex);
+                /*gr::thread::scoped_lock l(d_mutex);
                 if(d_next_update <= 0 && d_stop_fine_sampling_synch==0){
 
                     estimate_peak_line_index(in, noutput_items);
@@ -321,7 +321,7 @@ namespace gr {
                     }
                     printf("\b\b\b\b\b\b\b\b Update \t");
 
-                }
+                }*/
                 int required_for_interpolation = noutput_items; 
                 
                 //printf("d_next_update: %i\n",d_next_update);

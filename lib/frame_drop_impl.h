@@ -87,6 +87,8 @@ namespace gr {
       uint32_t * d_input_index;
       double * d_historic_samp_phase;
 
+      bool d_start_frame_drop;
+
       // the interpolating filter        
       gr::filter::mmse_fir_interpolator_cc d_inter; 
 
@@ -94,9 +96,11 @@ namespace gr {
 
       void estimate_peak_line_index(const gr_complex * in, int in_size);
 
-      void set_iHsize_msg(pmt::pmt_t msg);
+      //void set_iHsize_msg(pmt::pmt_t msg);
+      //void set_Vsize_msg(pmt::pmt_t msg);
 
-      void set_Vsize_msg(pmt::pmt_t msg);
+      gr::thread::mutex d_mutex;
+      void set_ena_msg(pmt::pmt_t msg);
      
      public:
       frame_drop_impl(int Htotal, int Vtotal, int correct_sampling, float max_deviation, float update_proba, double actual_samp_rate);

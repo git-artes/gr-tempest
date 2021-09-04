@@ -86,20 +86,20 @@ namespace gr {
          gr::filter::mmse_fir_interpolator_cc d_inter; 
 
         int interpolate_input(const gr_complex * in, gr_complex * out, int size);
-      
+      /*
         void update_interpolation_ratio(const gr_complex * in, int in_size);
 
         void estimate_peak_line_index(const gr_complex * in, int in_size);
-
-        void set_ratio_msg(pmt::pmt_t msg);
 
         void set_iHsize_msg(pmt::pmt_t msg);
 
         void set_Vsize_msg(pmt::pmt_t msg);
 
-
         gr::thread::mutex d_mutex;
         void set_ena_msg(pmt::pmt_t msg);
+*/
+        void set_ratio_msg(pmt::pmt_t msg);
+
      public:
       fine_sampling_synchronization_impl(int Htotal, int Vtotal, int correct_sampling, float max_deviation, float update_proba);
       ~fine_sampling_synchronization_impl();

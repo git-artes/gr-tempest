@@ -80,6 +80,8 @@ namespace gr
       //d_actual_samp_rate = actual_samp_rate;
       d_samp_phase = 0; 
       d_alpha_corr = 1e-6; 
+
+      d_start_frame_drop = 0;
       
       d_Htotal = Htotal; 
       d_Vtotal = Vtotal; 
@@ -95,12 +97,14 @@ namespace gr
       d_next_update = 0;
 
       // PMT ports
-      message_port_register_in(pmt::mp("iHsize"));
-      message_port_register_in(pmt::mp("Vsize"));
+      //message_port_register_in(pmt::mp("iHsize"));
+      //message_port_register_in(pmt::mp("Vsize"));
+      message_port_register_in(pmt::mp("en"));
 
       // PMT handlers
-      set_msg_handler(pmt::mp("iHsize"), [this](const pmt::pmt_t& msg) {frame_drop_impl::set_iHsize_msg(msg); });
-      set_msg_handler(pmt::mp("Vsize"),  [this](const pmt::pmt_t& msg) {frame_drop_impl::set_Vsize_msg(msg); });
+      //set_msg_handler(pmt::mp("iHsize"), [this](const pmt::pmt_t& msg) {frame_drop_impl::set_iHsize_msg(msg); });
+      //set_msg_handler(pmt::mp("Vsize"),  [this](const pmt::pmt_t& msg) {frame_drop_impl::set_Vsize_msg(msg); });
+      set_msg_handler(pmt::mp("en"),     [this](const pmt::pmt_t& msg) {frame_drop_impl::set_ena_msg(msg); });
 
       /* Volk_Malloc
         https://github.com/gnuradio/volk/blob/master/lib/volk_malloc.c
@@ -187,6 +191,19 @@ namespace gr
         }
     }
 
+    void 
+    frame_drop_impl::set_ena_msg(pmt::pmt_t msg){
+
+        if (pmt::is_bool(msg)) {
+            bool en = pmt::to_bool(msg);
+            gr::thread::scoped_lock l(d_mutex);
+            d_start_frame_drop = !en;
+            printf("Frame Dropping Start.\n");
+        } else {
+            GR_LOG_WARN(d_logger,
+                        "Frame Dropper: Non-PMT type received, expecting Boolean PMT\n");
+        }
+    }
 
     void
     frame_drop_impl::estimate_peak_line_index(const gr_complex * in, int in_size)
@@ -266,7 +283,7 @@ namespace gr
       d_required_for_interpolation = ii;
     }
 
-
+    /*
     void 
     frame_drop_impl::set_iHsize_msg(pmt::pmt_t msg)
     {
@@ -299,7 +316,7 @@ namespace gr
             }
         }
     }
-
+    */
 
     int
     frame_drop_impl::general_work (int noutput_items,
@@ -315,8 +332,9 @@ namespace gr
       ////////////////////////////////////////////////////////////
      
       d_next_update -= noutput_items;
+      gr::thread::scoped_lock l(d_mutex);
 
-      if(d_next_update <= 0){
+      if(d_next_update <= 0 && d_start_frame_drop==0){
 
         estimate_peak_line_index(&in[0], noutput_items);
         update_interpolation_ratio(&in[0], noutput_items);
@@ -341,25 +359,34 @@ namespace gr
      
       ///////////////////////////////////////////////////////////
 
-      for (int i=0; i<noutput_items; i++){
+      if (d_start_frame_drop==0){
 
-        d_sample_counter++;
-
-        if (d_sample_counter <= d_required_for_interpolation){
-
+        for (int i=0; i<noutput_items; i++){
           out[i]=in[i];
-          out_amount++;
+        }
 
-        } else if (d_sample_counter == (d_discarded_amount_per_frame*d_required_for_interpolation)){
-          consumed += i;
-          d_sample_counter = 0;
-          get_required_samples(d_Htotal*d_Vtotal);
+      } else {
 
-          add_item_tag(0, nitems_written(0)+i, pmt::mp("trigger"), pmt::PMT_T);
-          break;
+        for (int i=0; i<noutput_items; i++){
 
-        } else {
-          // Aca los out amount deben dejar de contar y desplegar solo el ultimo valor de out_amount que se contó.
+          d_sample_counter++;
+
+          if (d_sample_counter <= d_required_for_interpolation){
+
+            out[i]=in[i];
+            out_amount++;
+
+          } else if (d_sample_counter == (d_discarded_amount_per_frame*d_required_for_interpolation)){
+            consumed += i;
+            d_sample_counter = 0;
+            get_required_samples(d_Htotal*d_Vtotal);
+
+            add_item_tag(0, nitems_written(0)+i, pmt::mp("trigger"), pmt::PMT_T);
+            break;
+
+          } else {
+            // Aca los out amount deben dejar de contar y desplegar solo el ultimo valor de out_amount que se contó.
+          }
         }
       }
 
