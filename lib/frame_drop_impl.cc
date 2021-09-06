@@ -362,8 +362,8 @@ namespace gr
 
         for (int i=0; i<noutput_items; i++){
           out[i]=in[i];
-          out_amount++; 
         }
+        out_amount = noutput_items;
 
       } else {
 

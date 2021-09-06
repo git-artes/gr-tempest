@@ -60,10 +60,12 @@ namespace gr {
       int d_frame_wait_for_blanking;
       int d_frame_output;
 
+
       //Counters
       int d_frame_height_counter; 
       int d_blanking_wait_counter; 
-      int d_output_counter;      
+      int d_output_counter;
+      bool d_start_sync_detect;   
 
       //Arrays
       float * d_data_h;
@@ -75,10 +77,7 @@ namespace gr {
       void find_shift (int *blanking_index, int *blanking_size, float *data, const int total_line_size, int min_blanking_size, double lowpasscoeff);
       void gaussianblur(float * data, int size);
       float calculate_gauss_coeff(float N, float i);
-      void set_iHsize_msg(pmt::pmt_t msg);
-      void set_iHblank_msg(pmt::pmt_t msg);
-      void set_Vsize_msg(pmt::pmt_t msg);
-      void set_Vblank_msg(pmt::pmt_t msg);
+      void set_ena_msg(pmt::pmt_t msg);
 
       //Fixed parameters
       float d_LOWPASS_COEFF_V;

@@ -169,7 +169,7 @@ namespace gr {
 
         printf("Line timing \t %Lf us. \t Ratio = \t %f  RatioTimings = \t %Lf  \r\n ", line_timing*1000000, d_ratio, ratio_timings);    
         printf("Peaks delta \t %Lf \t \t\r\n ", d_accumulator);  
-        if( ratio_timings > 0.9999 && ratio_timings < 1.000162   ){
+        if( ratio_timings > 0.999 && ratio_timings < 1.000162   ){
         //if( ratio_timings > 0.99 && ratio_timings < 1.005   ){
             bool bool_msg = false;
             message_port_pub(

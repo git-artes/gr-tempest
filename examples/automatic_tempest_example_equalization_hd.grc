@@ -41,14 +41,14 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1200, 158]
+    coordinate: [1201, 157]
     rotation: 0
     state: enabled
 - name: Hdisplay
   id: variable
   parameters:
     comment: ''
-    value: '1024'
+    value: '1920'
   states:
     bus_sink: false
     bus_source: false
@@ -68,7 +68,7 @@ blocks:
     start: '0'
     step: '1'
     stop: int(4096*1.5)
-    value: '1344'
+    value: '2200'
     widget: counter
   states:
     bus_sink: false
@@ -81,12 +81,12 @@ blocks:
   id: variable
   parameters:
     comment: ''
-    value: '768'
+    value: '1920'
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1483, 50]
+    coordinate: [1450, 53]
     rotation: 0
     state: enabled
 - name: Vblank
@@ -105,7 +105,7 @@ blocks:
   id: variable
   parameters:
     comment: ''
-    value: '768'
+    value: '1080'
   states:
     bus_sink: false
     bus_source: false
@@ -125,7 +125,7 @@ blocks:
     start: '0'
     step: '1'
     stop: int(2160*1.5)
-    value: '806'
+    value: '1125'
     widget: counter
   states:
     bus_sink: false
@@ -138,7 +138,7 @@ blocks:
   id: variable
   parameters:
     comment: ''
-    value: '768'
+    value: '1080'
   states:
     bus_sink: false
     bus_source: false
@@ -357,7 +357,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [164, 826]
+    coordinate: [1209, 228]
     rotation: 0
     state: true
 - name: filtro_ecualizador_1st
@@ -624,7 +624,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1438, 388]
+    coordinate: [1321, 227]
     rotation: 0
     state: disabled
 - name: px_rate
@@ -664,7 +664,7 @@ blocks:
   id: variable
   parameters:
     comment: ''
-    value: int(40e6)
+    value: '19980000'
   states:
     bus_sink: false
     bus_source: false
@@ -677,7 +677,6 @@ blocks:
   parameters:
     affinity: ''
     alias: ''
-    alpha: '1'
     comment: ''
     fac_decimation: '10'
     fft_size: int(fft_size)
@@ -688,7 +687,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [890, 622]
+    coordinate: [680, 650]
     rotation: 270
     state: true
 - name: FFT_autocorrelation_0_0
@@ -696,7 +695,6 @@ blocks:
   parameters:
     affinity: ''
     alias: ''
-    alpha: '1'
     comment: ''
     fac_decimation: '10'
     fft_size: int(fft_size)
@@ -707,7 +705,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [289, 620]
+    coordinate: [256, 667]
     rotation: 270
     state: disabled
 - name: blocks_complex_to_mag_0
@@ -723,8 +721,8 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1046, 623]
-    rotation: 270
+    coordinate: [1173, 438]
+    rotation: 0
     state: enabled
 - name: blocks_file_source_0
   id: blocks_file_source
@@ -733,7 +731,7 @@ blocks:
     alias: ''
     begin_tag: pmt.PMT_NIL
     comment: ''
-    file: /media/felipe/BAYCHIP/gr-tempest/data
+    file: /home/pablo/fing/proyecto/grabaciones/test_19980KHz_1920_1080.dat
     length: '0'
     maxoutbuf: '0'
     minoutbuf: '0'
@@ -745,7 +743,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [0, 332]
+    coordinate: [33, 354]
     rotation: 0
     state: enabled
 - name: blocks_float_to_short_0
@@ -762,8 +760,8 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1057, 1030]
-    rotation: 270
+    coordinate: [1011, 628]
+    rotation: 180
     state: enabled
 - name: blocks_null_sink_0
   id: blocks_null_sink
@@ -779,8 +777,8 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [658, 441]
-    rotation: 90
+    coordinate: [519, 645]
+    rotation: 270
     state: enabled
 - name: blocks_null_sink_0_0
   id: blocks_null_sink
@@ -796,7 +794,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [168, 427]
+    coordinate: [135, 474]
     rotation: 90
     state: disabled
 - name: blocks_throttle_0
@@ -815,7 +813,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [216, 348]
+    coordinate: [274, 386]
     rotation: 0
     state: enabled
 - name: qtgui_time_sink_x_0
@@ -912,7 +910,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [548, 547]
+    coordinate: [440, 644]
     rotation: 270
     state: disabled
 - name: tempest_fft_peak_fine_sampling_sync_0
@@ -933,7 +931,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [645, 606]
+    coordinate: [555, 645]
     rotation: 90
     state: enabled
 - name: tempest_fft_peak_fine_sampling_sync_0_0
@@ -954,7 +952,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [164, 597]
+    coordinate: [131, 644]
     rotation: 90
     state: disabled
 - name: tempest_fine_sampling_synchronization_0
@@ -974,7 +972,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [751, 263]
+    coordinate: [726, 386]
     rotation: 0
     state: enabled
 - name: tempest_frame_drop_0
@@ -995,7 +993,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [499, 314]
+    coordinate: [466, 362]
     rotation: 0
     state: enabled
 - name: tempest_normalize_flow_0
@@ -1015,8 +1013,8 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1034, 826]
-    rotation: 270
+    coordinate: [1175, 596]
+    rotation: 180
     state: enabled
 - name: tempest_sync_detector_0
   id: tempest_sync_detector
@@ -1034,9 +1032,9 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1052, 354]
+    coordinate: [1010, 410]
     rotation: 0
-    state: disabled
+    state: enabled
 - name: video_sdl_sink_0_0_0
   id: video_sdl_sink
   parameters:
@@ -1055,7 +1053,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [739, 1053]
+    coordinate: [808, 596]
     rotation: 180
     state: enabled
 
@@ -1071,12 +1069,12 @@ connections:
 - [tempest_fft_peak_fine_sampling_sync_0, '0', qtgui_time_sink_x_0, '0']
 - [tempest_fft_peak_fine_sampling_sync_0, en, FFT_autocorrelation_0, en]
 - [tempest_fft_peak_fine_sampling_sync_0, en, tempest_frame_drop_0, en]
+- [tempest_fft_peak_fine_sampling_sync_0, en, tempest_sync_detector_0, en]
 - [tempest_fft_peak_fine_sampling_sync_0_0, '0', blocks_null_sink_0_0, '0']
 - [tempest_fft_peak_fine_sampling_sync_0_0, en, FFT_autocorrelation_0_0, en]
 - [tempest_fft_peak_fine_sampling_sync_0_0, ratio, tempest_fine_sampling_synchronization_0,
   ratio]
 - [tempest_fine_sampling_synchronization_0, '0', FFT_autocorrelation_0, '0']
-- [tempest_fine_sampling_synchronization_0, '0', blocks_complex_to_mag_0, '0']
 - [tempest_fine_sampling_synchronization_0, '0', tempest_sync_detector_0, '0']
 - [tempest_frame_drop_0, '0', tempest_fine_sampling_synchronization_0, '0']
 - [tempest_frame_drop_0, ratio, tempest_fine_sampling_synchronization_0, ratio]
