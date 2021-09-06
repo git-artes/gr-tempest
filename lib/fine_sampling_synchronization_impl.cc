@@ -186,7 +186,6 @@ namespace gr {
                 if(pmt::eq(key, pmt::string_to_symbol("ratio"))) {
                     if(pmt::is_number(val)) {
                         d_new_interpolation_ratio_rem = pmt::to_double(val);
-                        set_Htotal_Vtotal(d_Htotal, d_Vtotal);
                     }
                 }
             }
@@ -308,7 +307,8 @@ namespace gr {
 
                 //if(d_dist(d_gen)<d_proba_of_updating){
                 d_next_update -= noutput_items;
-                /*gr::thread::scoped_lock l(d_mutex);
+                gr::thread::scoped_lock l(d_mutex);
+                /*
                 if(d_next_update <= 0 && d_stop_fine_sampling_synch==0){
 
                     estimate_peak_line_index(in, noutput_items);

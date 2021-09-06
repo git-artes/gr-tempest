@@ -254,7 +254,6 @@ namespace gr
 //(d_peak_line_index - 1) * d_Vtotal fixes array center (0,0)
       d_new_interpolation_ratio_rem = ((double)(peak_index+offset_in-d_Vtotal))/(double)(d_Vtotal*d_Htotal);
       
-      printf("peak_index %d\t corrsize %d\t offset_in %d\t \r\n", peak_index , corrsize, offset_in);
       delete [] d_in_conj;
     }
 
@@ -363,6 +362,7 @@ namespace gr
 
         for (int i=0; i<noutput_items; i++){
           out[i]=in[i];
+          out_amount++; 
         }
 
       } else {

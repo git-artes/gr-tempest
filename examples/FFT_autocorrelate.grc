@@ -56,6 +56,23 @@ blocks:
     coordinate: [586, 10]
     rotation: 0
     state: true
+- name: alpha
+  id: parameter
+  parameters:
+    alias: ''
+    comment: ''
+    hide: none
+    label: ''
+    short_id: ''
+    type: ''
+    value: '1.0'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [167, 218]
+    rotation: 0
+    state: true
 - name: blocks_complex_to_mag_0
   id: blocks_complex_to_mag
   parameters:
@@ -352,7 +369,7 @@ blocks:
   parameters:
     affinity: ''
     alias: ''
-    alpha: '1.0'
+    alpha: alpha
     comment: ''
     maxoutbuf: '0'
     minoutbuf: '0'

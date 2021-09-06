@@ -95,9 +95,9 @@ namespace gr {
 
         void set_Vsize_msg(pmt::pmt_t msg);
 
-        gr::thread::mutex d_mutex;
+        
         void set_ena_msg(pmt::pmt_t msg);
-*/
+*/      gr::thread::mutex d_mutex;
         void set_ratio_msg(pmt::pmt_t msg);
 
      public:

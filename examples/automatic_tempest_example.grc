@@ -418,6 +418,7 @@ blocks:
   parameters:
     affinity: ''
     alias: ''
+    alpha: '1'
     comment: ''
     fac_decimation: '10'
     fft_size: int(4096*512)

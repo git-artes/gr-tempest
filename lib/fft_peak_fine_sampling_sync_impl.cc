@@ -196,7 +196,7 @@ namespace gr {
 
         
       }
-      //memcpy(out, in, noutput_items*sizeof(float));
+      memcpy(out, in, noutput_items*sizeof(float));
       // Tell runtime system how many input items we consumed on
       // each input stream.
       d_work_counter++;    
@@ -209,3 +209,36 @@ namespace gr {
   } /* namespace tempest */
 } /* namespace gr */
 
+
+      #if ONE_LINE_SEARCH == 1
+      /////////////////////////////
+      //   ONE LINE SEARCH       //
+      /////////////////////////////
+      d_search_skip= 150;//round(d_search_margin/2);
+      volk_32f_index_max_32u(&peak_index, &in[d_search_skip], floor(d_search_margin) );
+
+      peak_index += d_search_skip;    
+      add_item_tag(0, nitems_written(0) + peak_index, pmt::mp("peak_1"), pmt::PMT_T); 
+
+      /////////////////////////////
+      //   2nd Peak ONE LINE     //
+      /////////////////////////////
+      d_search_skip = peak_index + 150;
+      int search_range = 840 + 150;// use dHtotal
+      
+      volk_32f_index_max_32u(&peak_index_2, &in[d_search_skip], search_range);   /* 'descartados' se elige para que de cerca del pico conocido */
+
+      peak_index_2 += d_search_skip;                                                /* Offset por indice relativo en volk */
+
+      add_item_tag(0, nitems_written(0) + peak_index_2, pmt::mp("peak_2"), pmt::PMT_T); 
+
+      if((peak_index_2-peak_index) > 700 )
+        d_accumulator += (long double)(peak_index_2-peak_index)/(long double)(N);
+      else
+        d_accumulator += (long double)(d_real_line)/(long double)(N);
+      #endif
+
+
+      #if ONE_LINE_SEARCH == 1
+        long double ratio = (long double)(d_accumulator)/(long double)d_real_line;
+      #endif
