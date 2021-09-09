@@ -100,11 +100,13 @@ namespace gr
       //message_port_register_in(pmt::mp("iHsize"));
       //message_port_register_in(pmt::mp("Vsize"));
       message_port_register_in(pmt::mp("en"));
+      message_port_register_in(pmt::mp("smpl"));
 
       // PMT handlers
       //set_msg_handler(pmt::mp("iHsize"), [this](const pmt::pmt_t& msg) {frame_drop_impl::set_iHsize_msg(msg); });
       //set_msg_handler(pmt::mp("Vsize"),  [this](const pmt::pmt_t& msg) {frame_drop_impl::set_Vsize_msg(msg); });
-      set_msg_handler(pmt::mp("en"),     [this](const pmt::pmt_t& msg) {frame_drop_impl::set_ena_msg(msg); });
+      set_msg_handler(pmt::mp("en"),   [this](const pmt::pmt_t& msg) {frame_drop_impl::set_ena_msg(msg); });
+      set_msg_handler(pmt::mp("smpl"), [this](const pmt::pmt_t& msg) {frame_drop_impl::set_smpl_msg(msg); });
 
       /* Volk_Malloc
         https://github.com/gnuradio/volk/blob/master/lib/volk_malloc.c
@@ -203,6 +205,22 @@ namespace gr
             GR_LOG_WARN(d_logger,
                         "Frame Dropper: Non-PMT type received, expecting Boolean PMT\n");
         }
+    }
+
+    void 
+    frame_drop_impl::set_smpl_msg(pmt::pmt_t msg){
+
+      if(pmt::is_pair(msg)) {
+        // saca el primero de la pareja
+        pmt::pmt_t key = pmt::car(msg);
+        // saca el segundo
+        pmt::pmt_t val = pmt::cdr(msg);
+        if(pmt::eq(key, pmt::string_to_symbol("smpl"))) {
+          if(pmt::is_number(val)) {
+            d_required_for_interpolation = ((uint32_t)(pmt::to_double(val)));
+          }
+        }
+      }
     }
 
     void
@@ -329,7 +347,7 @@ namespace gr
       int consumed = 0, out_amount = 0, aux;
       
       ////////////////////////////////////////////////////////////
-     
+     /*
       d_next_update -= noutput_items;
       gr::thread::scoped_lock l(d_mutex);
 
@@ -340,7 +358,7 @@ namespace gr
 
         double new_freq = d_new_interpolation_ratio_rem;
         
-        /* Add Tag. */
+        //Add Tag.
         add_item_tag(0, nitems_written(0), pmt::mp("update_interpolation_ratio"), pmt::PMT_T);
 
         message_port_pub(
@@ -355,10 +373,11 @@ namespace gr
           d_next_update = d_dist(d_gen);
         }
       }
-     
+     */
       ///////////////////////////////////////////////////////////
 
-      if (d_start_frame_drop==0){
+      //if ((d_start_frame_drop==0) && (d_required_for_interpolation==0)){
+      if (d_required_for_interpolation==0) {
 
         for (int i=0; i<noutput_items; i++){
           out[i]=in[i];
@@ -377,9 +396,12 @@ namespace gr
             out_amount++;
 
           } else if (d_sample_counter == (d_discarded_amount_per_frame*d_required_for_interpolation)){
-            consumed += i;
+            consumed = i;
+            //consumed = (d_sample_counter%noutput_items);
             d_sample_counter = 0;
-            get_required_samples(d_Htotal*d_Vtotal);
+            //get_required_samples(d_Htotal*d_Vtotal);
+            //printf("Samples required for a full frame: %i \n",d_required_for_interpolation);
+
 
             add_item_tag(0, nitems_written(0)+i, pmt::mp("trigger"), pmt::PMT_T);
             break;

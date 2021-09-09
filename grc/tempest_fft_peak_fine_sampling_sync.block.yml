@@ -44,4 +44,7 @@ outputs:
 - label: ratio
   domain: message
   optional: true
+- label: smpl
+  domain: message
+  optional: true
 file_format: 1

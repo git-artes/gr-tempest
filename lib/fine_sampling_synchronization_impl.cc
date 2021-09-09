@@ -61,7 +61,7 @@ namespace gr {
             d_max_deviation = max_deviation;
             set_Htotal_Vtotal(Htotal, Vtotal);
 
-            d_alpha_samp_inc = 1e-1;
+            d_alpha_samp_inc = 5e-1;
             
             d_samp_phase = 0; 
             d_alpha_corr = 1e-6; 
@@ -183,9 +183,11 @@ namespace gr {
                 pmt::pmt_t key = pmt::car(msg);
                 // saca el segundo
                 pmt::pmt_t val = pmt::cdr(msg);
+                gr::thread::scoped_lock l(d_mutex);
                 if(pmt::eq(key, pmt::string_to_symbol("ratio"))) {
                     if(pmt::is_number(val)) {
                         d_new_interpolation_ratio_rem = pmt::to_double(val);
+                        set_Htotal_Vtotal(d_Htotal, d_Vtotal);
                     }
                 }
             }

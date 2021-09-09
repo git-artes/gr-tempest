@@ -85,6 +85,7 @@ namespace gr {
       //PMT ports
       message_port_register_out(pmt::mp("en"));
       message_port_register_out(pmt::mp("ratio"));
+      message_port_register_out(pmt::mp("smpl"));
 
       set_history(d_fft_size);
     }
@@ -136,7 +137,7 @@ namespace gr {
       uint32_t one_full_frame_in_samples=floor((0.0166656)*d_sample_rate);
 
       d_search_skip = peak_index + one_full_frame_in_samples - floor((0.001)*d_sample_rate);
-      int search_range = 200 + floor((0.001)*d_sample_rate);//floor(d_fft_size/2) - d_search_skip;// use dHtotal
+      int search_range = 200 + floor((0.003)*d_sample_rate);//floor(d_fft_size/2) - d_search_skip;// use dHtotal
       
       volk_32f_index_max_32u(&peak_index_2, &in[d_search_skip], search_range);   /* 'descartados' se elige para que de cerca del pico conocido */
 
@@ -164,9 +165,6 @@ namespace gr {
 
         /* Add Tag. */
 
-        d_accumulator = 0;
-        d_work_counter = 0;
-
         printf("Line timing \t %Lf us. \t Ratio = \t %f  RatioTimings = \t %Lf  \r\n ", line_timing*1000000, d_ratio, ratio_timings);    
         printf("Peaks delta \t %Lf \t \t\r\n ", d_accumulator);  
         if( ratio_timings > 0.999 && ratio_timings < 1.000162   ){
@@ -180,10 +178,13 @@ namespace gr {
                       pmt::mp("ratio"), 
                       pmt::cons(pmt::mp("ratio"), pmt::from_double(ratio_timings))
                     );
+            message_port_pub(
+                      pmt::mp("smpl"), 
+                      pmt::cons(pmt::mp("smpl"), pmt::from_double(d_accumulator))
+                    );
             /* 
               Stop fine sampling synchronization and sleep for a long period.
                   - Commented. Because this stops execution of the entire flowgraph, somehow.
-
             */
             long period_ms = (100000);
             boost::this_thread::sleep(  boost::posix_time::milliseconds(static_cast<long>(period_ms)) );
@@ -193,7 +194,8 @@ namespace gr {
             long period_ms = (500);
             //boost::this_thread::sleep(  boost::posix_time::milliseconds(static_cast<long>(period_ms)) );
         }
-
+        d_accumulator = 0;
+        d_work_counter = 0;
         
       }
       memcpy(out, in, noutput_items*sizeof(float));

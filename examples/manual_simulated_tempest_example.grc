@@ -27,7 +27,7 @@ options:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1048, 143]
+    coordinate: [1049, 130]
     rotation: 0
     state: enabled
 
@@ -41,7 +41,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1047, 80]
+    coordinate: [1016, 70]
     rotation: 0
     state: enabled
 - name: Hdisplay
@@ -89,7 +89,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1126, 80]
+    coordinate: [1095, 70]
     rotation: 0
     state: enabled
 - name: Vdisplay
@@ -158,7 +158,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1200, 12]
+    coordinate: [1169, 2]
     rotation: 0
     state: true
 - name: epsilon_channel
@@ -179,9 +179,21 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [799, 144]
+    coordinate: [800, 131]
     rotation: 0
-    state: disabled
+    state: enabled
+- name: fft_size
+  id: variable
+  parameters:
+    comment: ''
+    value: 4096*512
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1050, 194]
+    rotation: 0
+    state: true
 - name: freq
   id: variable_qtgui_range
   parameters:
@@ -202,7 +214,7 @@ blocks:
     bus_structure: null
     coordinate: [496, 147]
     rotation: 0
-    state: disabled
+    state: enabled
 - name: harmonic
   id: variable_qtgui_range
   parameters:
@@ -221,7 +233,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [936, 142]
+    coordinate: [937, 129]
     rotation: 0
     state: enabled
 - name: horizontal_offset
@@ -244,7 +256,7 @@ blocks:
     bus_structure: null
     coordinate: [610, 3]
     rotation: 0
-    state: disabled
+    state: enabled
 - name: inter
   id: variable
   parameters:
@@ -266,7 +278,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1039, 13]
+    coordinate: [1008, 3]
     rotation: 0
     state: enabled
 - name: interpolatedHscreen
@@ -278,7 +290,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [911, 77]
+    coordinate: [880, 67]
     rotation: 0
     state: enabled
 - name: interpolatedHsize
@@ -290,7 +302,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [911, 15]
+    coordinate: [880, 5]
     rotation: 0
     state: enabled
 - name: inverted
@@ -321,7 +333,7 @@ blocks:
     bus_structure: null
     coordinate: [474, 3]
     rotation: 0
-    state: disabled
+    state: enabled
 - name: lines_offset
   id: variable_qtgui_range
   parameters:
@@ -342,7 +354,7 @@ blocks:
     bus_structure: null
     coordinate: [754, 3]
     rotation: 0
-    state: disabled
+    state: enabled
 - name: noise
   id: variable_qtgui_range
   parameters:
@@ -361,9 +373,9 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [663, 144]
+    coordinate: [664, 131]
     rotation: 0
-    state: disabled
+    state: enabled
 - name: px_rate
   id: variable
   parameters:
@@ -431,36 +443,17 @@ blocks:
     alias: ''
     comment: ''
     fac_decimation: '10'
-    fft_size: int(4096*512)
+    fft_size: int(fft_size)
     maxoutbuf: '0'
     minoutbuf: '0'
-    sample_rate: int(50e6)
+    sample_rate: samp_rate
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1250, 184]
-    rotation: 0
-    state: disabled
-- name: FFT_crosscorrelation_0
-  id: FFT_crosscorrelation
-  parameters:
-    affinity: ''
-    alias: ''
-    comment: ''
-    delay_samples: '8'
-    fac_decimation: '10'
-    fft_size: int(Hsize)
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    sample_rate: int(50e6)
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [1469, 532]
-    rotation: 0
-    state: true
+    coordinate: [944, 715]
+    rotation: 270
+    state: enabled
 - name: analog_sig_source_x_0
   id: analog_sig_source_x
   parameters:
@@ -482,7 +475,7 @@ blocks:
     bus_structure: null
     coordinate: [511, 377]
     rotation: 0
-    state: disabled
+    state: enabled
 - name: blocks_complex_to_mag_0
   id: blocks_complex_to_mag
   parameters:
@@ -517,7 +510,7 @@ blocks:
     bus_structure: null
     coordinate: [736, 542]
     rotation: 180
-    state: disabled
+    state: enabled
 - name: blocks_file_source_0
   id: blocks_file_source
   parameters:
@@ -539,7 +532,7 @@ blocks:
     bus_structure: null
     coordinate: [37, 390]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: blocks_float_to_short_0
   id: blocks_float_to_short
   parameters:
@@ -574,7 +567,7 @@ blocks:
     bus_structure: null
     coordinate: [745, 330]
     rotation: 0
-    state: disabled
+    state: enabled
 - name: blocks_null_sink_0
   id: blocks_null_sink
   parameters:
@@ -589,9 +582,9 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1513, 168]
-    rotation: 0
-    state: disabled
+    coordinate: [783, 710]
+    rotation: 270
+    state: enabled
 - name: blocks_throttle_0
   id: blocks_throttle
   parameters:
@@ -610,7 +603,7 @@ blocks:
     bus_structure: null
     coordinate: [282, 422]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: blocks_throttle_0_0
   id: blocks_throttle
   parameters:
@@ -629,7 +622,7 @@ blocks:
     bus_structure: null
     coordinate: [514, 326]
     rotation: 0
-    state: disabled
+    state: enabled
 - name: channels_channel_model_0
   id: channels_channel_model
   parameters:
@@ -650,7 +643,7 @@ blocks:
     bus_structure: null
     coordinate: [1091, 302]
     rotation: 0
-    state: disabled
+    state: enabled
 - name: interp_fir_filter_xxx_0
   id: interp_fir_filter_xxx
   parameters:
@@ -669,104 +662,7 @@ blocks:
     bus_structure: null
     coordinate: [288, 318]
     rotation: 0
-    state: disabled
-- name: qtgui_time_sink_x_0
-  id: qtgui_time_sink_x
-  parameters:
-    affinity: ''
-    alias: ''
-    alpha1: '1.0'
-    alpha10: '1.0'
-    alpha2: '1.0'
-    alpha3: '1.0'
-    alpha4: '1.0'
-    alpha5: '1.0'
-    alpha6: '1.0'
-    alpha7: '1.0'
-    alpha8: '1.0'
-    alpha9: '1.0'
-    autoscale: 'False'
-    axislabels: 'True'
-    color1: blue
-    color10: dark blue
-    color2: red
-    color3: green
-    color4: black
-    color5: cyan
-    color6: magenta
-    color7: yellow
-    color8: dark red
-    color9: dark green
-    comment: ''
-    ctrlpanel: 'False'
-    entags: 'True'
-    grid: 'False'
-    gui_hint: ''
-    label1: Signal 1
-    label10: Signal 10
-    label2: Signal 2
-    label3: Signal 3
-    label4: Signal 4
-    label5: Signal 5
-    label6: Signal 6
-    label7: Signal 7
-    label8: Signal 8
-    label9: Signal 9
-    legend: 'True'
-    marker1: '-1'
-    marker10: '-1'
-    marker2: '-1'
-    marker3: '-1'
-    marker4: '-1'
-    marker5: '-1'
-    marker6: '-1'
-    marker7: '-1'
-    marker8: '-1'
-    marker9: '-1'
-    name: '""'
-    nconnections: '1'
-    size: int(Hsize)
-    srate: int(50e6)
-    stemplot: 'False'
-    style1: '1'
-    style10: '1'
-    style2: '1'
-    style3: '1'
-    style4: '1'
-    style5: '1'
-    style6: '1'
-    style7: '1'
-    style8: '1'
-    style9: '1'
-    tr_chan: '0'
-    tr_delay: '0'
-    tr_level: '0.0'
-    tr_mode: qtgui.TRIG_MODE_FREE
-    tr_slope: qtgui.TRIG_SLOPE_POS
-    tr_tag: '""'
-    type: float
-    update_time: '0.10'
-    width1: '1'
-    width10: '1'
-    width2: '1'
-    width3: '1'
-    width4: '1'
-    width5: '1'
-    width6: '1'
-    width7: '1'
-    width8: '1'
-    width9: '1'
-    ylabel: Amplitude
-    ymax: '1'
-    ymin: '-1'
-    yunit: '""'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [1546, 421]
-    rotation: 0
-    state: true
+    state: enabled
 - name: rational_resampler_xxx_0
   id: rational_resampler_xxx
   parameters:
@@ -786,7 +682,28 @@ blocks:
     bus_structure: null
     coordinate: [886, 318]
     rotation: 0
-    state: disabled
+    state: enabled
+- name: tempest_fft_peak_fine_sampling_sync_0
+  id: tempest_fft_peak_fine_sampling_sync
+  parameters:
+    Hvisible: interpolatedHsize
+    Vvisible: Vsize
+    affinity: ''
+    alias: ''
+    automatic_mode: 'True'
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    refresh_rate: refresh_rate
+    sample_rate: samp_rate
+    size: int(fft_size/1)
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [819, 710]
+    rotation: 90
+    state: enabled
 - name: tempest_fine_sampling_synchronization_0
   id: tempest_fine_sampling_synchronization
   parameters:
@@ -806,7 +723,7 @@ blocks:
     bus_structure: null
     coordinate: [1076, 521]
     rotation: 180
-    state: disabled
+    state: enabled
 - name: tempest_frame_drop_0
   id: tempest_frame_drop
   parameters:
@@ -838,7 +755,7 @@ blocks:
     affinity: ''
     alias: ''
     comment: ''
-    image_file: /home/felipe/gnuradio/git/fork-gr-tempest/gr-tempest/Imagen_800_600.png
+    image_file: /home/pablo/fing/proyecto/grabaciones/prueba2.800x600.jpg
     maxoutbuf: '0'
     minoutbuf: '0'
     repeatmode: '1'
@@ -848,24 +765,7 @@ blocks:
     bus_structure: null
     coordinate: [43, 286]
     rotation: 0
-    state: disabled
-- name: tempest_infer_resolution_0
-  id: tempest_infer_resolution
-  parameters:
-    affinity: ''
-    alias: ''
-    comment: ''
-    fft_size: ''
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    samp_rate: ''
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [1420, 219]
-    rotation: 0
-    state: disabled
+    state: enabled
 - name: tempest_normalize_flow_0
   id: tempest_normalize_flow
   parameters:
@@ -904,7 +804,7 @@ blocks:
     bus_structure: null
     coordinate: [892, 518]
     rotation: 180
-    state: disabled
+    state: enabled
 - name: video_sdl_sink_0_0_0
   id: video_sdl_sink
   parameters:
@@ -928,8 +828,7 @@ blocks:
     state: enabled
 
 connections:
-- [FFT_autocorrelation_0, '0', tempest_infer_resolution_0, '0']
-- [FFT_crosscorrelation_0, '0', qtgui_time_sink_x_0, '0']
+- [FFT_autocorrelation_0, '0', tempest_fft_peak_fine_sampling_sync_0, '0']
 - [analog_sig_source_x_0, '0', blocks_multiply_xx_0, '1']
 - [blocks_complex_to_mag_0, '0', tempest_normalize_flow_0, '0']
 - [blocks_delay_0, '0', blocks_complex_to_mag_0, '0']
@@ -938,17 +837,17 @@ connections:
 - [blocks_multiply_xx_0, '0', rational_resampler_xxx_0, '0']
 - [blocks_throttle_0, '0', tempest_frame_drop_0, '0']
 - [blocks_throttle_0_0, '0', blocks_multiply_xx_0, '0']
-- [channels_channel_model_0, '0', FFT_autocorrelation_0, '0']
 - [channels_channel_model_0, '0', tempest_frame_drop_0, '0']
 - [interp_fir_filter_xxx_0, '0', blocks_throttle_0_0, '0']
 - [rational_resampler_xxx_0, '0', channels_channel_model_0, '0']
+- [tempest_fft_peak_fine_sampling_sync_0, '0', blocks_null_sink_0, '0']
+- [tempest_fft_peak_fine_sampling_sync_0, en, FFT_autocorrelation_0, en]
+- [tempest_fft_peak_fine_sampling_sync_0, en, tempest_sync_detector_0, en]
+- [tempest_fine_sampling_synchronization_0, '0', FFT_autocorrelation_0, '0']
 - [tempest_fine_sampling_synchronization_0, '0', tempest_sync_detector_0, '0']
-- [tempest_frame_drop_0, '0', FFT_crosscorrelation_0, '0']
-- [tempest_frame_drop_0, '0', blocks_complex_to_mag_0, '0']
 - [tempest_frame_drop_0, '0', tempest_fine_sampling_synchronization_0, '0']
 - [tempest_frame_drop_0, ratio, tempest_fine_sampling_synchronization_0, ratio]
 - [tempest_image_source_0, '0', interp_fir_filter_xxx_0, '0']
-- [tempest_infer_resolution_0, '0', blocks_null_sink_0, '0']
 - [tempest_normalize_flow_0, '0', blocks_float_to_short_0, '0']
 - [tempest_sync_detector_0, '0', blocks_delay_0, '0']
 

@@ -101,6 +101,7 @@ namespace gr {
 
       gr::thread::mutex d_mutex;
       void set_ena_msg(pmt::pmt_t msg);
+      void set_smpl_msg(pmt::pmt_t msg);
      
      public:
       frame_drop_impl(int Htotal, int Vtotal, int correct_sampling, float max_deviation, float update_proba, double actual_samp_rate);

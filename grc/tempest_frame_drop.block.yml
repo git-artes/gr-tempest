@@ -34,6 +34,9 @@ inputs:
 - label: en
   domain: message
   optional: true
+- label: smpl
+  domain: message
+  optional: true
 outputs:
 - label: out
   domain: stream
