@@ -166,7 +166,7 @@ namespace gr {
 
             if (pmt::is_bool(msg)) {
                 bool en = pmt::to_bool(msg);
-                gr::thread::scoped_lock l(d_mutex);
+                //gr::thread::scoped_lock l(d_mutex);
                 d_stop_fine_sampling_synch = !en;
                 printf("Fine Samp Received Sampling Stop.\n");
             } else {
@@ -185,8 +185,9 @@ namespace gr {
                 pmt::pmt_t val = pmt::cdr(msg);
                 if(pmt::eq(key, pmt::string_to_symbol("ratio"))) {
                     if(pmt::is_number(val)) {
-                        //d_new_interpolation_ratio_rem = pmt::to_double(val);
-                        //set_Htotal_Vtotal(d_Htotal, d_Vtotal);
+                        set_Htotal_Vtotal(d_Htotal, d_Vtotal);
+                        d_new_interpolation_ratio_rem = (double)pmt::to_double(val);
+                        printf("Fine sampling: interpolation ratio received = %f \n", d_new_interpolation_ratio_rem);
                     }
                 }
             }
@@ -307,9 +308,9 @@ namespace gr {
 
 
                 //if(d_dist(d_gen)<d_proba_of_updating){
-                d_next_update -= noutput_items;
-                gr::thread::scoped_lock l(d_mutex);
-                if(d_next_update <= 0 && d_stop_fine_sampling_synch==0){
+                //d_next_update -= noutput_items;
+                //gr::thread::scoped_lock l(d_mutex);
+                /*if(d_next_update <= 0 && d_stop_fine_sampling_synch==0){
 
                     estimate_peak_line_index(in, noutput_items);
                     // If noutput_items is too big, I only use a single line
@@ -321,9 +322,9 @@ namespace gr {
                     }
                     printf("\b\b\b\b\b\b\b\b Update \t");
 
-                }
+                }*/
                 int required_for_interpolation = noutput_items; 
-                
+                //printf("Fine sampling: interpolation ratio received = %f \n",d_new_interpolation_ratio_rem);
                 //printf("d_next_update: %i\n",d_next_update);
                 if (d_correct_sampling){
                     d_samp_inc_rem = (1-d_alpha_samp_inc)*d_samp_inc_rem + d_alpha_samp_inc*d_new_interpolation_ratio_rem;

@@ -117,7 +117,7 @@ namespace gr {
           d_start = false;
       }
       /////////////////////////////
-      //   RATIO SEARCH           //
+      //      RATIO SEARCH       //
       /////////////////////////////
 
       uint32_t peak_index = 0, peak_index_2 = 0, yt_index = 0, yt_aux = 0;
@@ -136,7 +136,7 @@ namespace gr {
       uint32_t one_full_frame_in_samples=floor((0.0166656)*d_sample_rate);
 
       d_search_skip = peak_index + one_full_frame_in_samples - floor((0.001)*d_sample_rate);
-      int search_range = 200 + floor((0.001)*d_sample_rate);//floor(d_fft_size/2) - d_search_skip;// use dHtotal
+      int search_range = 200 + floor((0.001)*5*d_sample_rate);//floor(d_fft_size/2) - d_search_skip;// use dHtotal
       
       volk_32f_index_max_32u(&peak_index_2, &in[d_search_skip], search_range);   /* 'descartados' se elige para que de cerca del pico conocido */
 
@@ -153,22 +153,29 @@ namespace gr {
       if(d_work_counter%N == 0)
       {
         // Compare with:
-        printf("d_search_skip %d d_search_margin  %d \t\n", d_search_skip, d_search_margin);
+        //printf("d_search_skip %d d_search_margin  %d \t\n", d_search_skip, d_search_margin);
 
         long double line_timing = (long double)(d_accumulator)/(long double)d_sample_rate;
         long double ratio_timings = line_timing*1000000 / (long double)(16.6656*1000);
-        long double ratio = (long double)(d_accumulator)/(long double)(d_real_line*d_Vvisible);
+        //long double ratio = (long double)(d_accumulator)/(long double)(d_real_line*d_Vvisible);
+        long double ratio = (long double)(d_accumulator)/(long double)(d_Hvisible*d_Vvisible);
 
         d_ratio = (ratio-1);
         //d_ratio = (0.01f)*((double)ratio-1.0f) + (1-0.01f)*d_ratio; 
 
         /* Add Tag. */
+        double new_freq = (double)d_ratio;
+
+        message_port_pub(
+                      pmt::mp("ratio"), 
+                      pmt::cons(pmt::mp("ratio"), pmt::from_double(new_freq))
+                    );
 
         d_accumulator = 0;
         d_work_counter = 0;
 
-        printf("Line timing \t %Lf us. \t Ratio = \t %f  RatioTimings = \t %Lf  \r\n ", line_timing*1000000, d_ratio, ratio_timings);    
-        printf("Peaks delta \t %Lf \t \t\r\n ", d_accumulator);  
+        printf("Line timing \t %Lf us. \t Ratio = \t %f  RatioTimings = \t %Lf  \r\n ", line_timing*1000000, new_freq, ratio_timings);    
+        //printf("Peaks delta \t %Lf \t \t\r\n ", d_accumulator);  
         if( ratio_timings > 0.9999 && ratio_timings < 1.000162   ){
         //if( ratio_timings > 0.99 && ratio_timings < 1.005   ){
             bool bool_msg = false;
@@ -178,7 +185,7 @@ namespace gr {
                     );
             message_port_pub(
                       pmt::mp("ratio"), 
-                      pmt::cons(pmt::mp("ratio"), pmt::from_double(ratio_timings))
+                      pmt::cons(pmt::mp("ratio"), pmt::from_double(d_ratio))
                     );
             /* 
               Stop fine sampling synchronization and sleep for a long period.
