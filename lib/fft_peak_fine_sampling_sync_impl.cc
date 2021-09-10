@@ -85,7 +85,6 @@ namespace gr {
       //PMT ports
       message_port_register_out(pmt::mp("en"));
       message_port_register_out(pmt::mp("ratio"));
-      message_port_register_out(pmt::mp("smpl"));
 
       set_history(d_fft_size);
     }
@@ -118,7 +117,7 @@ namespace gr {
           d_start = false;
       }
       /////////////////////////////
-      //   RATIO SEARCH           //
+      //      RATIO SEARCH       //
       /////////////////////////////
 
       uint32_t peak_index = 0, peak_index_2 = 0, yt_index = 0, yt_aux = 0;
@@ -137,7 +136,7 @@ namespace gr {
       uint32_t one_full_frame_in_samples=floor((0.0166656)*d_sample_rate);
 
       d_search_skip = peak_index + one_full_frame_in_samples - floor((0.001)*d_sample_rate);
-      int search_range = 200 + floor((0.003)*d_sample_rate);//floor(d_fft_size/2) - d_search_skip;// use dHtotal
+      int search_range = 200 + floor((0.001)*5*d_sample_rate);//floor(d_fft_size/2) - d_search_skip;// use dHtotal
       
       volk_32f_index_max_32u(&peak_index_2, &in[d_search_skip], search_range);   /* 'descartados' se elige para que de cerca del pico conocido */
 
@@ -154,20 +153,30 @@ namespace gr {
       if(d_work_counter%N == 0)
       {
         // Compare with:
-        printf("d_search_skip %d d_search_margin  %d \t\n", d_search_skip, d_search_margin);
+        //printf("d_search_skip %d d_search_margin  %d \t\n", d_search_skip, d_search_margin);
 
         long double line_timing = (long double)(d_accumulator)/(long double)d_sample_rate;
         long double ratio_timings = line_timing*1000000 / (long double)(16.6656*1000);
-        long double ratio = (long double)(d_accumulator)/(long double)(d_real_line*d_Vvisible);
+        //long double ratio = (long double)(d_accumulator)/(long double)(d_real_line*d_Vvisible);
+        long double ratio = (long double)(d_accumulator)/(long double)(d_Hvisible*d_Vvisible);
 
         d_ratio = (ratio-1);
         //d_ratio = (0.01f)*((double)ratio-1.0f) + (1-0.01f)*d_ratio; 
 
         /* Add Tag. */
+        double new_freq = (double)d_ratio;
 
-        printf("Line timing \t %Lf us. \t Ratio = \t %f  RatioTimings = \t %Lf  \r\n ", line_timing*1000000, d_ratio, ratio_timings);    
-        printf("Peaks delta \t %Lf \t \t\r\n ", d_accumulator);  
-        if( ratio_timings > 0.999 && ratio_timings < 1.000162   ){
+        message_port_pub(
+                      pmt::mp("ratio"), 
+                      pmt::cons(pmt::mp("ratio"), pmt::from_double(new_freq))
+                    );
+
+        d_accumulator = 0;
+        d_work_counter = 0;
+
+        printf("Line timing \t %Lf us. \t Ratio = \t %f  RatioTimings = \t %Lf  \r\n ", line_timing*1000000, new_freq, ratio_timings);    
+        //printf("Peaks delta \t %Lf \t \t\r\n ", d_accumulator);  
+        if( ratio_timings > 0.9999 && ratio_timings < 1.000162   ){
         //if( ratio_timings > 0.99 && ratio_timings < 1.005   ){
             bool bool_msg = false;
             message_port_pub(
@@ -176,15 +185,12 @@ namespace gr {
                     );
             message_port_pub(
                       pmt::mp("ratio"), 
-                      pmt::cons(pmt::mp("ratio"), pmt::from_double(ratio_timings))
-                    );
-            message_port_pub(
-                      pmt::mp("smpl"), 
-                      pmt::cons(pmt::mp("smpl"), pmt::from_double(d_accumulator))
+                      pmt::cons(pmt::mp("ratio"), pmt::from_double(d_ratio))
                     );
             /* 
               Stop fine sampling synchronization and sleep for a long period.
                   - Commented. Because this stops execution of the entire flowgraph, somehow.
+
             */
             long period_ms = (100000);
             boost::this_thread::sleep(  boost::posix_time::milliseconds(static_cast<long>(period_ms)) );
@@ -194,11 +200,10 @@ namespace gr {
             long period_ms = (500);
             //boost::this_thread::sleep(  boost::posix_time::milliseconds(static_cast<long>(period_ms)) );
         }
-        d_accumulator = 0;
-        d_work_counter = 0;
+
         
       }
-      memcpy(out, in, noutput_items*sizeof(float));
+      //memcpy(out, in, noutput_items*sizeof(float));
       // Tell runtime system how many input items we consumed on
       // each input stream.
       d_work_counter++;    
@@ -211,36 +216,3 @@ namespace gr {
   } /* namespace tempest */
 } /* namespace gr */
 
-
-      #if ONE_LINE_SEARCH == 1
-      /////////////////////////////
-      //   ONE LINE SEARCH       //
-      /////////////////////////////
-      d_search_skip= 150;//round(d_search_margin/2);
-      volk_32f_index_max_32u(&peak_index, &in[d_search_skip], floor(d_search_margin) );
-
-      peak_index += d_search_skip;    
-      add_item_tag(0, nitems_written(0) + peak_index, pmt::mp("peak_1"), pmt::PMT_T); 
-
-      /////////////////////////////
-      //   2nd Peak ONE LINE     //
-      /////////////////////////////
-      d_search_skip = peak_index + 150;
-      int search_range = 840 + 150;// use dHtotal
-      
-      volk_32f_index_max_32u(&peak_index_2, &in[d_search_skip], search_range);   /* 'descartados' se elige para que de cerca del pico conocido */
-
-      peak_index_2 += d_search_skip;                                                /* Offset por indice relativo en volk */
-
-      add_item_tag(0, nitems_written(0) + peak_index_2, pmt::mp("peak_2"), pmt::PMT_T); 
-
-      if((peak_index_2-peak_index) > 700 )
-        d_accumulator += (long double)(peak_index_2-peak_index)/(long double)(N);
-      else
-        d_accumulator += (long double)(d_real_line)/(long double)(N);
-      #endif
-
-
-      #if ONE_LINE_SEARCH == 1
-        long double ratio = (long double)(d_accumulator)/(long double)d_real_line;
-      #endif
