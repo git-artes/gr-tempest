@@ -86,7 +86,7 @@ namespace gr {
          gr::filter::mmse_fir_interpolator_cc d_inter; 
 
         int interpolate_input(const gr_complex * in, gr_complex * out, int size);
-      /*
+      
         void update_interpolation_ratio(const gr_complex * in, int in_size);
 
         void estimate_peak_line_index(const gr_complex * in, int in_size);
@@ -97,7 +97,7 @@ namespace gr {
 
         
         void set_ena_msg(pmt::pmt_t msg);
-*/      gr::thread::mutex d_mutex;
+        gr::thread::mutex d_mutex;
         void set_ratio_msg(pmt::pmt_t msg);
 
      public:

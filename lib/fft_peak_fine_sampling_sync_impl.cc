@@ -85,6 +85,7 @@ namespace gr {
       //PMT ports
       message_port_register_out(pmt::mp("en"));
       message_port_register_out(pmt::mp("ratio"));
+      message_port_register_out(pmt::mp("smpl"));
 
       set_history(d_fft_size);
     }
@@ -170,6 +171,11 @@ namespace gr {
                       pmt::mp("ratio"), 
                       pmt::cons(pmt::mp("ratio"), pmt::from_double(new_freq))
                     );
+        message_port_pub(
+                      pmt::mp("smpl"), 
+                      pmt::cons(pmt::mp("smpl"), pmt::from_double(d_accumulator))
+                    );
+
 
         d_accumulator = 0;
         d_work_counter = 0;
@@ -183,10 +189,12 @@ namespace gr {
                       pmt::mp("en"), 
                       pmt::from_bool(bool_msg)
                     );
+            /*
             message_port_pub(
                       pmt::mp("ratio"), 
-                      pmt::cons(pmt::mp("ratio"), pmt::from_double(d_ratio))
+                      pmt::cons(pmt::mp("ratio"), pmt::from_double(new_freq))
                     );
+            */
             /* 
               Stop fine sampling synchronization and sleep for a long period.
                   - Commented. Because this stops execution of the entire flowgraph, somehow.
