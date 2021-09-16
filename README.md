@@ -12,7 +12,7 @@ TEMPEST (or [Van Eck Phreaking](https://en.wikipedia.org/wiki/Van_Eck_phreaking)
 
 This is basically a re-implementation of Martin Marinov's excelent TempestSDR in GNU Radio (see https://github.com/martinmarinov/TempestSDR). The reason is that I felt it may be easier to maintain and extend. Note however that the basic ideas were imitated, but the synchronization algorithms are different, and some functionalities (particularly in the GUI) are missing. 
 
-For a technical explanation you may read [Marinov's thesis](https://github.com/martinmarinov/TempestSDR/raw/master/documentation/acs-dissertation.pdf) or [Pablo Menoni's thesis](https://iie.fing.edu.uy/publicaciones/2018/Men18/) (in spanish). For a demo using TempestSDR you may see the [following video](https://www.youtube.com/watch?v=Vb0PJkEl9xU).
+For a technical explanation you may read [Marinov's thesis](https://github.com/martinmarinov/TempestSDR/raw/master/documentation/acs-dissertation.pdf) or [Pablo Menoni's thesis](https://iie.fing.edu.uy/publicaciones/2018/Men18/) (in spanish). You may also watch [my presentation at GRCon21](https://youtu.be/k_vsFspGpAA) (in English), which includes a technical overview and several demos.
 
 **Notes and examples**
 
