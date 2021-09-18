@@ -344,7 +344,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [56, 473]
+    coordinate: [53, 474]
     rotation: 0
     state: true
 - name: sample_rate

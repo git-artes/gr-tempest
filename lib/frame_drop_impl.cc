@@ -68,7 +68,7 @@ namespace gr
       d_frames_counter = 0;
 
       //Fixed values
-      d_discarded_amount_per_frame = 30;
+      d_discarded_amount_per_frame = 15;
 
       //d_correct_sampling = correct_sampling; 
       d_proba_of_updating = update_proba;
@@ -101,12 +101,14 @@ namespace gr
       //message_port_register_in(pmt::mp("Vsize"));
       message_port_register_in(pmt::mp("en"));
       message_port_register_in(pmt::mp("smpl"));
+      message_port_register_in(pmt::mp("ratio"));
 
       // PMT handlers
       //set_msg_handler(pmt::mp("iHsize"), [this](const pmt::pmt_t& msg) {frame_drop_impl::set_iHsize_msg(msg); });
       //set_msg_handler(pmt::mp("Vsize"),  [this](const pmt::pmt_t& msg) {frame_drop_impl::set_Vsize_msg(msg); });
       set_msg_handler(pmt::mp("en"),   [this](const pmt::pmt_t& msg) {frame_drop_impl::set_ena_msg(msg); });
       set_msg_handler(pmt::mp("smpl"), [this](const pmt::pmt_t& msg) {frame_drop_impl::set_smpl_msg(msg); });
+      set_msg_handler(pmt::mp("ratio"),[this](const pmt::pmt_t& msg) {frame_drop_impl::set_ratio_msg(msg); });
 
       /* Volk_Malloc
         https://github.com/gnuradio/volk/blob/master/lib/volk_malloc.c
@@ -218,10 +220,27 @@ namespace gr
         if(pmt::eq(key, pmt::string_to_symbol("smpl"))) {
           if(pmt::is_number(val)) {
             d_required_for_interpolation = ((uint32_t)(pmt::to_double(val)));
+            printf("Frame dropper: interpolation ratio received = %f \n", d_required_for_interpolation);
           }
         }
       }
     }
+
+    void frame_drop_impl::set_ratio_msg(pmt::pmt_t msg){
+
+      if(pmt::is_pair(msg)) {
+          // saca el primero de la pareja
+          pmt::pmt_t key = pmt::car(msg);
+          // saca el segundo
+          pmt::pmt_t val = pmt::cdr(msg);
+          if(pmt::eq(key, pmt::string_to_symbol("ratio"))) {
+              if(pmt::is_number(val)) {
+                  d_new_interpolation_ratio_rem = (double)pmt::to_double(val);
+                  printf("Frame dropper: interpolation ratio received = %f \n", d_new_interpolation_ratio_rem);
+              }
+          }
+      }
+    } 
 
     void
     frame_drop_impl::estimate_peak_line_index(const gr_complex * in, int in_size)
@@ -283,7 +302,7 @@ namespace gr
       int oo = 0;
       double s, f;
       
-      d_samp_inc_rem = (1-d_alpha_samp_inc)*d_samp_inc_rem + d_alpha_samp_inc*d_new_interpolation_ratio_rem;
+      //d_samp_inc_rem = (1-d_alpha_samp_inc)*d_samp_inc_rem + d_alpha_samp_inc*d_new_interpolation_ratio_rem;
 
       while(oo < size) {
         s = d_samp_phase + d_samp_inc_rem + 1;
@@ -377,40 +396,40 @@ namespace gr
       ///////////////////////////////////////////////////////////
 
       //if ((d_start_frame_drop==0) && (d_required_for_interpolation==0)){
-      if (d_required_for_interpolation==0) {
+      /*if (d_required_for_interpolation==0) {
 
-        for (int i=0; i<noutput_items; i++){
-          out[i]=in[i];
-        }
+        memcpy(&out[0], &in[0], noutput_items*sizeof(gr_complex));
         out_amount = noutput_items;
 
-      } else {
+      } else {*/
 
-        for (int i=0; i<noutput_items; i++){
+      d_samp_inc_rem = (1-d_alpha_samp_inc)*d_samp_inc_rem + d_alpha_samp_inc*d_new_interpolation_ratio_rem;
 
-          d_sample_counter++;
+      for (int i=0; i<noutput_items; i++){
 
-          if (d_sample_counter <= d_required_for_interpolation){
+        d_sample_counter++;
 
-            out[i]=in[i];
-            out_amount++;
+        if (d_sample_counter <= d_required_for_interpolation){
+          out[i]=in[i];
+          out_amount++;
+        }
 
-          } else if (d_sample_counter == (d_discarded_amount_per_frame*d_required_for_interpolation)){
-            consumed = i;
-            //consumed = (d_sample_counter%noutput_items);
-            d_sample_counter = 0;
-            //get_required_samples(d_Htotal*d_Vtotal);
-            //printf("Samples required for a full frame: %i \n",d_required_for_interpolation);
+        if (d_sample_counter == (d_discarded_amount_per_frame*d_required_for_interpolation)){
+          consumed = i;
+          //consumed = (d_sample_counter%noutput_items);
+          d_sample_counter = 0;
+          
+          //printf("Samples required for a full frame: %i \n",d_required_for_interpolation);
 
+          add_item_tag(0, nitems_written(0)+i, pmt::mp("trigger"), pmt::PMT_T);
+          break;
+        } 
 
-            add_item_tag(0, nitems_written(0)+i, pmt::mp("trigger"), pmt::PMT_T);
-            break;
-
-          } else {
-            // Aca los out amount deben dejar de contar y desplegar solo el ultimo valor de out_amount que se contó.
-          }
+        if (d_sample_counter%d_required_for_interpolation==0){
+          get_required_samples(d_Htotal*d_Vtotal);
         }
       }
+      //}
 
       consumed == 0 ? consumed += noutput_items : consumed += 0;
 

@@ -37,6 +37,9 @@ inputs:
 - label: smpl
   domain: message
   optional: true
+- label: ratio
+  domain: message
+  optional: true
 outputs:
 - label: out
   domain: stream
