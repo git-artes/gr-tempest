@@ -135,8 +135,16 @@ namespace gr {
         } else {
             GR_LOG_WARN(d_logger,
                         "FFT peak finder: Non-PMT type received, expecting Boolean PMT\n");
-            d_start_fft_peak_finder = 0;
-            printf("FFT peak finder. Ratio calculation stopped.\n");
+            if(d_start_fft_peak_finder)
+            {
+              printf("FFT peak finder. Ratio calculation stopped.\n");
+              d_start_fft_peak_finder = 0;
+            }  
+            else
+            {
+              printf("FFT peak finder. Ratio calculation restarted.\n");
+              d_start_fft_peak_finder = 1;
+            }
         }
     }
 
@@ -159,7 +167,11 @@ namespace gr {
 
       gr::thread::scoped_lock l(d_mutex);
                                                              /* Work iteration counter */
-      if(d_start_fft_peak_finder)
+      if(!d_start_fft_peak_finder)
+      {
+          return WORK_DONE; // This kills the block forever.
+      }
+      else
       {
 
           /////////////////////////////
@@ -214,8 +226,12 @@ namespace gr {
                           pmt::mp("ratio"), 
                           pmt::cons(pmt::mp("ratio"), pmt::from_double(new_freq))
                         );
-          
+            message_port_pub(
+                          pmt::mp("smpl"), 
+                          pmt::cons(pmt::mp("smpl"), pmt::from_double(d_accumulator))
+                        );       
             new_freq = (double)(d_ratio + 1) * (double)d_sample_rate;
+
 
             message_port_pub(
                               pmt::mp("rate"), 
@@ -227,6 +243,19 @@ namespace gr {
 
             printf("Line timing \t %Lf us. \t Ratio = \t %f  RatioTimings = \t %Lf  \r\n ", line_timing*1000000, new_freq, ratio_timings);    
             if( ratio_timings > 0.9997 && ratio_timings < 1.000162   ){
+            //if( ratio_timings > 0.99 && ratio_timings < 1.005   ){
+                /*
+                message_port_pub(
+                          pmt::mp("ratio"), 
+                          pmt::cons(pmt::mp("ratio"), pmt::from_double(new_freq))
+                        );
+                */
+                /* 
+                  Stop fine sampling synchronization and sleep for a long period.
+                      - Commented. Because this stops execution of the entire flowgraph, somehow.
+
+                */
+
                 bool bool_msg = false;
                 message_port_pub(
                           pmt::mp("en"), 
@@ -248,10 +277,7 @@ namespace gr {
           consume_each (noutput_items);
 
           return noutput_items; 
-      } else
-      {
-          return WORK_DONE;
-      }
+      } 
     }
 
   } /* namespace tempest */
