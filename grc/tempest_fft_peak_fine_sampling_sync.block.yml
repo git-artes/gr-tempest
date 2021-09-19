@@ -34,6 +34,9 @@ inputs:
 - label: in
   domain: stream
   dtype: float
+- label: en
+  domain: message
+  optional: true
 outputs:
 - label: out
   domain: stream

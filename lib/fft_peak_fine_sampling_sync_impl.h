@@ -36,6 +36,9 @@ namespace gr {
      private:
       // Nothing to declare in this block.
 
+      gr::thread::mutex d_mutex;
+      bool d_start_fft_peak_finder = 1;
+
       //Received parameters
       int d_sample_rate;
       int d_fft_size;
@@ -61,6 +64,8 @@ namespace gr {
 
       //Counters
       uint32_t d_work_counter;
+      
+      void set_ena_msg(pmt::pmt_t msg);
 
      public:
       fft_peak_fine_sampling_sync_impl(int sample_rate, int size, int refresh_rate, int Vvisible, int Hvisible, bool automatic_mode);

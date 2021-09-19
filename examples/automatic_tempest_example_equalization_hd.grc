@@ -41,7 +41,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1201, 157]
+    coordinate: [1170, 137]
     rotation: 0
     state: enabled
 - name: Hsize
@@ -56,25 +56,25 @@ blocks:
     start: '0'
     step: '1'
     stop: int(4096*1.5)
-    value: '1344'
+    value: '2200'
     widget: counter
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [520, 12]
+    coordinate: [1102, 278]
     rotation: 0
     state: enabled
 - name: Hvisible
   id: variable
   parameters:
     comment: ''
-    value: '1024'
+    value: '1920'
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1450, 53]
+    coordinate: [1171, 33]
     rotation: 0
     state: enabled
 - name: Vblank
@@ -86,7 +86,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1360, 75]
+    coordinate: [1284, 85]
     rotation: 0
     state: enabled
 - name: Vsize
@@ -101,25 +101,25 @@ blocks:
     start: '0'
     step: '1'
     stop: int(2160*1.5)
-    value: '806'
+    value: '1125'
     widget: counter
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [568, 148]
+    coordinate: [978, 277]
     rotation: 0
     state: enabled
 - name: Vvisible
   id: variable
   parameters:
     comment: ''
-    value: '768'
+    value: '1080'
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1277, 76]
+    coordinate: [1284, 33]
     rotation: 0
     state: enabled
 - name: delay
@@ -517,7 +517,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1447, 131]
+    coordinate: [1169, 85]
     rotation: 0
     state: enabled
 - name: interpolatedHsize
@@ -640,7 +640,7 @@ blocks:
   id: variable
   parameters:
     comment: ''
-    value: int(50e6)
+    value: int(19.98e6)
   states:
     bus_sink: false
     bus_source: false
@@ -709,7 +709,7 @@ blocks:
     alias: ''
     begin_tag: pmt.PMT_NIL
     comment: ''
-    file: /home/pablo/fing/proyecto/grabaciones/grabacion_splitter_50M_1344_806_px_freq_64995840.dat
+    file: /home/felipe/gnuradio/git/grabaciones_local/test2_19980KHz_1920_1080.dat
     length: '0'
     maxoutbuf: '0'
     minoutbuf: '0'
@@ -891,6 +891,42 @@ blocks:
     coordinate: [440, 644]
     rotation: 270
     state: disabled
+- name: ratio_finder_stop
+  id: variable_qtgui_msg_push_button
+  parameters:
+    comment: ''
+    gui_hint: ''
+    label: ''
+    msgName: pressed
+    relBackgroundColor: default
+    relFontColor: default
+    type: int
+    value: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [166, 868]
+    rotation: 0
+    state: true
+- name: sync_detector_start
+  id: variable_qtgui_msg_push_button
+  parameters:
+    comment: ''
+    gui_hint: ''
+    label: ''
+    msgName: pressed
+    relBackgroundColor: default
+    relFontColor: default
+    type: bool
+    value: 'True'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [758, 315]
+    rotation: 0
+    state: true
 - name: tempest_fft_peak_fine_sampling_sync_0
   id: tempest_fft_peak_fine_sampling_sync
   parameters:
@@ -950,7 +986,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [726, 386]
+    coordinate: [723, 434]
     rotation: 0
     state: enabled
 - name: tempest_frame_drop_0
@@ -1020,8 +1056,8 @@ blocks:
     alias: ''
     comment: "Enable this path when you are sure what the \nresolution is (and defaut\
       \ to those values on \nthe chooser)."
-    display_height: Vsize
-    display_width: Hsize
+    display_height: '806'
+    display_width: '1033'
     fps: '0'
     height: Vsize
     num_channels: '1'
@@ -1043,6 +1079,9 @@ connections:
 - [blocks_float_to_short_0, '0', video_sdl_sink_0_0_0, '0']
 - [blocks_throttle_0, '0', FFT_autocorrelation_0_0, '0']
 - [blocks_throttle_0, '0', tempest_frame_drop_0, '0']
+- [ratio_finder_stop, pressed, tempest_fft_peak_fine_sampling_sync_0, en]
+- [ratio_finder_stop, pressed, tempest_fft_peak_fine_sampling_sync_0_0, en]
+- [sync_detector_start, pressed, tempest_sync_detector_0, en]
 - [tempest_fft_peak_fine_sampling_sync_0, '0', blocks_null_sink_0, '0']
 - [tempest_fft_peak_fine_sampling_sync_0, '0', qtgui_time_sink_x_0, '0']
 - [tempest_fft_peak_fine_sampling_sync_0, en, FFT_autocorrelation_0, en]
