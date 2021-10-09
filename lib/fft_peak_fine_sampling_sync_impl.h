@@ -1,10 +1,12 @@
 /* -*- c++ -*- */
-/*
- * Copyright 2020
- *   Federico "Larroca" La Rocca <flarroca@fing.edu.uy>
- *
- *   Instituto de Ingenieria Electrica, Facultad de Ingenieria,
- *   Universidad de la Republica, Uruguay.
+/**
+ * Copyright 2021
+ *    Pablo Bertrand    <pablo.bertrand@fing.edu.uy>
+ *    Felipe Carrau     <felipe.carrau@fing.edu.uy>
+ *    Victoria Severi   <maria.severi@fing.edu.uy>
+ *    
+ *    Instituto de Ingeniería Eléctrica, Facultad de Ingeniería,
+ *    Universidad de la República, Uruguay.
  *  
  * This is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,10 +23,30 @@
  * the Free Software Foundation, Inc., 51 Franklin Street,
  * Boston, MA 02110-1301, USA.
  *
+ * @file fft_peak_fine_sampling_sync_impl.h
+ * 
+ * @brief Block that uses the signal autocorrelation to
+ * continuously calculate the interpolation ratio required,
+ * for as long as it takes to properly correct sampling.
+ *
+ * gr-tempest
+ *
+ * @date September 19, 2021
+ * @author  Pablo Bertrand   <pablo.bertrand@fing.edu.uy>
+ * @author  Felipe Carrau    <felipe.carrau@fing.edu.uy>
+ * @author  Victoria Severi  <maria.severi@fing.edu.uy>
  */
+
+/**********************************************************
+ * Constant and macro definitions
+ **********************************************************/
 
 #ifndef INCLUDED_TEMPEST_FFT_PEAK_FINE_SAMPLING_SYNC_IMPL_H
 #define INCLUDED_TEMPEST_FFT_PEAK_FINE_SAMPLING_SYNC_IMPL_H
+
+/**********************************************************
+ * Include statements
+ **********************************************************/
 
 #include <tempest/fft_peak_fine_sampling_sync.h>
 
@@ -34,7 +56,10 @@ namespace gr {
     class fft_peak_fine_sampling_sync_impl : public fft_peak_fine_sampling_sync
     {
      private:
-      // Nothing to declare in this block.
+
+      /**********************************************************
+       * Data declarations
+       **********************************************************/
 
       gr::thread::mutex d_mutex;
       bool d_start_fft_peak_finder = 1;
@@ -64,21 +89,46 @@ namespace gr {
 
       //Counters
       uint32_t d_work_counter;
-      
-      void set_ena_msg(pmt::pmt_t msg);
 
+      /**********************************************************
+       * Private function prototypes
+       **********************************************************/
+      /**
+        * @brief Function that processes the enable received as PMT
+        * message from other blocks and assignes it to a variable.
+        *  
+        * @param pmt_t msg: Message received from autocorrelation
+        * block during runtime.
+        */
+      void set_ena_msg(pmt::pmt_t msg);
+      //---------------------------------------------------------
      public:
       fft_peak_fine_sampling_sync_impl(int sample_rate, int size, int refresh_rate, int Vvisible, int Hvisible, bool automatic_mode);
       ~fft_peak_fine_sampling_sync_impl();
 
-      // Where all the action really happens
+      /**********************************************************
+       * Public function prototypes
+       **********************************************************/
+      /**
+        * @brief Used to establish the amount of samples required
+        * for a full work iteration.
+        *  
+        */
       void forecast (int noutput_items, gr_vector_int &ninput_items_required);
-
+      //---------------------------------------------------------
+      /**
+        * @brief Main function that carries out the peak searches
+        * in the autocorrelation signal and uses the results to
+        * calculate the interpolation ratio required and prints 
+        * it to a PMT port for other blocks to use it as it is 
+        * updated in runtime.
+        *  
+        */
       int general_work(int noutput_items,
            gr_vector_int &ninput_items,
            gr_vector_const_void_star &input_items,
            gr_vector_void_star &output_items);
-
+      //---------------------------------------------------------
     };
 
   } // namespace tempest

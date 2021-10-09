@@ -1,7 +1,9 @@
 /* -*- c++ -*- */
-/*
- * Copyright 2020
- *   Federico "Larroca" La Rocca <flarroca@fing.edu.uy>
+/**
+ * Copyright 2021
+ *    Pablo Bertrand    <pablo.bertrand@fing.edu.uy>
+ *    Felipe Carrau     <felipe.carrau@fing.edu.uy>
+ *    Victoria Severi   <maria.severi@fing.edu.uy>
  *
  *   Instituto de Ingenieria Electrica, Facultad de Ingenieria,
  *   Universidad de la Republica, Uruguay.
@@ -21,7 +23,19 @@
  * the Free Software Foundation, Inc., 51 Franklin Street,
  * Boston, MA 02110-1301, USA.
  *
+ * @file fft_peak_fine_sampling_sync_impl.cc
+ *
+ * gr-tempest
+ *
+ * @date September 19, 2021
+ * @author  Pablo Bertrand   <pablo.bertrand@fing.edu.uy>
+ * @author  Felipe Carrau    <felipe.carrau@fing.edu.uy>
+ * @author  Victoria Severi  <maria.severi@fing.edu.uy>
  */
+
+/**********************************************************
+ * Include statements
+ **********************************************************/
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"
@@ -33,8 +47,11 @@
 #include <volk/volk.h>
 #include <math.h>
 
-#define N 8192
+/**********************************************************
+ * Constant and macro definitions
+ **********************************************************/
 
+#define N 8192
 
 namespace gr {
   namespace tempest {
@@ -45,8 +62,10 @@ namespace gr {
       return gnuradio::get_initial_sptr
         (new fft_peak_fine_sampling_sync_impl(sample_rate, size, refresh_rate, Vvisible, Hvisible, automatic_mode));
     }
-
-
+    
+    /**********************************************************
+     * Function bodies
+     **********************************************************/
     /*
      * The private constructor
      */
@@ -56,6 +75,7 @@ namespace gr {
               gr::io_signature::make(1, 1, sizeof(float)))
     {
       d_start_fft_peak_finder = 1;
+      
       //Received parameters
       d_sample_rate = sample_rate;
       d_fft_size = size;
@@ -79,14 +99,12 @@ namespace gr {
       //d_real_line = 827;  
       d_real_line = 827.076923077;  
 
-
       //Counters
       d_work_counter = 1;
       
       //PMT ports
       message_port_register_out(pmt::mp("en"));
       message_port_register_out(pmt::mp("ratio"));
-      message_port_register_out(pmt::mp("smpl"));
 
       message_port_register_in(pmt::mp("en"));
 
@@ -94,8 +112,11 @@ namespace gr {
       set_msg_handler(pmt::mp("en"),   [this](const pmt::pmt_t& msg) {fft_peak_fine_sampling_sync_impl::set_ena_msg(msg); });
 
       set_history(d_fft_size);
+
+      printf("[TEMPEST] Welcome to gr-tempest. Once the sampling is being corrected properly and the vertical lines of the target monitor are indeed vertical, please hit the Stop button to stop autocorrelation calculation and begin the vertical and horizontal synchronization .\n");
     }
 
+    //---------------------------------------------------------
     /*
      * Our virtual destructor.
      */
@@ -103,8 +124,7 @@ namespace gr {
     {
     }
 
-    void 
-    fft_peak_fine_sampling_sync_impl::set_ena_msg(pmt::pmt_t msg)
+    void fft_peak_fine_sampling_sync_impl::set_ena_msg(pmt::pmt_t msg)
     {
         gr::thread::scoped_lock l(d_mutex); 
         if (pmt::is_bool(msg)) {
@@ -119,15 +139,16 @@ namespace gr {
         }
     }
 
+    //---------------------------------------------------------
 
-    void
-    fft_peak_fine_sampling_sync_impl::forecast (int noutput_items, gr_vector_int &ninput_items_required)
+    void fft_peak_fine_sampling_sync_impl::forecast (int noutput_items, gr_vector_int &ninput_items_required)
     {
       /* <+forecast+> e.g. ninput_items_required[0] = noutput_items */
     }
 
-    int
-    fft_peak_fine_sampling_sync_impl::general_work (int noutput_items,
+    //---------------------------------------------------------
+
+    int fft_peak_fine_sampling_sync_impl::general_work (int noutput_items,
                        gr_vector_int &ninput_items,
                        gr_vector_const_void_star &input_items,
                        gr_vector_void_star &output_items)
@@ -146,20 +167,19 @@ namespace gr {
 
           uint32_t peak_index = 0, peak_index_2 = 0, yt_index = 0, yt_aux = 0;
           
-          d_search_skip= 0;
-          volk_32f_index_max_32u(&peak_index, &in[d_search_skip], floor(d_search_margin) );   /* 'descartados' se elige para que de cerca del pico conocido */
-          
-          //d_search_skip= round(0);
-          //volk_32f_index_max_32u(&peak_index, &in[0], floor(d_search_margin) );   /* 'descartados' se elige para que de cerca del pico conocido */
+          d_search_skip = 0;
 
+          volk_32f_index_max_32u(&peak_index, &in[d_search_skip], floor(d_search_margin) );
+   
           peak_index += d_search_skip;                     
-                                                   /* Intentar que varíe menos que fv */
+
           add_item_tag(0, nitems_written(0) + peak_index, pmt::mp("peak_1"), pmt::PMT_T); 
 
           ////////////////////////////////////////////////////////////////////////////// Second peak
           uint32_t one_full_frame_in_samples=floor((0.0166656)*d_sample_rate);
 
           d_search_skip = peak_index + one_full_frame_in_samples - floor((0.001)*d_sample_rate);
+          
           int search_range = 200 + floor((0.001)*5*d_sample_rate);//floor(d_fft_size/2) - d_search_skip;// use dHtotal
           
           volk_32f_index_max_32u(&peak_index_2, &in[d_search_skip], search_range);   /* 'descartados' se elige para que de cerca del pico conocido */
@@ -181,7 +201,6 @@ namespace gr {
 
             long double line_timing = (long double)(d_accumulator)/(long double)d_sample_rate;
             long double ratio_timings = line_timing*1000000 / (long double)(16.6656*1000);
-            //long double ratio = (long double)(d_accumulator)/(long double)(d_real_line*d_Vvisible);
             long double ratio = (long double)(d_accumulator)/(long double)(d_Hvisible*d_Vvisible);
 
             d_ratio = (ratio-1);
@@ -194,35 +213,17 @@ namespace gr {
                           pmt::mp("ratio"), 
                           pmt::cons(pmt::mp("ratio"), pmt::from_double(new_freq))
                         );
-            message_port_pub(
-                          pmt::mp("smpl"), 
-                          pmt::cons(pmt::mp("smpl"), pmt::from_double(d_accumulator))
-                        );
-
 
             d_accumulator = 0;
             d_work_counter = 0;
 
             printf("Line timing \t %Lf us. \t Ratio = \t %f  RatioTimings = \t %Lf  \r\n ", line_timing*1000000, new_freq, ratio_timings);    
-            //printf("Peaks delta \t %Lf \t \t\r\n ", d_accumulator);  
             if( ratio_timings > 0.9997 && ratio_timings < 1.000162   ){
-            //if( ratio_timings > 0.99 && ratio_timings < 1.005   ){
                 bool bool_msg = false;
                 message_port_pub(
                           pmt::mp("en"), 
                           pmt::from_bool(bool_msg)
                         );
-                /*
-                message_port_pub(
-                          pmt::mp("ratio"), 
-                          pmt::cons(pmt::mp("ratio"), pmt::from_double(new_freq))
-                        );
-                */
-                /* 
-                  Stop fine sampling synchronization and sleep for a long period.
-                      - Commented. Because this stops execution of the entire flowgraph, somehow.
-
-                */
                 long period_ms = (100000);
                 boost::this_thread::sleep(  boost::posix_time::milliseconds(static_cast<long>(period_ms)) );
                 //return WORK_DONE;
@@ -235,12 +236,9 @@ namespace gr {
             
           }
           d_work_counter++;   
-          //memcpy(out, in, noutput_items*sizeof(float));
-          // Tell runtime system how many input items we consumed on
-          // each input stream.
+
           consume_each (noutput_items);
 
-          // Tell runtime system how many output items we produced.
           return noutput_items; 
       } else
       {
