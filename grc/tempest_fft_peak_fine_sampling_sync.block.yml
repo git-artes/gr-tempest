@@ -50,4 +50,7 @@ outputs:
 - label: smpl
   domain: message
   optional: true
+- label: rate
+  domain: message
+  optional: true
 file_format: 1

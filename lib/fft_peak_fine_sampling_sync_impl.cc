@@ -105,7 +105,8 @@ namespace gr {
       //PMT ports
       message_port_register_out(pmt::mp("en"));
       message_port_register_out(pmt::mp("ratio"));
-
+      message_port_register_out(pmt::mp("rate"));
+      
       message_port_register_in(pmt::mp("en"));
 
       // PMT handlers
@@ -213,6 +214,13 @@ namespace gr {
                           pmt::mp("ratio"), 
                           pmt::cons(pmt::mp("ratio"), pmt::from_double(new_freq))
                         );
+          
+            new_freq = (double)(d_ratio + 1) * (double)d_sample_rate;
+
+            message_port_pub(
+                              pmt::mp("rate"), 
+                              pmt::cons(pmt::mp("rate"), pmt::from_long((long)new_freq))//TODO: why is this sent as long int?
+                            ); 
 
             d_accumulator = 0;
             d_work_counter = 0;
@@ -224,12 +232,12 @@ namespace gr {
                           pmt::mp("en"), 
                           pmt::from_bool(bool_msg)
                         );
-                long period_ms = (100000);
-                boost::this_thread::sleep(  boost::posix_time::milliseconds(static_cast<long>(period_ms)) );
+                //long period_ms = (100000);
+                //boost::this_thread::sleep(  boost::posix_time::milliseconds(static_cast<long>(period_ms)) );
                 //return WORK_DONE;
             } else{
-                //Sleep for short period of time.. this affects the entire flowgraph.
-                long period_ms = (500);
+                //Sleep for short period of time.. this for some reason affects the entire flowgraph.
+                //long period_ms = (500);
                 //boost::this_thread::sleep(  boost::posix_time::milliseconds(static_cast<long>(period_ms)) );
             }
 
