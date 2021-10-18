@@ -61,7 +61,7 @@ namespace gr {
             d_max_deviation = max_deviation;
             set_Htotal_Vtotal(Htotal, Vtotal);
 
-            d_alpha_samp_inc = 1e-1;
+            d_alpha_samp_inc = 1e-3;
             
             d_samp_phase = 0; 
             d_alpha_corr = 1e-6; 
