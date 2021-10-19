@@ -328,7 +328,7 @@ blocks:
   id: variable
   parameters:
     comment: ''
-    value: 4096*1024
+    value: 4096*256
   states:
     bus_sink: false
     bus_source: false
@@ -1003,7 +1003,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [166, 868]
+    coordinate: [35, 841]
     rotation: 0
     state: true
 - name: sync_detector_start

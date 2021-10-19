@@ -145,6 +145,13 @@ namespace gr {
               printf("FFT peak finder. Ratio calculation restarted.\n");
               d_start_fft_peak_finder = 1;
             }
+            /*
+              Stop FFT_autocorrelation block.
+            */
+            message_port_pub(
+              pmt::mp("en"), 
+              pmt::from_bool(d_start_fft_peak_finder)
+            );
         }
     }
 
@@ -169,7 +176,8 @@ namespace gr {
                                                              /* Work iteration counter */
       if(!d_start_fft_peak_finder)
       {
-          return noutput_items; // This kills the block forever.
+                consume_each(d_search_margin);
+                return noutput_items; // This kills the block forever.
       }
       else
       {
