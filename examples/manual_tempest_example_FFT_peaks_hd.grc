@@ -674,7 +674,7 @@ blocks:
     alias: ''
     alpha: '1.0'
     comment: ''
-    fac_decimation: '10'
+    fac_decimation: '20'
     fft_size: int(fft_size/2)
     maxoutbuf: '0'
     minoutbuf: '0'

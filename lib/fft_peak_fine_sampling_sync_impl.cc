@@ -51,7 +51,7 @@
  * Constant and macro definitions
  **********************************************************/
 
-#define N 1000
+#define N 256
 
 namespace gr {
   namespace tempest {
@@ -173,15 +173,14 @@ namespace gr {
       float *out = (float *) output_items[0];
 
       gr::thread::scoped_lock l(d_mutex);
-                                                             /* Work iteration counter */
+
       if(!d_start_fft_peak_finder)
       {
                 consume_each(d_search_margin);
-                return noutput_items; // This kills the block forever.
+                return noutput_items;
       }
       else
       {
-
                 /////////////////////////////
                 //      RATIO SEARCH       //
                 /////////////////////////////
@@ -204,7 +203,6 @@ namespace gr {
 
                 add_item_tag(0, nitems_written(0) + peak_index, pmt::mp("peak_1"), pmt::PMT_T); 
 
-                ////////////////////////////////////////////////////////////////////////////// Second peak
                 uint32_t one_full_frame_in_samples=floor((1.0/d_refresh_rate)*d_sample_rate);
 
                 d_search_skip = peak_index + one_full_frame_in_samples - floor((0.001)*d_sample_rate);
@@ -216,79 +214,34 @@ namespace gr {
                 peak_index_2 += d_search_skip;                                                /* Offset por indice relativo en volk */
 
                 add_item_tag(0, nitems_written(0) + peak_index_2, pmt::mp("peak_2"), pmt::PMT_T);
-                // 827 826 827 // el acumulador deberia dar 829.7053735
-
-                //if(1)// (peak_index_2-peak_index) > 500 )
+                
                 d_accumulator += (long double)(peak_index_2-peak_index)/(long double)(N);
-                //else
-                //  d_accumulator += (long double)(d_real_line*d_Vvisible)/(long double)(N);
-
+                
                 if(d_work_counter%N == 0)
                 {
-                              // Compare with:
-                              //printf("d_search_skip %d d_search_margin  %d \t\n", d_search_skip, d_search_margin);
-
-                              long double line_timing = (long double)(d_accumulator)/(long double)d_sample_rate;
-                              //long double ratio_timings = line_timing*1000000 / (long double)(16.6656*1000);
                               long double ratio = (long double)(d_accumulator)/(long double)(d_Hvisible*d_Vvisible);
 
                               d_ratio = (ratio-1);
-                              //d_ratio = (0.01f)*((double)ratio-1.0f) + (1-0.01f)*d_ratio; 
-
+                              
                               /* Add Tag. */
                               double new_freq = d_ratio;
 
                   
                               message_port_pub(
-                                            pmt::mp("ratio"), 
-                                            pmt::cons(pmt::mp("ratio"), pmt::from_double(new_freq))
-                                          );
-                              printf("\r\n[FFT_peak_finder] Line timing \t %Lf us. \t Ratio = \t %Lf. \t d_accumulator = \t %Lf. \t \r\n ", line_timing*1000000, ratio, d_accumulator);  
-                              printf("\r\n \t [FFT_peak_finder] 1/Refresh_Rate = %f secs \r\n", 1.0/d_refresh_rate);
+                                pmt::mp("ratio"), 
+                                pmt::cons(
+                                  pmt::mp("ratio"), 
+                                  pmt::from_double(new_freq)
+                                )
+                              );
+                              printf("\r\n[FFT_peak_finder] Ratio = \t %Lf. \t d_accumulator = \t %Lf. \t \r\n ", ratio, d_accumulator);  
+                              printf("\r\n[FFT_peak_finder] 1/Refresh_Rate = %f secs \r\n", 1.0/d_refresh_rate);
                               d_accumulator = 0;
-                              d_work_counter = 0;  
-                              if( d_ratio > 0.9997 && d_ratio < 1.000162   )
-                              {
-                              //if( ratio_timings > 0.99 && ratio_timings < 1.005   ){
-                                  /*
-                                  message_port_pub(
-                                            pmt::mp("ratio"), 
-                                            pmt::cons(pmt::mp("ratio"), pmt::from_double(new_freq))
-                                          );
-                                  */
-                                  /* 
-                                    Stop fine sampling synchronization and sleep for a long period.
-                                        - Commented. Because this stops execution of the entire flowgraph, somehow.
-
-                                  */
-
-                                  bool bool_msg = false;
-                                  /*message_port_pub(
-                                            pmt::mp("en"), 
-                                            pmt::from_bool(bool_msg)
-                                          );*/
-                                  //long period_ms = (100000);
-                                  //boost::this_thread::sleep(  boost::posix_time::milliseconds(static_cast<long>(period_ms)) );
-                                  //return WORK_DONE;
-                              } else
-                              {
-                                  //Sleep for short period of time.. this for some reason affects the entire flowgraph.
-                                  //long period_ms = (500);
-                                  //boost::this_thread::sleep(  boost::posix_time::milliseconds(static_cast<long>(period_ms)) );
-                              }
-                  
+                              d_work_counter = 0;
+                              /* Hardware USRP rate command: */
                               /*
-                              message_port_pub(
-                                            pmt::mp("smpl"), 
-                                            pmt::cons(pmt::mp("smpl"), pmt::from_double(d_accumulator))
-                                          );       
-                              */
-
                               new_freq = (double)(d_ratio + 1) * (double)d_sample_rate;
 
-
-
-                             /*
                               message_port_pub(
                                                 pmt::mp("rate"), 
                                                 pmt::cons(pmt::mp("rate"), pmt::from_long((long)new_freq))//TODO: why is this sent as long int?
@@ -296,6 +249,7 @@ namespace gr {
                               */
                               
                 }
+                
                 memcpy(&out[0], &in[0], noutput_items*sizeof(float));
                 d_work_counter++;   
 
