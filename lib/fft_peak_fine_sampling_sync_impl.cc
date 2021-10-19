@@ -59,8 +59,8 @@ namespace gr {
     fft_peak_fine_sampling_sync::sptr
     fft_peak_fine_sampling_sync::make(int sample_rate, int size, int refresh_rate, int Vvisible, int Hvisible, bool automatic_mode)
     {
-      return gnuradio::get_initial_sptr
-        (new fft_peak_fine_sampling_sync_impl(sample_rate, size, refresh_rate, Vvisible, Hvisible, automatic_mode));
+        return gnuradio::get_initial_sptr
+          (new fft_peak_fine_sampling_sync_impl(sample_rate, size, refresh_rate, Vvisible, Hvisible, automatic_mode));
     }
     
     /**********************************************************
@@ -74,47 +74,47 @@ namespace gr {
               gr::io_signature::make(1, 1, sizeof(float)),
               gr::io_signature::make(1, 1, sizeof(float)))
     {
-      d_start_fft_peak_finder = 1;
-      
-      //Received parameters
-      d_sample_rate = sample_rate;
-      d_fft_size = size;
+        d_start_fft_peak_finder = 1;
+        
+        //Received parameters
+        d_sample_rate = sample_rate;
+        d_fft_size = size;
 
-      //Search values
-      d_search_skip = 0;
-      d_search_margin = d_fft_size;
-      d_vtotal_est = 0;
-      
-      //Parameters to publish
-      d_refresh_rate = refresh_rate;
-      d_Hvisible = Hvisible;
-      d_Vvisible = Vvisible;
-      d_Hblank = 0;
-      d_Vblank = 0;
+        //Search values
+        d_search_skip = 0;
+        d_search_margin = d_fft_size;
+        d_vtotal_est = 0;
+        
+        //Parameters to publish
+        d_refresh_rate = refresh_rate;
+        d_Hvisible = Hvisible;
+        d_Vvisible = Vvisible;
+        d_Hblank = 0;
+        d_Vblank = 0;
 
-      d_start = true;
+        d_start = true;
 
-      d_ratio = 0;
-      d_accumulator = 0.0f;
-      //d_real_line = 827;  
-      d_real_line = 827.076923077;  
+        d_ratio = 0;
+        d_accumulator = 0.0f;
+        //d_real_line = 827;  
+        d_real_line = 827.076923077;  
 
-      //Counters
-      d_work_counter = 1;
-      
-      //PMT ports
-      message_port_register_out(pmt::mp("en"));
-      message_port_register_out(pmt::mp("ratio"));
-      message_port_register_out(pmt::mp("rate"));
-      
-      message_port_register_in(pmt::mp("en"));
+        //Counters
+        d_work_counter = 1;
+        
+        //PMT ports
+        message_port_register_out(pmt::mp("en"));
+        message_port_register_out(pmt::mp("ratio"));
+        message_port_register_out(pmt::mp("rate"));
+        
+        message_port_register_in(pmt::mp("en"));
 
-      // PMT handlers
-      set_msg_handler(pmt::mp("en"),   [this](const pmt::pmt_t& msg) {fft_peak_fine_sampling_sync_impl::set_ena_msg(msg); });
+        // PMT handlers
+        set_msg_handler(pmt::mp("en"),   [this](const pmt::pmt_t& msg) {fft_peak_fine_sampling_sync_impl::set_ena_msg(msg); });
 
-      set_history(d_fft_size);
+        set_history(d_fft_size);
 
-      printf("[TEMPEST] Welcome to gr-tempest. Once the sampling is being corrected properly and the vertical lines of the target monitor are indeed vertical, please hit the Stop button to stop autocorrelation calculation and begin the vertical and horizontal synchronization .\n");
+        printf("[TEMPEST] Welcome to gr-tempest. Once the sampling is being corrected properly and the vertical lines of the target monitor are indeed vertical, please hit the Stop button to stop autocorrelation calculation and begin the vertical and horizontal synchronization .\n");
     }
 
     //---------------------------------------------------------
@@ -159,7 +159,7 @@ namespace gr {
 
     void fft_peak_fine_sampling_sync_impl::forecast (int noutput_items, gr_vector_int &ninput_items_required)
     {
-      ninput_items_required[0] = noutput_items; // Funny Obs: Leaving ninput_items_required uninitialized creates chaos.
+        ninput_items_required[0] = noutput_items; // Funny Obs: Leaving ninput_items_required uninitialized creates chaos.
     }
 
     //---------------------------------------------------------
@@ -207,11 +207,11 @@ namespace gr {
 
                 d_search_skip = peak_index + one_full_frame_in_samples - floor((0.001)*d_sample_rate);
                 
-                int search_range = 200 + floor((0.001)*5*d_sample_rate);//floor(d_fft_size/2) - d_search_skip;// use dHtotal
-                
-                volk_32f_index_max_32u(&peak_index_2, &in[d_search_skip], search_range);   /* 'descartados' se elige para que de cerca del pico conocido */
+                int search_range = 200 + floor((0.001)*5*d_sample_rate);
 
-                peak_index_2 += d_search_skip;                                                /* Offset por indice relativo en volk */
+                volk_32f_index_max_32u(&peak_index_2, &in[d_search_skip], search_range);   
+
+                peak_index_2 += d_search_skip;                                                
 
                 add_item_tag(0, nitems_written(0) + peak_index_2, pmt::mp("peak_2"), pmt::PMT_T);
                 
@@ -223,10 +223,10 @@ namespace gr {
 
                               d_ratio = (ratio-1);
                               
-                              /* Add Tag. */
+                              /* 
+                                Send ratio message to the interpolator. 
+                              */
                               double new_freq = d_ratio;
-
-                  
                               message_port_pub(
                                 pmt::mp("ratio"), 
                                 pmt::cons(
@@ -244,12 +244,16 @@ namespace gr {
 
                               message_port_pub(
                                                 pmt::mp("rate"), 
-                                                pmt::cons(pmt::mp("rate"), pmt::from_long((long)new_freq))//TODO: why is this sent as long int?
+                                                pmt::cons(pmt::mp("rate"), pmt::from_long((long)new_freq))
                                               ); 
                               */
-                              
+                              /* 
+                                  Maybe sleep for a few milliseconds here.
+                              */
+                              long period_ms = (1000);
+                              boost::this_thread::sleep(  boost::posix_time::milliseconds(static_cast<long>(period_ms)) );
+                                    
                 }
-                
                 memcpy(&out[0], &in[0], noutput_items*sizeof(float));
                 d_work_counter++;   
 
