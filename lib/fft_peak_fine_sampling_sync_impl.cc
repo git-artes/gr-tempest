@@ -203,8 +203,11 @@ namespace gr {
 
                 add_item_tag(0, nitems_written(0) + peak_index, pmt::mp("peak_1"), pmt::PMT_T); 
 
-                uint32_t one_full_frame_in_samples=floor((1.0/d_refresh_rate)*d_sample_rate);
 
+
+
+                uint32_t one_full_frame_in_samples = floor( (1.0/d_refresh_rate) * d_sample_rate);
+ 
                 d_search_skip = peak_index + one_full_frame_in_samples - floor((0.001)*d_sample_rate);
                 
                 int search_range = 200 + floor((0.001)*5*d_sample_rate);
@@ -215,6 +218,10 @@ namespace gr {
 
                 add_item_tag(0, nitems_written(0) + peak_index_2, pmt::mp("peak_2"), pmt::PMT_T);
                 
+
+
+
+
                 d_accumulator += (long double)(peak_index_2-peak_index)/(long double)(N);
                 
                 if(d_work_counter%N == 0)
@@ -246,6 +253,7 @@ namespace gr {
                                                 pmt::mp("rate"), 
                                                 pmt::cons(pmt::mp("rate"), pmt::from_long((long)new_freq))
                                               ); 
+                              d_sample_rate = new_freq;
                               */
                               /* 
                                   Maybe sleep for a few milliseconds here.

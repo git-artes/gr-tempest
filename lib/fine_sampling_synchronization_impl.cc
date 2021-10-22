@@ -185,7 +185,7 @@ namespace gr {
                 pmt::pmt_t val = pmt::cdr(msg);
                 if(pmt::eq(key, pmt::string_to_symbol("ratio"))) {
                     if(pmt::is_number(val)) {
-                        set_Htotal_Vtotal(d_Htotal, d_Vtotal);
+                        
                         d_new_interpolation_ratio_rem = (double)pmt::to_double(val);
                         printf("Fine sampling: interpolation ratio received = %f \n", d_new_interpolation_ratio_rem);
                     }
