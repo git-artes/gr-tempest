@@ -79,6 +79,8 @@ namespace gr {
       uint32_t d_search_skip;
       uint32_t d_search_margin;
       uint32_t d_vtotal_est;
+      uint32_t d_peak_1;
+      uint32_t d_peak_2;
 
       //Results to publish
       long d_refresh_rate;

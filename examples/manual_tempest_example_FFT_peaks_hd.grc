@@ -674,7 +674,7 @@ blocks:
   parameters:
     affinity: ''
     alias: ''
-    alpha: '0.7'
+    alpha: '1.0'
     comment: ''
     fac_decimation: '10'
     fft_size: int(fft_size/2)
@@ -1485,7 +1485,7 @@ blocks:
       \ to those values on \nthe chooser)."
     display_height: Vsize
     display_width: Hsize
-    fps: '4'
+    fps: '0'
     height: Vsize
     num_channels: '1'
     type: short

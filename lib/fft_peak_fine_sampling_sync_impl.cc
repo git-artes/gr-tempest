@@ -60,7 +60,7 @@ uint32_t calculate_peak_index_relative_to_search_skip(const float *in, uint32_t 
 
 }
 
-#define N 4
+#define N 32
 
 namespace gr {
   namespace tempest {
@@ -93,6 +93,8 @@ namespace gr {
         d_search_skip = 0;
         d_search_margin = d_fft_size;
         d_vtotal_est = 0;
+        d_peak_1 = 0;
+        d_peak_2 = 0;
         
         //Parameters to publish
         d_refresh_rate = refresh_rate;
@@ -208,32 +210,21 @@ namespace gr {
                       
                       d_search_margin = d_fft_size;
                       d_search_skip = 0;
-                      uint32_t peak_index = calculate_peak_index_relative_to_search_skip(
+                      d_peak_1 = calculate_peak_index_relative_to_search_skip(
                                               in, 
                                               d_search_skip, 
                                               d_search_margin
                                             );
-                      add_item_tag(
-                        0, 
-                        nitems_written(0) + peak_index, 
-                        pmt::mp("peak_1"), 
-                        pmt::PMT_T
-                      ); 
        
-                      d_search_skip = peak_index + one_full_frame_in_samples - floor((0.001)*d_sample_rate);
+                      d_search_skip = d_peak_1 + one_full_frame_in_samples - floor((0.001)*d_sample_rate);
                       d_search_margin = 200 + floor((0.001)*5*d_sample_rate);
-                      uint32_t peak_index_2 = calculate_peak_index_relative_to_search_skip(
+                      d_peak_2 = calculate_peak_index_relative_to_search_skip(
                                                 in, 
                                                 d_search_skip, 
                                                 d_search_margin
                                               );
-                      add_item_tag(
-                        0, 
-                        nitems_written(0) + peak_index_2, 
-                        pmt::mp("peak_2"), pmt::PMT_T
-                      );
 
-                      d_accumulator += (long double)(peak_index_2-peak_index)/(long double)(N);
+                      d_accumulator += (long double)(d_peak_2-d_peak_1)/(long double)(N);
                       
                       if(d_work_counter%N == 0)
                       {
@@ -268,19 +259,32 @@ namespace gr {
                                     /* 
                                         Maybe sleep for a few milliseconds here.
                                     */
-                                    //long period_ms = (1000);
-                                    //boost::this_thread::sleep(  boost::posix_time::milliseconds(static_cast<long>(period_ms)) );
+                                    long period_ms = (1000);
+                                    boost::this_thread::sleep(  boost::posix_time::milliseconds(static_cast<long>(period_ms)) );
                                           
                       }
                       
                       d_sample_counter = 0;
 
                 }
-                memcpy(&out[0], &in[0], noutput_items*sizeof(float));
+                memcpy(&out[0], &in[0], noutput_items*sizeof(float)); // el tag deberia hacerse repetidamente aca con d_peak_1 d_peak_2
+
                 d_work_counter++;   
                 d_sample_counter+=noutput_items;
+                
                 consume_each (noutput_items);
 
+                add_item_tag(
+                  0, 
+                  nitems_written(0) + d_peak_1, 
+                  pmt::mp("peak_1"), 
+                  pmt::PMT_T
+                ); 
+                add_item_tag(
+                  0, 
+                  nitems_written(0) + d_peak_2, 
+                  pmt::mp("peak_2"), pmt::PMT_T
+                );
                 return noutput_items; 
 
       } 
