@@ -51,7 +51,16 @@
  * Constant and macro definitions
  **********************************************************/
 
-#define N 256
+
+uint32_t calculate_peak_index_relative_to_search_skip(const float *in, uint32_t search_skip, uint32_t search_range)
+{
+    uint32_t peak_index;
+    volk_32f_index_max_32u(&peak_index, &in[search_skip], search_range);   
+    return peak_index += search_skip;                                                
+
+}
+
+#define N 4
 
 namespace gr {
   namespace tempest {
@@ -176,7 +185,7 @@ namespace gr {
 
       if(!d_start_fft_peak_finder)
       {
-                consume_each(d_search_margin);
+                consume_each(noutput_items);
                 return noutput_items;
       }
       else
@@ -185,7 +194,7 @@ namespace gr {
                 //      RATIO SEARCH       //
                 /////////////////////////////
                 /* 
-                    If we receive a full d_fft_size from the ft_autocorrelation block
+                    If we receive a full d_fft_size from the fft_autocorrelation block
                   we process the full d_fft_size vector to find the best two peaks, peak_1, peak_2.
                     We should consume d_fft_size data from the in[0] to the in[d_fft_size] 
                   and compute the distance between peak_1 and peak_2 in samples.
@@ -193,78 +202,83 @@ namespace gr {
                   the distance between peak_2 and peak_1. 
                     So we divide the thing over N and repeat the measurement N times.
                 */ 
-                uint32_t peak_index = 0, peak_index_2 = 0, yt_index = 0, yt_aux = 0;
-                
-                d_search_skip = 0;
-
-                volk_32f_index_max_32u(&peak_index, &in[d_search_skip], floor(d_search_margin));
-         
-                peak_index += d_search_skip;                     
-
-                add_item_tag(0, nitems_written(0) + peak_index, pmt::mp("peak_1"), pmt::PMT_T); 
-
-
-
-
-                uint32_t one_full_frame_in_samples = floor( (1.0/d_refresh_rate) * d_sample_rate);
- 
-                d_search_skip = peak_index + one_full_frame_in_samples - floor((0.001)*d_sample_rate);
-                
-                int search_range = 200 + floor((0.001)*5*d_sample_rate);
-
-                volk_32f_index_max_32u(&peak_index_2, &in[d_search_skip], search_range);   
-
-                peak_index_2 += d_search_skip;                                                
-
-                add_item_tag(0, nitems_written(0) + peak_index_2, pmt::mp("peak_2"), pmt::PMT_T);
-                
-
-
-
-
-                d_accumulator += (long double)(peak_index_2-peak_index)/(long double)(N);
-                
-                if(d_work_counter%N == 0)
+                if(d_sample_counter > 1)
                 {
-                              long double ratio = (long double)(d_accumulator)/(long double)(d_Hvisible*d_Vvisible);
+                      uint32_t one_full_frame_in_samples = floor( (1.0/d_refresh_rate) * d_sample_rate );
+                      
+                      d_search_margin = d_fft_size;
+                      d_search_skip = 0;
+                      uint32_t peak_index = calculate_peak_index_relative_to_search_skip(
+                                              in, 
+                                              d_search_skip, 
+                                              d_search_margin
+                                            );
+                      add_item_tag(
+                        0, 
+                        nitems_written(0) + peak_index, 
+                        pmt::mp("peak_1"), 
+                        pmt::PMT_T
+                      ); 
+       
+                      d_search_skip = peak_index + one_full_frame_in_samples - floor((0.001)*d_sample_rate);
+                      d_search_margin = 200 + floor((0.001)*5*d_sample_rate);
+                      uint32_t peak_index_2 = calculate_peak_index_relative_to_search_skip(
+                                                in, 
+                                                d_search_skip, 
+                                                d_search_margin
+                                              );
+                      add_item_tag(
+                        0, 
+                        nitems_written(0) + peak_index_2, 
+                        pmt::mp("peak_2"), pmt::PMT_T
+                      );
 
-                              d_ratio = (ratio-1);
-                              
-                              /* 
-                                Send ratio message to the interpolator. 
-                              */
-                              double new_freq = d_ratio;
-                              message_port_pub(
-                                pmt::mp("ratio"), 
-                                pmt::cons(
-                                  pmt::mp("ratio"), 
-                                  pmt::from_double(new_freq)
-                                )
-                              );
-                              printf("\r\n[FFT_peak_finder] Ratio = \t %Lf. \t d_accumulator = \t %Lf. \t \r\n ", ratio, d_accumulator);  
-                              printf("\r\n[FFT_peak_finder] 1/Refresh_Rate = %f secs \r\n", 1.0/d_refresh_rate);
-                              d_accumulator = 0;
-                              d_work_counter = 0;
-                              /* Hardware USRP rate command: */
-                              /*
-                              new_freq = (double)(d_ratio + 1) * (double)d_sample_rate;
+                      d_accumulator += (long double)(peak_index_2-peak_index)/(long double)(N);
+                      
+                      if(d_work_counter%N == 0)
+                      {
+                                    long double ratio = (long double)(d_accumulator)/(long double)(d_Hvisible*d_Vvisible);
 
-                              message_port_pub(
-                                                pmt::mp("rate"), 
-                                                pmt::cons(pmt::mp("rate"), pmt::from_long((long)new_freq))
-                                              ); 
-                              d_sample_rate = new_freq;
-                              */
-                              /* 
-                                  Maybe sleep for a few milliseconds here.
-                              */
-                              long period_ms = (1000);
-                              boost::this_thread::sleep(  boost::posix_time::milliseconds(static_cast<long>(period_ms)) );
+                                    d_ratio = (ratio-1);
                                     
+                                    /* 
+                                      Send ratio message to the interpolator. 
+                                    */
+                                    double new_freq = d_ratio;
+                                    message_port_pub(
+                                      pmt::mp("ratio"), pmt::cons(
+                                                          pmt::mp("ratio"), 
+                                                          pmt::from_double(new_freq)
+                                                        )
+                                    );
+                                    printf("\r\n[FFT_peak_finder] Ratio = \t %Lf. \t d_accumulator = \t %Lf. \t \r\n ", ratio, d_accumulator);  
+                                    printf("\r\n[FFT_peak_finder] 1/Refresh_Rate = %f secs \r\n", 1.0/d_refresh_rate);
+                                    d_accumulator = 0;
+                                    d_work_counter = 0;
+                                    /* Hardware USRP rate command: */
+                                    /*
+                                    new_freq = (double)(d_ratio + 1) * (double)d_sample_rate;
+
+                                    message_port_pub(
+                                                      pmt::mp("rate"), 
+                                                      pmt::cons(pmt::mp("rate"), pmt::from_long((long)new_freq))
+                                                    ); 
+                                    d_sample_rate = new_freq;
+                                    */
+                                    /* 
+                                        Maybe sleep for a few milliseconds here.
+                                    */
+                                    //long period_ms = (1000);
+                                    //boost::this_thread::sleep(  boost::posix_time::milliseconds(static_cast<long>(period_ms)) );
+                                          
+                      }
+                      
+                      d_sample_counter = 0;
+
                 }
                 memcpy(&out[0], &in[0], noutput_items*sizeof(float));
                 d_work_counter++;   
-
+                d_sample_counter+=noutput_items;
                 consume_each (noutput_items);
 
                 return noutput_items; 

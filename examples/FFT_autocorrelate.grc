@@ -337,7 +337,7 @@ blocks:
     maxoutbuf: '0'
     minoutbuf: '0'
     num_streams: '1'
-    optional: 'False'
+    optional: 'True'
     type: message
     vlen: '1'
   states:

@@ -328,7 +328,7 @@ blocks:
   id: variable
   parameters:
     comment: ''
-    value: 4096*512
+    value: 4096*1024
   states:
     bus_sink: false
     bus_source: false
@@ -675,7 +675,7 @@ blocks:
     alpha: '1.0'
     comment: ''
     fac_decimation: '10'
-    fft_size: int(fft_size)
+    fft_size: int(fft_size/2)
     maxoutbuf: '0'
     minoutbuf: '0'
     sample_rate: samp_rate
@@ -683,7 +683,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [311, 651]
+    coordinate: [305, 662]
     rotation: 270
     state: enabled
 - name: blocks_complex_to_mag_0
@@ -774,7 +774,7 @@ blocks:
     bus_structure: null
     coordinate: [135, 474]
     rotation: 90
-    state: enabled
+    state: disabled
 - name: blocks_throttle_0
   id: blocks_throttle
   parameters:
@@ -891,12 +891,109 @@ blocks:
     coordinate: [440, 644]
     rotation: 270
     state: disabled
-- name: ratio_finder_stop
+- name: qtgui_time_sink_x_1
+  id: qtgui_time_sink_x
+  parameters:
+    affinity: ''
+    alias: ''
+    alpha1: '1.0'
+    alpha10: '1.0'
+    alpha2: '1.0'
+    alpha3: '1.0'
+    alpha4: '1.0'
+    alpha5: '1.0'
+    alpha6: '1.0'
+    alpha7: '1.0'
+    alpha8: '1.0'
+    alpha9: '1.0'
+    autoscale: 'False'
+    axislabels: 'True'
+    color1: blue
+    color10: dark blue
+    color2: red
+    color3: green
+    color4: black
+    color5: cyan
+    color6: magenta
+    color7: yellow
+    color8: dark red
+    color9: dark green
+    comment: ''
+    ctrlpanel: 'False'
+    entags: 'True'
+    grid: 'False'
+    gui_hint: tab_m@1
+    label1: Signal 1
+    label10: Signal 10
+    label2: Signal 2
+    label3: Signal 3
+    label4: Signal 4
+    label5: Signal 5
+    label6: Signal 6
+    label7: Signal 7
+    label8: Signal 8
+    label9: Signal 9
+    legend: 'True'
+    marker1: '-1'
+    marker10: '-1'
+    marker2: '-1'
+    marker3: '-1'
+    marker4: '-1'
+    marker5: '-1'
+    marker6: '-1'
+    marker7: '-1'
+    marker8: '-1'
+    marker9: '-1'
+    name: '""'
+    nconnections: '1'
+    size: fft_size
+    srate: samp_rate
+    stemplot: 'False'
+    style1: '1'
+    style10: '1'
+    style2: '1'
+    style3: '1'
+    style4: '1'
+    style5: '1'
+    style6: '1'
+    style7: '1'
+    style8: '1'
+    style9: '1'
+    tr_chan: '0'
+    tr_delay: '0'
+    tr_level: '0.0'
+    tr_mode: qtgui.TRIG_MODE_FREE
+    tr_slope: qtgui.TRIG_SLOPE_POS
+    tr_tag: '""'
+    type: float
+    update_time: '0.10'
+    width1: '1'
+    width10: '1'
+    width2: '1'
+    width3: '1'
+    width4: '1'
+    width5: '1'
+    width6: '1'
+    width7: '1'
+    width8: '1'
+    width9: '1'
+    ylabel: Amplitude
+    ymax: '1'
+    ymin: '-1'
+    yunit: '""'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [201, 466]
+    rotation: 0
+    state: enabled
+- name: ratio_finder_toggle_on_and_off
   id: variable_qtgui_msg_push_button
   parameters:
     comment: ''
     gui_hint: ''
-    label: ''
+    label: Ratio Finder toggle ON or OFF (FFT peaks).
     msgName: pressed
     relBackgroundColor: default
     relFontColor: default
@@ -925,6 +1022,40 @@ blocks:
     bus_source: false
     bus_structure: null
     coordinate: [758, 315]
+    rotation: 0
+    state: disabled
+- name: tab_m
+  id: qtgui_tab_widget
+  parameters:
+    alias: ''
+    comment: ''
+    gui_hint: ''
+    label0: Tempest Main Tab
+    label1: Autocorrelation Plot Tab
+    label10: Tab 10
+    label11: Tab 11
+    label12: Tab 12
+    label13: Tab 13
+    label14: Tab 14
+    label15: Tab 15
+    label16: Tab 16
+    label17: Tab 17
+    label18: Tab 18
+    label19: Tab 19
+    label2: Tab 2
+    label3: Tab 3
+    label4: Tab 4
+    label5: Tab 5
+    label6: Tab 6
+    label7: Tab 7
+    label8: Tab 8
+    label9: Tab 9
+    num_tabs: '2'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [542, 205]
     rotation: 0
     state: true
 - name: tempest_fft_peak_fine_sampling_sync_0
@@ -961,12 +1092,12 @@ blocks:
     minoutbuf: '0'
     refresh_rate: refresh_rate
     sample_rate: samp_rate
-    size: int(fft_size/1)
+    size: int(fft_size/2)
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [176, 651]
+    coordinate: [113, 645]
     rotation: 90
     state: enabled
 - name: tempest_fine_sampling_synchronization_0
@@ -1009,7 +1140,7 @@ blocks:
     bus_structure: null
     coordinate: [466, 362]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: tempest_normalize_flow_0
   id: tempest_normalize_flow
   parameters:
@@ -1048,7 +1179,7 @@ blocks:
     bus_structure: null
     coordinate: [1010, 410]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: video_sdl_sink_0_0_0
   id: video_sdl_sink
   parameters:
@@ -1056,8 +1187,8 @@ blocks:
     alias: ''
     comment: "Enable this path when you are sure what the \nresolution is (and defaut\
       \ to those values on \nthe chooser)."
-    display_height: '806'
-    display_width: '1033'
+    display_height: Vsize
+    display_width: Hsize
     fps: '0'
     height: Vsize
     num_channels: '1'
@@ -1078,9 +1209,12 @@ connections:
 - [blocks_file_source_0, '0', blocks_throttle_0, '0']
 - [blocks_float_to_short_0, '0', video_sdl_sink_0_0_0, '0']
 - [blocks_throttle_0, '0', FFT_autocorrelation_0_0, '0']
+- [blocks_throttle_0, '0', tempest_fine_sampling_synchronization_0, '0']
 - [blocks_throttle_0, '0', tempest_frame_drop_0, '0']
-- [ratio_finder_stop, pressed, tempest_fft_peak_fine_sampling_sync_0, en]
-- [ratio_finder_stop, pressed, tempest_fft_peak_fine_sampling_sync_0_0, en]
+- [ratio_finder_toggle_on_and_off, pressed, tempest_fft_peak_fine_sampling_sync_0,
+  en]
+- [ratio_finder_toggle_on_and_off, pressed, tempest_fft_peak_fine_sampling_sync_0_0,
+  en]
 - [sync_detector_start, pressed, tempest_sync_detector_0, en]
 - [tempest_fft_peak_fine_sampling_sync_0, '0', blocks_null_sink_0, '0']
 - [tempest_fft_peak_fine_sampling_sync_0, '0', qtgui_time_sink_x_0, '0']
@@ -1088,11 +1222,13 @@ connections:
 - [tempest_fft_peak_fine_sampling_sync_0, en, tempest_frame_drop_0, en]
 - [tempest_fft_peak_fine_sampling_sync_0, en, tempest_sync_detector_0, en]
 - [tempest_fft_peak_fine_sampling_sync_0_0, '0', blocks_null_sink_0_0, '0']
+- [tempest_fft_peak_fine_sampling_sync_0_0, '0', qtgui_time_sink_x_1, '0']
 - [tempest_fft_peak_fine_sampling_sync_0_0, en, FFT_autocorrelation_0_0, en]
 - [tempest_fft_peak_fine_sampling_sync_0_0, ratio, tempest_fine_sampling_synchronization_0,
   ratio]
 - [tempest_fft_peak_fine_sampling_sync_0_0, smpl, tempest_frame_drop_0, smpl]
 - [tempest_fine_sampling_synchronization_0, '0', FFT_autocorrelation_0, '0']
+- [tempest_fine_sampling_synchronization_0, '0', blocks_complex_to_mag_0, '0']
 - [tempest_fine_sampling_synchronization_0, '0', tempest_sync_detector_0, '0']
 - [tempest_frame_drop_0, '0', tempest_fine_sampling_synchronization_0, '0']
 - [tempest_frame_drop_0, ratio, tempest_fine_sampling_synchronization_0, ratio]

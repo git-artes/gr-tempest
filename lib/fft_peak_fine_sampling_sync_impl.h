@@ -89,6 +89,7 @@ namespace gr {
 
       //Counters
       uint32_t d_work_counter;
+      uint32_t d_sample_counter;
 
       /**********************************************************
        * Private function prototypes
