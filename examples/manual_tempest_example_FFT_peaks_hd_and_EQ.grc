@@ -261,6 +261,18 @@ blocks:
     coordinate: [842, 184]
     rotation: 0
     state: disabled
+- name: ferror
+  id: variable
+  parameters:
+    comment: ''
+    value: (samp_rate*fine_freq)/(2*pi*interpolatedHsize)
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1077, 302]
+    rotation: 0
+    state: true
 - name: fft_size
   id: variable
   parameters:
@@ -358,9 +370,9 @@ blocks:
     min_len: '200'
     orient: Qt.Horizontal
     rangeType: float
-    start: '-20000'
-    step: '0.0001'
-    stop: '20000'
+    start: '-50000'
+    step: '0.1'
+    stop: '50000'
     value: '0'
     widget: counter
   states:
@@ -382,7 +394,7 @@ blocks:
     start: '1'
     step: '1'
     stop: '10'
-    value: '3'
+    value: '2'
     widget: counter_slider
   states:
     bus_sink: false
@@ -493,7 +505,7 @@ blocks:
   id: variable
   parameters:
     comment: ''
-    value: int(19.98e6)
+    value: int(25e6)
   states:
     bus_sink: false
     bus_source: false
@@ -545,7 +557,7 @@ blocks:
     affinity: ''
     alias: ''
     comment: ''
-    fac_decimation: '10'
+    fac_decimation: '1'
     fft_size: fft_size
     maxoutbuf: '0'
     minoutbuf: '0'
@@ -555,7 +567,7 @@ blocks:
     bus_structure: null
     coordinate: [324, 728]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: analog_sig_source_x_0_0
   id: analog_sig_source_x
   parameters:
@@ -666,7 +678,7 @@ blocks:
     bus_structure: null
     coordinate: [69, 626]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: blocks_float_to_short_0
   id: blocks_float_to_short
   parameters:
@@ -736,7 +748,20 @@ blocks:
     bus_structure: null
     coordinate: [271, 650]
     rotation: 0
-    state: enabled
+    state: disabled
+- name: import_0
+  id: import
+  parameters:
+    alias: ''
+    comment: ''
+    imports: from math import pi
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1048, 141]
+    rotation: 0
+    state: true
 - name: interp_fir_filter_xxx_1
   id: interp_fir_filter_xxx
   parameters:
@@ -850,7 +875,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1226, 380]
+    coordinate: [1341, 496]
     rotation: 0
     state: enabled
 - name: qtgui_time_sink_x_1
@@ -908,7 +933,7 @@ blocks:
     marker9: '-1'
     name: '""'
     nconnections: '1'
-    size: int(fft_size)
+    size: int(fft_size/2)
     srate: samp_rate
     stemplot: 'False'
     style1: '1'
@@ -928,7 +953,7 @@ blocks:
     tr_slope: qtgui.TRIG_SLOPE_POS
     tr_tag: '"peak_1"'
     type: float
-    update_time: '0.10'
+    update_time: '1.0'
     width1: '1'
     width10: '1'
     width2: '1'
@@ -947,7 +972,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [559, 805]
+    coordinate: [645, 796]
     rotation: 90
     state: enabled
 - name: qtgui_time_sink_x_1_0
@@ -1122,7 +1147,7 @@ blocks:
     tr_slope: qtgui.TRIG_SLOPE_POS
     tr_tag: '"peak_1"'
     type: float
-    update_time: '1.0'
+    update_time: '0.1'
     width1: '1'
     width10: '1'
     width2: '1'
@@ -1177,7 +1202,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [887, 392]
+    coordinate: [850, 392]
     rotation: 0
     state: enabled
 - name: tab_m
@@ -1254,7 +1279,7 @@ blocks:
     bus_structure: null
     coordinate: [680, 654]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: tempest_normalize_flow_0
   id: tempest_normalize_flow
   parameters:
@@ -1331,7 +1356,7 @@ blocks:
     ant7: ''
     ant8: ''
     ant9: ''
-    bw0: 10e6
+    bw0: '0'
     bw1: '0'
     bw10: '0'
     bw11: '0'
@@ -1664,7 +1689,7 @@ blocks:
     bus_structure: null
     coordinate: [64, 733]
     rotation: 0
-    state: disabled
+    state: enabled
 - name: video_sdl_sink_0_0_0
   id: video_sdl_sink
   parameters:
@@ -1712,11 +1737,18 @@ connections:
   en]
 - [single_pole_iir_filter_xx_0, '0', blocks_complex_to_arg_0, '0']
 - [tempest_fft_peak_fine_sampling_sync_0_0, '0', qtgui_time_sink_x_1, '0']
-- [tempest_fft_peak_fine_sampling_sync_0_0, en, FFT_autocorrelation_0_0, en]
+- [tempest_fft_peak_fine_sampling_sync_0_0, rate, uhd_usrp_source_0, command]
 - [tempest_fft_peak_fine_sampling_sync_0_0, ratio, tempest_fine_sampling_synchronization_0,
   ratio]
+- [tempest_fine_sampling_synchronization_0, '0', blocks_complex_to_mag_0, '0']
 - [tempest_fine_sampling_synchronization_0, '0', blocks_multiply_xx_0_0, '0']
 - [tempest_normalize_flow_0, '0', blocks_float_to_short_0, '0']
+- [uhd_usrp_source_0, '0', FFT_autocorrelation_0_0, '0']
+- [uhd_usrp_source_0, '0', Keep_1_in_N_Frames_0, '0']
+- [uhd_usrp_source_0, '0', blocks_delay_1, '0']
+- [uhd_usrp_source_0, '0', blocks_multiply_conjugate_cc_0, '0']
+- [uhd_usrp_source_0, '0', blocks_multiply_xx_0_0, '0']
+- [uhd_usrp_source_0, '0', tempest_fine_sampling_synchronization_0, '0']
 
 metadata:
   file_format: 1

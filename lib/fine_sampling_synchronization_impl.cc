@@ -187,7 +187,7 @@ namespace gr {
                     if(pmt::is_number(val)) {
                         
                         d_new_interpolation_ratio_rem = (double)pmt::to_double(val);
-                        printf("Fine sampling: interpolation ratio received = %f \n", d_new_interpolation_ratio_rem);
+                        //printf("Fine sampling: interpolation ratio received = %f \n", d_new_interpolation_ratio_rem);
                     }
                 }
             }
