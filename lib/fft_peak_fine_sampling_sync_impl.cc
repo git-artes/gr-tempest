@@ -60,7 +60,7 @@ uint32_t calculate_peak_index_relative_to_search_skip(const float *in, uint32_t 
 
 }
 
-#define N 8192
+#define N 64
 
 namespace gr {
   namespace tempest {
@@ -163,6 +163,14 @@ namespace gr {
               pmt::mp("en"), 
               pmt::from_bool(d_start_fft_peak_finder)
             );
+
+            /* Hardware USRP rate command: */
+            
+            double new_freq = ((double)1.0/((double)(d_ratio + 1))) * (double)d_sample_rate;
+
+            message_port_pub(pmt::mp("rate"), pmt::cons(pmt::mp("rate"), pmt::from_double(new_freq))); 
+            d_sample_rate = new_freq;
+            
         }
     }
 
@@ -242,19 +250,10 @@ namespace gr {
                                                           pmt::from_double(new_freq)
                                                         )
                                     );
-                                    //printf("\r\n[FFT_peak_finder] Ratio = \t %Lf. \t d_accumulator = \t %Lf. \t \r\n ", ratio, d_accumulator);  
-                                    //printf("\r\n[FFT_peak_finder] 1/Refresh_Rate = %f secs \r\n", 1.0/d_refresh_rate);
+                                    printf("\r\n[FFT_peak_finder] Ratio = \t %Lf. \t d_accumulator = \t %Lf. \t \r\n ", ratio, d_accumulator);  
+                                    printf("\r\n[FFT_peak_finder] 1/Refresh_Rate = %f secs \r\n", 1.0/d_refresh_rate);
                                     d_accumulator = 0;
                                     d_work_counter = 0;
-                                    /* Hardware USRP rate command: */
-                                    
-                                    new_freq = (double)(d_ratio + 1) * (double)d_sample_rate;
-
-                                    message_port_pub(
-                                                      pmt::mp("rate"), 
-                                                      pmt::cons(pmt::mp("rate"), pmt::from_long((long)new_freq))
-                                                    ); 
-                                    d_sample_rate = new_freq;
                                     
                                     /* 
                                         Maybe sleep for a few milliseconds here.

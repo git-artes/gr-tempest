@@ -277,7 +277,7 @@ blocks:
   id: variable
   parameters:
     comment: ''
-    value: 2**20
+    value: 2**21
   states:
     bus_sink: false
     bus_source: false
@@ -289,29 +289,76 @@ blocks:
   id: variable
   parameters:
     comment: ''
-    value: "[-3.11363682e-06+6.75278918e-06j,  2.23797433e-05+3.63850305e-04j,\n \
-      \       1.24424796e-04+2.07552626e-03j,  9.13369821e-05+1.23922328e-03j,\n \
-      \       9.17470541e-06-1.27599772e-03j, -1.89672336e-04-7.66449364e-03j,\n \
-      \      -6.04326364e-04-2.07456042e-02j, -1.03016890e-03-4.52780337e-02j,\n \
-      \      -2.24322298e-03-7.65338416e-02j, -2.59317061e-03-1.35562197e-01j,\n \
-      \      -5.05937146e-03-1.88184719e-01j, -4.40754770e-03-2.95364441e-01j,\n \
-      \      -8.83183526e-03-3.55251606e-01j, -5.10069889e-03-5.21066895e-01j,\n \
-      \      -1.41464771e-02-5.38323401e-01j,  2.42260390e-03-8.16748190e-01j,\n \
-      \       4.49687679e-02+2.68517170e-01j, -1.78853630e-02+7.82072975e-01j,\n \
-      \      -4.44448737e-03+4.96178030e-01j, -1.02738240e-02+4.81143615e-01j,\n \
-      \      -4.81582961e-03+3.17597516e-01j, -6.18209100e-03+2.63011491e-01j,\n \
-      \      -3.16653758e-03+1.61327366e-01j, -3.01959070e-03+1.15054664e-01j,\n \
-      \      -1.44674044e-03+6.17245262e-02j, -9.99648902e-04+3.55652006e-02j,\n \
-      \      -3.99929733e-04+1.49286935e-02j, -9.70523497e-05+4.64566966e-03j,\n \
-      \       4.45207677e-05+1.15474691e-04j,  1.16728796e-04-1.83264974e-03j,\n \
-      \       9.57920774e-05-1.59212307e-03j, -3.78999089e-06+4.47966583e-05j]"
+    value: '[-6.13e-05-1.22e-05j,
+
+      6.18e-04-2.02e-04j,
+
+      3.84e-03-2.43e-03j,
+
+      5.50e-03-3.87e-03j,
+
+      7.65e-03-5.51e-03j,
+
+      8.36e-03-6.47e-03j,
+
+      3.42e-03-3.78e-03j,
+
+      -7.81e-03+2.35e-03j,
+
+      -3.86e-02+2.21e-02j,
+
+      -8.12e-02+4.68e-02j,
+
+      -1.62e-01+9.94e-02j,
+
+      -2.48e-01+1.48e-01j,
+
+      -3.92e-01+2.43e-01j,
+
+      -5.04e-01+2.99e-01j,
+
+      -7.22e-01+4.49e-01j,
+
+      -6.65e-01+3.56e-01j,
+
+      7.83e-01-4.68e-01j,
+
+      6.76e-01-3.60e-01j,
+
+      5.19e-01-2.92e-01j,
+
+      3.70e-01-1.98e-01j,
+
+      2.48e-01-1.39e-01j,
+
+      1.48e-01-8.02e-02j,
+
+      7.74e-02-4.50e-02j,
+
+      3.09e-02-1.83e-02j,
+
+      4.68e-03-4.89e-03j,
+
+      -6.43e-03+1.92e-03j,
+
+      -9.85e-03+4.10e-03j,
+
+      -8.23e-03+3.73e-03j,
+
+      -5.86e-03+2.73e-03j,
+
+      -3.57e-03+1.94e-03j,
+
+      -1.81e-04+2.41e-04j,
+
+      ]'
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
     coordinate: [976, 185]
     rotation: 0
-    state: disabled
+    state: enabled
 - name: filtro_ecualizador_viejo
   id: variable
   parameters:
@@ -373,7 +420,7 @@ blocks:
     start: '-50000'
     step: '0.1'
     stop: '50000'
-    value: '0'
+    value: '19215.22'
     widget: counter
   states:
     bus_sink: false
@@ -505,7 +552,7 @@ blocks:
   id: variable
   parameters:
     comment: ''
-    value: int(25e6)
+    value: int(50e6)
   states:
     bus_sink: false
     bus_source: false
@@ -513,6 +560,48 @@ blocks:
     coordinate: [137, 116]
     rotation: 0
     state: enabled
+- name: var_rate_msg
+  id: variable_qtgui_range
+  parameters:
+    comment: ''
+    gui_hint: ''
+    label: ''
+    min_len: '200'
+    orient: Qt.Horizontal
+    rangeType: float
+    start: '0'
+    step: '1'
+    stop: '60000000'
+    value: '0'
+    widget: counter_slider
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [915, 947]
+    rotation: 0
+    state: disabled
+- name: var_rate_slider
+  id: variable_qtgui_range
+  parameters:
+    comment: ''
+    gui_hint: ''
+    label: Var Rate Slider
+    min_len: '200'
+    orient: Qt.Horizontal
+    rangeType: int
+    start: '16000000'
+    step: '100'
+    stop: '18000000'
+    value: '16000000'
+    widget: counter_slider
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [807, 944]
+    rotation: 0
+    state: disabled
 - name: FFT_autocorrelation_0_0
   id: FFT_autocorrelation
   parameters:
@@ -557,8 +646,8 @@ blocks:
     affinity: ''
     alias: ''
     comment: ''
-    fac_decimation: '1'
-    fft_size: fft_size
+    fac_decimation: '10'
+    fft_size: interpolatedHsize*Vsize*4
     maxoutbuf: '0'
     minoutbuf: '0'
   states:
@@ -567,7 +656,7 @@ blocks:
     bus_structure: null
     coordinate: [324, 728]
     rotation: 0
-    state: disabled
+    state: enabled
 - name: analog_sig_source_x_0_0
   id: analog_sig_source_x
   parameters:
@@ -605,7 +694,7 @@ blocks:
     bus_structure: null
     coordinate: [1059, 396]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: blocks_complex_to_mag_0
   id: blocks_complex_to_mag
   parameters:
@@ -619,7 +708,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1258, 724]
+    coordinate: [1257, 721]
     rotation: 0
     state: disabled
 - name: blocks_complex_to_real_0
@@ -656,7 +745,7 @@ blocks:
     bus_structure: null
     coordinate: [603, 554]
     rotation: 90
-    state: enabled
+    state: disabled
 - name: blocks_file_source_0
   id: blocks_file_source
   parameters:
@@ -711,7 +800,7 @@ blocks:
     bus_structure: null
     coordinate: [576, 374]
     rotation: 90
-    state: enabled
+    state: disabled
 - name: blocks_multiply_xx_0_0
   id: blocks_multiply_xx
   parameters:
@@ -778,7 +867,29 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [818, 292]
+    coordinate: [893, 610]
+    rotation: 0
+    state: enabled
+- name: qtgui_edit_box_msg_0
+  id: qtgui_edit_box_msg
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    gui_hint: ''
+    is_pair: 'True'
+    is_static: 'False'
+    key: '"rate"'
+    label: Rate Msg
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    type: int
+    value: '0'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [82, 969]
     rotation: 0
     state: disabled
 - name: qtgui_time_sink_x_0
@@ -877,7 +988,7 @@ blocks:
     bus_structure: null
     coordinate: [1341, 496]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: qtgui_time_sink_x_1
   id: qtgui_time_sink_x
   parameters:
@@ -1204,7 +1315,7 @@ blocks:
     bus_structure: null
     coordinate: [850, 392]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: tab_m
   id: qtgui_tab_widget
   parameters:
@@ -1278,6 +1389,20 @@ blocks:
     bus_source: false
     bus_structure: null
     coordinate: [680, 654]
+    rotation: 0
+    state: disabled
+- name: tempest_message_to_var_0
+  id: tempest_message_to_var
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    target: var_rate_msg
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [807, 899]
     rotation: 0
     state: disabled
 - name: tempest_normalize_flow_0
@@ -1463,8 +1588,8 @@ blocks:
     dc_offs_enb8: '""'
     dc_offs_enb9: '""'
     dev_addr: '""'
-    dev_args: '""'
-    gain0: '40'
+    dev_args: '"num_recv_frames=128"'
+    gain0: '50'
     gain1: '0'
     gain10: '0'
     gain11: '0'
@@ -1697,8 +1822,8 @@ blocks:
     alias: ''
     comment: "Enable this path when you are sure what the \nresolution is (and defaut\
       \ to those values on \nthe chooser)."
-    display_height: Vsize
-    display_width: Hsize
+    display_height: '806'
+    display_width: '1344'
     fps: '0'
     height: Vsize
     num_channels: '1'
@@ -1721,6 +1846,7 @@ connections:
 - [Keep_1_in_N_Frames_0, '0', FFT_crosscorrelation_0, '1']
 - [Keep_1_in_N_Frames_0, '0', blocks_delay_1, '0']
 - [Keep_1_in_N_Frames_0, '0', blocks_multiply_conjugate_cc_0, '0']
+- [Keep_1_in_N_Frames_0, '0', interp_fir_filter_xxx_1, '0']
 - [Keep_1_in_N_Frames_0, '0', tempest_fine_sampling_synchronization_0, '0']
 - [analog_sig_source_x_0_0, '0', blocks_multiply_xx_0_0, '1']
 - [blocks_complex_to_arg_0, '0', qtgui_time_sink_x_0, '0']
@@ -1732,23 +1858,27 @@ connections:
 - [blocks_multiply_conjugate_cc_0, '0', single_pole_iir_filter_xx_0, '0']
 - [blocks_multiply_xx_0_0, '0', blocks_complex_to_mag_0, '0']
 - [blocks_multiply_xx_0_0, '0', blocks_complex_to_real_0, '0']
+- [blocks_throttle_0, '0', FFT_autocorrelation_0_0, '0']
 - [blocks_throttle_0, '0', Keep_1_in_N_Frames_0, '0']
+- [blocks_throttle_0, '0', tempest_fine_sampling_synchronization_0, '0']
+- [interp_fir_filter_xxx_1, '0', blocks_multiply_xx_0_0, '0']
+- [qtgui_edit_box_msg_0, msg, uhd_usrp_source_0, command]
 - [ratio_finder_toggle_on_and_off, pressed, tempest_fft_peak_fine_sampling_sync_0_0,
   en]
 - [single_pole_iir_filter_xx_0, '0', blocks_complex_to_arg_0, '0']
 - [tempest_fft_peak_fine_sampling_sync_0_0, '0', qtgui_time_sink_x_1, '0']
+- [tempest_fft_peak_fine_sampling_sync_0_0, en, FFT_autocorrelation_0_0, en]
+- [tempest_fft_peak_fine_sampling_sync_0_0, en, tempest_fine_sampling_synchronization_0,
+  en]
+- [tempest_fft_peak_fine_sampling_sync_0_0, rate, tempest_message_to_var_0, port0]
 - [tempest_fft_peak_fine_sampling_sync_0_0, rate, uhd_usrp_source_0, command]
 - [tempest_fft_peak_fine_sampling_sync_0_0, ratio, tempest_fine_sampling_synchronization_0,
   ratio]
-- [tempest_fine_sampling_synchronization_0, '0', blocks_complex_to_mag_0, '0']
-- [tempest_fine_sampling_synchronization_0, '0', blocks_multiply_xx_0_0, '0']
+- [tempest_fine_sampling_synchronization_0, '0', interp_fir_filter_xxx_1, '0']
 - [tempest_normalize_flow_0, '0', blocks_float_to_short_0, '0']
-- [uhd_usrp_source_0, '0', FFT_autocorrelation_0_0, '0']
 - [uhd_usrp_source_0, '0', Keep_1_in_N_Frames_0, '0']
 - [uhd_usrp_source_0, '0', blocks_delay_1, '0']
 - [uhd_usrp_source_0, '0', blocks_multiply_conjugate_cc_0, '0']
-- [uhd_usrp_source_0, '0', blocks_multiply_xx_0_0, '0']
-- [uhd_usrp_source_0, '0', tempest_fine_sampling_synchronization_0, '0']
 
 metadata:
   file_format: 1

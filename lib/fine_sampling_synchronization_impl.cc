@@ -61,7 +61,7 @@ namespace gr {
             d_max_deviation = max_deviation;
             set_Htotal_Vtotal(Htotal, Vtotal);
 
-            d_alpha_samp_inc = 1e-3;
+            d_alpha_samp_inc = 1e-1;
             
             d_samp_phase = 0; 
             d_alpha_corr = 1e-6; 
@@ -166,7 +166,7 @@ namespace gr {
 
             if (pmt::is_bool(msg)) {
                 bool en = pmt::to_bool(msg);
-                //gr::thread::scoped_lock l(d_mutex);
+                gr::thread::scoped_lock l(d_mutex);
                 d_stop_fine_sampling_synch = !en;
                 printf("Fine Samp Received Sampling Stop.\n");
             } else {
@@ -185,9 +185,8 @@ namespace gr {
                 pmt::pmt_t val = pmt::cdr(msg);
                 if(pmt::eq(key, pmt::string_to_symbol("ratio"))) {
                     if(pmt::is_number(val)) {
-                        
                         d_new_interpolation_ratio_rem = (double)pmt::to_double(val);
-                        //printf("Fine sampling: interpolation ratio received = %f \n", d_new_interpolation_ratio_rem);
+                        printf("Fine sampling: interpolation ratio received = %f \n", d_new_interpolation_ratio_rem);
                     }
                 }
             }
@@ -305,11 +304,8 @@ namespace gr {
             {
                 const gr_complex *in = (const gr_complex *) input_items[0];
                 gr_complex *out = (gr_complex *) output_items[0];
-
-
                 //if(d_dist(d_gen)<d_proba_of_updating){
                 //d_next_update -= noutput_items;
-                //gr::thread::scoped_lock l(d_mutex);
                 /*if(d_next_update <= 0 && d_stop_fine_sampling_synch==0){
 
                     estimate_peak_line_index(in, noutput_items);
@@ -323,26 +319,18 @@ namespace gr {
                     printf("\b\b\b\b\b\b\b\b Update \t");
 
                 }*/
+                gr::thread::scoped_lock l(d_mutex);
                 int required_for_interpolation = noutput_items; 
-                //printf("Fine sampling: interpolation ratio received = %f \n",d_new_interpolation_ratio_rem);
-                //printf("d_next_update: %i\n",d_next_update);
-                if (d_correct_sampling){
+                if (d_correct_sampling ){
                     d_samp_inc_rem = (1-d_alpha_samp_inc)*d_samp_inc_rem + d_alpha_samp_inc*d_new_interpolation_ratio_rem;
-                    // d_samp_inc_rem = d_samp_inc_rem - d_alpha_samp_inc*(d_samp_inc_rem+1 - new_interpolation_ratio);
                     required_for_interpolation = interpolate_input(&in[0], &out[0], noutput_items);
+                    consume_each (required_for_interpolation);
                 }
                 else
                 {
                     memcpy(&out[0], &in[0], noutput_items*sizeof(gr_complex));
+                    consume_each (noutput_items);
                 }
-
-                //memcpy(out, in, noutput_items*sizeof(gr_complex));
-
-                // Tell runtime system how many input items we consumed on
-                // each input stream.
-                consume_each (required_for_interpolation);
-
-                // Tell runtime system how many output items we produced.
                 return noutput_items;
             }
 
