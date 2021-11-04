@@ -65,6 +65,9 @@ namespace gr {
       int d_frame_height_counter; 
       int d_blanking_wait_counter; 
       int d_output_counter;
+
+      // Control flag, and its mutex
+      gr::thread::mutex d_mutex;
       bool d_start_sync_detect;   
 
       //Arrays

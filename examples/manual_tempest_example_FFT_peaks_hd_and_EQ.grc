@@ -560,48 +560,6 @@ blocks:
     coordinate: [137, 116]
     rotation: 0
     state: enabled
-- name: var_rate_msg
-  id: variable_qtgui_range
-  parameters:
-    comment: ''
-    gui_hint: ''
-    label: ''
-    min_len: '200'
-    orient: Qt.Horizontal
-    rangeType: float
-    start: '0'
-    step: '1'
-    stop: '60000000'
-    value: '0'
-    widget: counter_slider
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [915, 947]
-    rotation: 0
-    state: disabled
-- name: var_rate_slider
-  id: variable_qtgui_range
-  parameters:
-    comment: ''
-    gui_hint: ''
-    label: Var Rate Slider
-    min_len: '200'
-    orient: Qt.Horizontal
-    rangeType: int
-    start: '16000000'
-    step: '100'
-    stop: '18000000'
-    value: '16000000'
-    widget: counter_slider
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [807, 944]
-    rotation: 0
-    state: disabled
 - name: FFT_autocorrelation_0_0
   id: FFT_autocorrelation
   parameters:
@@ -637,7 +595,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [350, 1048]
+    coordinate: [230, 1043]
     rotation: 270
     state: disabled
 - name: Keep_1_in_N_Frames_0
@@ -646,7 +604,7 @@ blocks:
     affinity: ''
     alias: ''
     comment: ''
-    fac_decimation: '10'
+    fac_decimation: '16'
     fft_size: interpolatedHsize*Vsize*4
     maxoutbuf: '0'
     minoutbuf: '0'
@@ -654,7 +612,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [324, 728]
+    coordinate: [353, 768]
     rotation: 0
     state: enabled
 - name: analog_sig_source_x_0_0
@@ -708,7 +666,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1257, 721]
+    coordinate: [1268, 780]
     rotation: 0
     state: disabled
 - name: blocks_complex_to_real_0
@@ -782,7 +740,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1407, 988]
+    coordinate: [1418, 1047]
     rotation: 270
     state: enabled
 - name: blocks_multiply_conjugate_cc_0
@@ -816,7 +774,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1050, 682]
+    coordinate: [985, 650]
     rotation: 0
     state: enabled
 - name: blocks_throttle_0
@@ -867,7 +825,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [893, 610]
+    coordinate: [1094, 693]
     rotation: 0
     state: enabled
 - name: qtgui_edit_box_msg_0
@@ -1083,7 +1041,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [645, 796]
+    coordinate: [737, 891]
     rotation: 90
     state: enabled
 - name: qtgui_time_sink_x_1_0
@@ -1180,7 +1138,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [199, 1206]
+    coordinate: [79, 1201]
     rotation: 180
     state: disabled
 - name: qtgui_time_sink_x_1_0_0
@@ -1279,7 +1237,7 @@ blocks:
     bus_structure: null
     coordinate: [357, 1261]
     rotation: 180
-    state: enabled
+    state: disabled
 - name: ratio_finder_toggle_on_and_off
   id: variable_qtgui_msg_push_button
   parameters:
@@ -1368,7 +1326,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [576, 1018]
+    coordinate: [584, 1065]
     rotation: 90
     state: enabled
 - name: tempest_fine_sampling_synchronization_0
@@ -1388,21 +1346,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [680, 654]
-    rotation: 0
-    state: disabled
-- name: tempest_message_to_var_0
-  id: tempest_message_to_var
-  parameters:
-    affinity: ''
-    alias: ''
-    comment: ''
-    target: var_rate_msg
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [807, 899]
+    coordinate: [696, 693]
     rotation: 0
     state: disabled
 - name: tempest_normalize_flow_0
@@ -1422,7 +1366,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1383, 809]
+    coordinate: [1394, 868]
     rotation: 270
     state: enabled
 - name: tempest_sync_detector_0
@@ -1441,7 +1385,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [884, 717]
+    coordinate: [1240, 855]
     rotation: 0
     state: disabled
 - name: uhd_usrp_source_0
@@ -1588,8 +1532,8 @@ blocks:
     dc_offs_enb8: '""'
     dc_offs_enb9: '""'
     dev_addr: '""'
-    dev_args: '"num_recv_frames=128"'
-    gain0: '50'
+    dev_args: '"recv_frame_size=65536,num_recv_frames=128"'
+    gain0: '40'
     gain1: '0'
     gain10: '0'
     gain11: '0'
@@ -1812,7 +1756,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [64, 733]
+    coordinate: [157, 828]
     rotation: 0
     state: enabled
 - name: video_sdl_sink_0_0_0
@@ -1833,7 +1777,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1383, 1133]
+    coordinate: [1394, 1192]
     rotation: 270
     state: enabled
 
@@ -1841,12 +1785,11 @@ connections:
 - [FFT_autocorrelation_0_0, '0', qtgui_time_sink_x_1_0_0, '0']
 - [FFT_autocorrelation_0_0, '0', tempest_fft_peak_fine_sampling_sync_0_0, '0']
 - [FFT_crosscorrelation_0, '0', qtgui_time_sink_x_1_0, '0']
-- [Keep_1_in_N_Frames_0, '0', FFT_autocorrelation_0_0, '0']
 - [Keep_1_in_N_Frames_0, '0', FFT_crosscorrelation_0, '0']
 - [Keep_1_in_N_Frames_0, '0', FFT_crosscorrelation_0, '1']
 - [Keep_1_in_N_Frames_0, '0', blocks_delay_1, '0']
 - [Keep_1_in_N_Frames_0, '0', blocks_multiply_conjugate_cc_0, '0']
-- [Keep_1_in_N_Frames_0, '0', interp_fir_filter_xxx_1, '0']
+- [Keep_1_in_N_Frames_0, '0', blocks_multiply_xx_0_0, '0']
 - [Keep_1_in_N_Frames_0, '0', tempest_fine_sampling_synchronization_0, '0']
 - [analog_sig_source_x_0_0, '0', blocks_multiply_xx_0_0, '1']
 - [blocks_complex_to_arg_0, '0', qtgui_time_sink_x_0, '0']
@@ -1856,12 +1799,12 @@ connections:
 - [blocks_file_source_0, '0', blocks_throttle_0, '0']
 - [blocks_float_to_short_0, '0', video_sdl_sink_0_0_0, '0']
 - [blocks_multiply_conjugate_cc_0, '0', single_pole_iir_filter_xx_0, '0']
-- [blocks_multiply_xx_0_0, '0', blocks_complex_to_mag_0, '0']
-- [blocks_multiply_xx_0_0, '0', blocks_complex_to_real_0, '0']
-- [blocks_throttle_0, '0', FFT_autocorrelation_0_0, '0']
+- [blocks_multiply_xx_0_0, '0', interp_fir_filter_xxx_1, '0']
 - [blocks_throttle_0, '0', Keep_1_in_N_Frames_0, '0']
 - [blocks_throttle_0, '0', tempest_fine_sampling_synchronization_0, '0']
-- [interp_fir_filter_xxx_1, '0', blocks_multiply_xx_0_0, '0']
+- [interp_fir_filter_xxx_1, '0', blocks_complex_to_mag_0, '0']
+- [interp_fir_filter_xxx_1, '0', blocks_complex_to_real_0, '0']
+- [interp_fir_filter_xxx_1, '0', tempest_sync_detector_0, '0']
 - [qtgui_edit_box_msg_0, msg, uhd_usrp_source_0, command]
 - [ratio_finder_toggle_on_and_off, pressed, tempest_fft_peak_fine_sampling_sync_0_0,
   en]
@@ -1870,15 +1813,12 @@ connections:
 - [tempest_fft_peak_fine_sampling_sync_0_0, en, FFT_autocorrelation_0_0, en]
 - [tempest_fft_peak_fine_sampling_sync_0_0, en, tempest_fine_sampling_synchronization_0,
   en]
-- [tempest_fft_peak_fine_sampling_sync_0_0, rate, tempest_message_to_var_0, port0]
+- [tempest_fft_peak_fine_sampling_sync_0_0, en, tempest_sync_detector_0, en]
 - [tempest_fft_peak_fine_sampling_sync_0_0, rate, uhd_usrp_source_0, command]
-- [tempest_fft_peak_fine_sampling_sync_0_0, ratio, tempest_fine_sampling_synchronization_0,
-  ratio]
-- [tempest_fine_sampling_synchronization_0, '0', interp_fir_filter_xxx_1, '0']
 - [tempest_normalize_flow_0, '0', blocks_float_to_short_0, '0']
+- [tempest_sync_detector_0, '0', blocks_complex_to_real_0, '0']
+- [uhd_usrp_source_0, '0', FFT_autocorrelation_0_0, '0']
 - [uhd_usrp_source_0, '0', Keep_1_in_N_Frames_0, '0']
-- [uhd_usrp_source_0, '0', blocks_delay_1, '0']
-- [uhd_usrp_source_0, '0', blocks_multiply_conjugate_cc_0, '0']
 
 metadata:
   file_format: 1

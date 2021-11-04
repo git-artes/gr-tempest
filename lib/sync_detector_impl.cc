@@ -301,6 +301,7 @@ namespace gr {
     void 
     sync_detector_impl::set_ena_msg(pmt::pmt_t msg)
     {
+        gr::thread::scoped_lock l(d_mutex);
         if (pmt::is_bool(msg)) {
             bool en = pmt::to_bool(msg);
             d_start_sync_detect = !en;
@@ -332,6 +333,8 @@ namespace gr {
       
       int delta_h, consumed = 0, out_amount = 0;
 
+      gr::thread::scoped_lock l(d_mutex);
+      
       if (d_start_sync_detect==0){
 
         for (int i=0; i<noutput_items; i++){

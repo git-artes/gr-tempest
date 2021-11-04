@@ -47,9 +47,6 @@ outputs:
 - label: ratio
   domain: message
   optional: true
-- label: smpl
-  domain: message
-  optional: true
 - label: rate
   domain: message
   optional: true
