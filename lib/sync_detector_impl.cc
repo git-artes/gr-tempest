@@ -108,8 +108,8 @@ namespace gr {
       //Complete lines per call to the block will be generated
       set_output_multiple(2*d_Htotal);
       
-      const int alignment_multiple = volk_get_alignment() / sizeof(gr_complex);
-      set_alignment(std::max(1, alignment_multiple));
+      // const int alignment_multiple = volk_get_alignment() / sizeof(gr_complex);
+      // set_alignment(std::max(1, alignment_multiple));
     }
 
     /*
@@ -336,98 +336,96 @@ namespace gr {
       gr::thread::scoped_lock l(d_mutex);
       
       if (d_start_sync_detect==0){
-
-        for (int i=0; i<noutput_items; i++){
-          out[i]=in[i];
-        }
-        out_amount=noutput_items;
-        consumed=noutput_items;
+          memcpy(out,in,noutput_items*sizeof(float));
+          out_amount=noutput_items;
+          consumed=noutput_items;
 
       } else {
 
-        for (int line = 0; line < noutput_items/d_Htotal; line++) { 
-   
-          volk_32fc_magnitude_32f(&d_data_h[0], &in[line*d_Htotal], d_Htotal);
+          for (int line = 0; line < noutput_items/d_Htotal; line++) { 
+     
+            volk_32fc_magnitude_32f(&d_data_h[0], &in[line*d_Htotal], d_Htotal);
 
-          //From an horizontal line, we obtain the partial value of all elements of the
-          //horizontal average and the full value of a single element of the vertical average
-          for (int i=0 ;   (i < d_Htotal)  ; i++)
-          {
-                d_avg_h_line[i] = d_avg_h_line[i] + (d_data_h[i]/(d_Vtotal));    
-                d_avg_v_line[d_frame_height_counter] += (d_data_h[i]/(d_Htotal));
-          }
-
-          d_frame_height_counter ++;
-
-          //When a complete frame is evaluated we have full averages and are ready to find the shift
-          if(d_frame_height_counter % d_Vtotal == 0)
-            d_frame_average_complete = 1;
-
-          if(d_frame_average_complete)
-          {
-            //Finding the position that maximizes beta both horizontally and vertically for the frame
-            find_shift (&d_blanking_index_h, &d_blanking_size_h,  d_avg_h_line, d_Htotal, d_Htotal*0.05f, d_LOWPASS_COEFF_H);
-            find_shift (&d_blanking_index_v, &d_blanking_size_v,  d_avg_v_line, d_Vtotal, d_Vtotal*0.005f, d_LOWPASS_COEFF_V);          
-
-            //As the information is used, we set up the variables to receive the next frame
-            d_frame_average_complete = 0;
-            d_frame_height_counter = 0;
-            d_blanking_wait_counter = 0;
-
-            for (int i=0; (i<d_Htotal); i++)
+            //From an horizontal line, we obtain the partial value of all elements of the
+            //horizontal average and the full value of a single element of the vertical average
+            for (int i=0 ;   (i < d_Htotal)  ; i++)
             {
-                   d_avg_h_line[i] = 0;
-            }
-            for (int i=0; (i<d_Vtotal); i++)
-            {
-                   d_avg_v_line[i] = 0;
+                  d_avg_h_line[i] = d_avg_h_line[i] + (d_data_h[i]/(d_Vtotal));    
+                  d_avg_v_line[d_frame_height_counter] += (d_data_h[i]/(d_Htotal));
             }
 
-            //Pass on to the state where the next frame's display is given by the found shifts
-            d_frame_wait_for_blanking = 1;
-          }
+            d_frame_height_counter ++;
 
-          if (d_frame_wait_for_blanking)
-          { 
-            //Begin the search for the line that provides the vertical shift found
-            d_blanking_wait_counter++;
+            //When a complete frame is evaluated we have full averages and are ready to find the shift
+            if(d_frame_height_counter % d_Vtotal == 0)
+              d_frame_average_complete = 1;
 
-            if(d_blanking_wait_counter == d_blanking_index_v)
+            if(d_frame_average_complete)
             {
-              //When found, first reset variables
-              d_frame_wait_for_blanking = 0;
-           
-              //Consume horizontally according to the shift
-              delta_h = d_blanking_index_h - d_working_index_h;
-              consumed += delta_h;
-              d_working_index_h = d_blanking_index_h;
-              
-              //If the vertical shift has been made and we are not yet printing, we begin
-              if (d_frame_output == 0) 
-              {
-                d_frame_output = 1;
-              } 
+              //Finding the position that maximizes beta both horizontally and vertically for the frame
+              find_shift (&d_blanking_index_h, &d_blanking_size_h,  d_avg_h_line, d_Htotal, d_Htotal*0.05f, d_LOWPASS_COEFF_H);
+              find_shift (&d_blanking_index_v, &d_blanking_size_v,  d_avg_v_line, d_Vtotal, d_Vtotal*0.005f, d_LOWPASS_COEFF_V);          
+
+              //As the information is used, we set up the variables to receive the next frame
+              d_frame_average_complete = 0;
+              d_frame_height_counter = 0;
               d_blanking_wait_counter = 0;
+
+              for (int i=0; (i<d_Htotal); i++)
+              {
+                     d_avg_h_line[i] = 0;
+              }
+              for (int i=0; (i<d_Vtotal); i++)
+              {
+                     d_avg_v_line[i] = 0;
+              }
+
+              //Pass on to the state where the next frame's display is given by the found shifts
+              d_frame_wait_for_blanking = 1;
             }
+
+            if (d_frame_wait_for_blanking)
+            { 
+              //Begin the search for the line that provides the vertical shift found
+              d_blanking_wait_counter++;
+
+              if(d_blanking_wait_counter == d_blanking_index_v)
+              {
+                //When found, first reset variables
+                d_frame_wait_for_blanking = 0;
+             
+                //Consume horizontally according to the shift
+                delta_h = d_blanking_index_h - d_working_index_h;
+                consumed += delta_h;
+                d_working_index_h = d_blanking_index_h;
+                
+                //If the vertical shift has been made and we are not yet printing, we begin
+                if (d_frame_output == 0) 
+                {
+                  d_frame_output = 1;
+                } 
+                d_blanking_wait_counter = 0;
+              }
+            }
+
+            if (d_frame_output)
+            { 
+              //If we are allowed, print a full line beginning at the horizontal shift found
+              //It is worth noticing that a full frame is always printed with the same shift
+              memcpy(&out[line*d_Htotal], &in[line*d_Htotal + d_working_index_h], d_Htotal*sizeof(gr_complex));
+              out_amount = out_amount + d_Htotal;
+              d_output_counter++;
+
+              //After a full frame, printing is disabled to allow further vertical sync
+              if (d_output_counter == d_Vtotal) {
+                d_frame_output = 0;
+                d_output_counter = 0;
+              }
+            }
+            //Consuming the regular amount since odd cases have already been considered
+            consumed += d_Htotal;
           }
 
-          if (d_frame_output)
-          { 
-            //If we are allowed, print a full line beginning at the horizontal shift found
-            //It is worth noticing that a full frame is always printed with the same shift
-            memcpy(&out[line*d_Htotal], &in[line*d_Htotal + d_working_index_h], d_Htotal*sizeof(gr_complex));
-            out_amount = out_amount + d_Htotal;
-            d_output_counter++;
-
-            //After a full frame, printing is disabled to allow further vertical sync
-            if (d_output_counter == d_Vtotal) {
-              d_frame_output = 0;
-              d_output_counter = 0;
-            }
-          }
-          //Consuming the regular amount since odd cases have already been considered
-          consumed += d_Htotal;
-        }
       }
 
       consume_each (consumed);

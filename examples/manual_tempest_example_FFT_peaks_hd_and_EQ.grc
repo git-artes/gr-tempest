@@ -15,7 +15,7 @@ options:
     output_language: python
     placement: (0,0)
     qt_qss_theme: ''
-    realtime_scheduling: ''
+    realtime_scheduling: '1'
     run: 'True'
     run_command: '{python} -u {filename}'
     run_options: prompt
@@ -50,7 +50,28 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [998, 572]
+    coordinate: [945, 905]
+    rotation: 0
+    state: enabled
+- name: DroppedFrames
+  id: variable_qtgui_range
+  parameters:
+    comment: ''
+    gui_hint: ''
+    label: ''
+    min_len: '200'
+    orient: Qt.Horizontal
+    rangeType: float
+    start: '0'
+    step: '1'
+    stop: '100'
+    value: '50'
+    widget: counter_slider
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [342, 931]
     rotation: 0
     state: true
 - name: Hblank
@@ -597,35 +618,16 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [457, 1048]
+    coordinate: [199, 1132]
     rotation: 270
     state: enabled
-- name: FFT_crosscorrelation_0
-  id: FFT_crosscorrelation
-  parameters:
-    affinity: ''
-    alias: ''
-    comment: ''
-    delay_samples: interpolatedHsize*Vsize-1000
-    fac_decimation: '1'
-    fft_size: 2**21
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    sample_rate: samp_rate
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [230, 1043]
-    rotation: 270
-    state: disabled
 - name: Keep_1_in_N_Frames_0
   id: Keep_1_in_N_Frames
   parameters:
     affinity: ''
     alias: ''
     comment: ''
-    fac_decimation: '16'
+    fac_decimation: DroppedFrames
     fft_size: interpolatedHsize*Vsize*4
     maxoutbuf: '0'
     minoutbuf: '0'
@@ -633,9 +635,9 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [353, 768]
+    coordinate: [349, 773]
     rotation: 0
-    state: bypassed
+    state: enabled
 - name: analog_sig_source_x_0_0
   id: analog_sig_source_x
   parameters:
@@ -655,8 +657,8 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1058, 785]
-    rotation: 180
+    coordinate: [743, 597]
+    rotation: 0
     state: enabled
 - name: blocks_complex_to_arg_0
   id: blocks_complex_to_arg
@@ -687,7 +689,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1268, 780]
+    coordinate: [1177, 840]
     rotation: 0
     state: disabled
 - name: blocks_complex_to_real_0
@@ -703,7 +705,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1257, 652]
+    coordinate: [1449, 584]
     rotation: 0
     state: enabled
 - name: blocks_delay_0
@@ -722,9 +724,28 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [803, 800]
+    coordinate: [712, 768]
     rotation: 0
-    state: true
+    state: enabled
+- name: blocks_delay_0_0
+  id: blocks_delay
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    delay: DelaySyncDetector
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    num_ports: '1'
+    type: complex
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [940, 838]
+    rotation: 0
+    state: disabled
 - name: blocks_delay_1
   id: blocks_delay
   parameters:
@@ -814,7 +835,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [985, 650]
+    coordinate: [1045, 580]
     rotation: 0
     state: enabled
 - name: blocks_throttle_0
@@ -865,31 +886,9 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [743, 499]
+    coordinate: [751, 527]
     rotation: 0
     state: enabled
-- name: qtgui_edit_box_msg_0
-  id: qtgui_edit_box_msg
-  parameters:
-    affinity: ''
-    alias: ''
-    comment: ''
-    gui_hint: ''
-    is_pair: 'True'
-    is_static: 'False'
-    key: '"rate"'
-    label: Rate Msg
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    type: int
-    value: '0'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [82, 969]
-    rotation: 0
-    state: disabled
 - name: qtgui_time_sink_x_0
   id: qtgui_time_sink_x
   parameters:
@@ -1084,200 +1083,6 @@ blocks:
     coordinate: [737, 891]
     rotation: 90
     state: enabled
-- name: qtgui_time_sink_x_1_0
-  id: qtgui_time_sink_x
-  parameters:
-    affinity: ''
-    alias: ''
-    alpha1: '1.0'
-    alpha10: '1.0'
-    alpha2: '1.0'
-    alpha3: '1.0'
-    alpha4: '1.0'
-    alpha5: '1.0'
-    alpha6: '1.0'
-    alpha7: '1.0'
-    alpha8: '1.0'
-    alpha9: '1.0'
-    autoscale: 'False'
-    axislabels: 'True'
-    color1: blue
-    color10: dark blue
-    color2: red
-    color3: green
-    color4: black
-    color5: cyan
-    color6: magenta
-    color7: yellow
-    color8: dark red
-    color9: dark green
-    comment: ''
-    ctrlpanel: 'False'
-    entags: 'True'
-    grid: 'False'
-    gui_hint: tab_m@0
-    label1: Signal 1
-    label10: Signal 10
-    label2: Signal 2
-    label3: Signal 3
-    label4: Signal 4
-    label5: Signal 5
-    label6: Signal 6
-    label7: Signal 7
-    label8: Signal 8
-    label9: Signal 9
-    legend: 'True'
-    marker1: '-1'
-    marker10: '-1'
-    marker2: '-1'
-    marker3: '-1'
-    marker4: '-1'
-    marker5: '-1'
-    marker6: '-1'
-    marker7: '-1'
-    marker8: '-1'
-    marker9: '-1'
-    name: '""'
-    nconnections: '1'
-    size: int(fft_size/2)
-    srate: samp_rate
-    stemplot: 'False'
-    style1: '1'
-    style10: '1'
-    style2: '1'
-    style3: '1'
-    style4: '1'
-    style5: '1'
-    style6: '1'
-    style7: '1'
-    style8: '1'
-    style9: '1'
-    tr_chan: '0'
-    tr_delay: '0'
-    tr_level: '0.0'
-    tr_mode: qtgui.TRIG_MODE_FREE
-    tr_slope: qtgui.TRIG_SLOPE_POS
-    tr_tag: '"peak_1"'
-    type: float
-    update_time: '1.0'
-    width1: '1'
-    width10: '1'
-    width2: '1'
-    width3: '1'
-    width4: '1'
-    width5: '1'
-    width6: '1'
-    width7: '1'
-    width8: '1'
-    width9: '1'
-    ylabel: CrossCorrelation
-    ymax: '1'
-    ymin: '-1'
-    yunit: '""'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [79, 1201]
-    rotation: 180
-    state: disabled
-- name: qtgui_time_sink_x_1_0_0
-  id: qtgui_time_sink_x
-  parameters:
-    affinity: ''
-    alias: ''
-    alpha1: '1.0'
-    alpha10: '1.0'
-    alpha2: '1.0'
-    alpha3: '1.0'
-    alpha4: '1.0'
-    alpha5: '1.0'
-    alpha6: '1.0'
-    alpha7: '1.0'
-    alpha8: '1.0'
-    alpha9: '1.0'
-    autoscale: 'False'
-    axislabels: 'True'
-    color1: blue
-    color10: dark blue
-    color2: red
-    color3: green
-    color4: black
-    color5: cyan
-    color6: magenta
-    color7: yellow
-    color8: dark red
-    color9: dark green
-    comment: ''
-    ctrlpanel: 'False'
-    entags: 'True'
-    grid: 'False'
-    gui_hint: tab_m@0
-    label1: Signal 1
-    label10: Signal 10
-    label2: Signal 2
-    label3: Signal 3
-    label4: Signal 4
-    label5: Signal 5
-    label6: Signal 6
-    label7: Signal 7
-    label8: Signal 8
-    label9: Signal 9
-    legend: 'True'
-    marker1: '-1'
-    marker10: '-1'
-    marker2: '-1'
-    marker3: '-1'
-    marker4: '-1'
-    marker5: '-1'
-    marker6: '-1'
-    marker7: '-1'
-    marker8: '-1'
-    marker9: '-1'
-    name: '""'
-    nconnections: '1'
-    size: int(fft_size/2)
-    srate: samp_rate
-    stemplot: 'False'
-    style1: '1'
-    style10: '1'
-    style2: '1'
-    style3: '1'
-    style4: '1'
-    style5: '1'
-    style6: '1'
-    style7: '1'
-    style8: '1'
-    style9: '1'
-    tr_chan: '0'
-    tr_delay: '0'
-    tr_level: '0.0'
-    tr_mode: qtgui.TRIG_MODE_FREE
-    tr_slope: qtgui.TRIG_SLOPE_POS
-    tr_tag: '"peak_1"'
-    type: float
-    update_time: '0.1'
-    width1: '1'
-    width10: '1'
-    width2: '1'
-    width3: '1'
-    width4: '1'
-    width5: '1'
-    width6: '1'
-    width7: '1'
-    width8: '1'
-    width9: '1'
-    ylabel: AutoCorrelation
-    ymax: '1'
-    ymin: '-1'
-    yunit: '""'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [357, 1261]
-    rotation: 180
-    state: disabled
 - name: ratio_finder_toggle_on_and_off
   id: variable_qtgui_msg_push_button
   parameters:
@@ -1293,7 +1098,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [802, 1199]
+    coordinate: [544, 1283]
     rotation: 180
     state: enabled
 - name: single_pole_iir_filter_xx_0
@@ -1366,7 +1171,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [584, 1065]
+    coordinate: [326, 1149]
     rotation: 90
     state: enabled
 - name: tempest_fine_sampling_synchronization_0
@@ -1386,7 +1191,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [696, 693]
+    coordinate: [645, 791]
     rotation: 0
     state: disabled
 - name: tempest_normalize_flow_0
@@ -1425,9 +1230,28 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [659, 780]
+    coordinate: [618, 696]
     rotation: 0
     state: enabled
+- name: tempest_sync_detector_0_0
+  id: tempest_sync_detector
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    hblanking: interpolatedHblank
+    hscreen: interpolatedHscreen
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    vblanking: Vblank
+    vscreen: Vsize-Vblank
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [581, 831]
+    rotation: 0
+    state: disabled
 - name: uhd_usrp_source_0
   id: uhd_usrp_source
   parameters:
@@ -1822,29 +1646,25 @@ blocks:
     state: enabled
 
 connections:
-- [FFT_autocorrelation_0_0, '0', qtgui_time_sink_x_1_0_0, '0']
 - [FFT_autocorrelation_0_0, '0', tempest_fft_peak_fine_sampling_sync_0_0, '0']
-- [FFT_crosscorrelation_0, '0', qtgui_time_sink_x_1_0, '0']
-- [Keep_1_in_N_Frames_0, '0', FFT_crosscorrelation_0, '0']
-- [Keep_1_in_N_Frames_0, '0', FFT_crosscorrelation_0, '1']
 - [Keep_1_in_N_Frames_0, '0', blocks_delay_1, '0']
 - [Keep_1_in_N_Frames_0, '0', blocks_multiply_conjugate_cc_0, '0']
 - [Keep_1_in_N_Frames_0, '0', tempest_fine_sampling_synchronization_0, '0']
 - [Keep_1_in_N_Frames_0, '0', tempest_sync_detector_0, '0']
+- [Keep_1_in_N_Frames_0, '0', tempest_sync_detector_0_0, '0']
 - [analog_sig_source_x_0_0, '0', blocks_multiply_xx_0_0, '1']
 - [blocks_complex_to_arg_0, '0', qtgui_time_sink_x_0, '0']
 - [blocks_complex_to_mag_0, '0', tempest_normalize_flow_0, '0']
 - [blocks_complex_to_real_0, '0', tempest_normalize_flow_0, '0']
 - [blocks_delay_0, '0', interp_fir_filter_xxx_1, '0']
+- [blocks_delay_0_0, '0', blocks_complex_to_mag_0, '0']
 - [blocks_delay_1, '0', blocks_multiply_conjugate_cc_0, '1']
 - [blocks_file_source_0, '0', blocks_throttle_0, '0']
 - [blocks_float_to_short_0, '0', video_sdl_sink_0_0_0, '0']
 - [blocks_multiply_conjugate_cc_0, '0', single_pole_iir_filter_xx_0, '0']
 - [blocks_multiply_xx_0_0, '0', blocks_complex_to_real_0, '0']
 - [blocks_throttle_0, '0', Keep_1_in_N_Frames_0, '0']
-- [blocks_throttle_0, '0', tempest_fine_sampling_synchronization_0, '0']
 - [interp_fir_filter_xxx_1, '0', blocks_multiply_xx_0_0, '0']
-- [qtgui_edit_box_msg_0, msg, uhd_usrp_source_0, command]
 - [ratio_finder_toggle_on_and_off, pressed, tempest_fft_peak_fine_sampling_sync_0_0,
   en]
 - [single_pole_iir_filter_xx_0, '0', blocks_complex_to_arg_0, '0']
@@ -1853,10 +1673,11 @@ connections:
 - [tempest_fft_peak_fine_sampling_sync_0_0, en, tempest_fine_sampling_synchronization_0,
   en]
 - [tempest_fft_peak_fine_sampling_sync_0_0, en, tempest_sync_detector_0, en]
+- [tempest_fft_peak_fine_sampling_sync_0_0, en, tempest_sync_detector_0_0, en]
 - [tempest_fft_peak_fine_sampling_sync_0_0, rate, uhd_usrp_source_0, command]
 - [tempest_normalize_flow_0, '0', blocks_float_to_short_0, '0']
-- [tempest_sync_detector_0, '0', blocks_complex_to_mag_0, '0']
 - [tempest_sync_detector_0, '0', blocks_delay_0, '0']
+- [tempest_sync_detector_0_0, '0', blocks_delay_0_0, '0']
 - [uhd_usrp_source_0, '0', FFT_autocorrelation_0_0, '0']
 - [uhd_usrp_source_0, '0', Keep_1_in_N_Frames_0, '0']
 
