@@ -283,7 +283,7 @@ namespace gr {
       const int half_line_size = total_line_size / 2;
 
       //Here is defined what would be the shift location (position found plus half of the blanking)
-      int raw_index = (beta_index + (d_hblanking) /2) % total_line_size;
+      int raw_index = (beta_index + (*blanking_size) /2) % total_line_size;
 
       //Checking if the new shift differs excessively from the previous one
       const int raw_diff = raw_index - *blanking_index;
@@ -364,7 +364,7 @@ namespace gr {
             {
               //Finding the position that maximizes beta both horizontally and vertically for the frame
               find_shift (&d_blanking_index_h, &d_blanking_size_h,  d_avg_h_line, d_Htotal, d_Htotal*0.05f, d_LOWPASS_COEFF_H);
-              find_shift (&d_blanking_index_v, &d_blanking_size_v,  d_avg_v_line, d_Vtotal, d_Vtotal*0.005f, d_LOWPASS_COEFF_V);          
+              find_shift (&d_blanking_index_v, &d_blanking_size_v,  d_avg_v_line, d_Vtotal, d_Vtotal*0.0005f, d_LOWPASS_COEFF_V);          
 
               //As the information is used, we set up the variables to receive the next frame
               d_frame_average_complete = 0;

@@ -50,7 +50,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [945, 905]
+    coordinate: [932, 1064]
     rotation: 0
     state: enabled
 - name: DroppedFrames
@@ -71,7 +71,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [342, 931]
+    coordinate: [291, 831]
     rotation: 0
     state: true
 - name: Hblank
@@ -609,16 +609,14 @@ blocks:
     alias: ''
     alpha: '1.0'
     comment: ''
-    fac_decimation: '10'
     fft_size: int(fft_size)
     maxoutbuf: '0'
     minoutbuf: '0'
-    sample_rate: samp_rate
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [199, 1132]
+    coordinate: [242, 1191]
     rotation: 270
     state: enabled
 - name: Keep_1_in_N_Frames_0
@@ -657,7 +655,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [743, 597]
+    coordinate: [937, 705]
     rotation: 0
     state: enabled
 - name: blocks_complex_to_arg_0
@@ -689,7 +687,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1177, 840]
+    coordinate: [1174, 908]
     rotation: 0
     state: disabled
 - name: blocks_complex_to_real_0
@@ -705,7 +703,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1449, 584]
+    coordinate: [1168, 637]
     rotation: 0
     state: enabled
 - name: blocks_delay_0
@@ -724,7 +722,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [712, 768]
+    coordinate: [820, 680]
     rotation: 0
     state: enabled
 - name: blocks_delay_0_0
@@ -743,7 +741,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [940, 838]
+    coordinate: [937, 906]
     rotation: 0
     state: disabled
 - name: blocks_delay_1
@@ -801,7 +799,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1418, 1047]
+    coordinate: [1424, 1113]
     rotation: 270
     state: enabled
 - name: blocks_multiply_conjugate_cc_0
@@ -835,7 +833,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1045, 580]
+    coordinate: [1239, 688]
     rotation: 0
     state: enabled
 - name: blocks_throttle_0
@@ -886,9 +884,28 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [751, 527]
+    coordinate: [522, 630]
     rotation: 0
     state: enabled
+- name: interp_fir_filter_xxx_1_0
+  id: interp_fir_filter_xxx
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    interp: '1'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    samp_delay: '0'
+    taps: filtro_ecualizador_1st
+    type: ccc
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [485, 886]
+    rotation: 0
+    state: disabled
 - name: qtgui_time_sink_x_0
   id: qtgui_time_sink_x
   parameters:
@@ -1080,7 +1097,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [737, 891]
+    coordinate: [573, 1094]
     rotation: 90
     state: enabled
 - name: ratio_finder_toggle_on_and_off
@@ -1211,7 +1228,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1394, 868]
+    coordinate: [1400, 924]
     rotation: 270
     state: enabled
 - name: tempest_sync_detector_0
@@ -1230,7 +1247,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [618, 696]
+    coordinate: [772, 590]
     rotation: 0
     state: enabled
 - name: tempest_sync_detector_0_0
@@ -1249,7 +1266,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [581, 831]
+    coordinate: [692, 885]
     rotation: 0
     state: disabled
 - name: uhd_usrp_source_0
@@ -1620,7 +1637,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [157, 828]
+    coordinate: [83, 741]
     rotation: 0
     state: enabled
 - name: video_sdl_sink_0_0_0
@@ -1630,8 +1647,8 @@ blocks:
     alias: ''
     comment: "Enable this path when you are sure what the \nresolution is (and defaut\
       \ to those values on \nthe chooser)."
-    display_height: '806'
-    display_width: '1344'
+    display_height: '517'
+    display_width: '1088'
     fps: '0'
     height: Vsize
     num_channels: '1'
@@ -1641,22 +1658,23 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1394, 1192]
+    coordinate: [1400, 1258]
     rotation: 270
     state: enabled
 
 connections:
 - [FFT_autocorrelation_0_0, '0', tempest_fft_peak_fine_sampling_sync_0_0, '0']
+- [Keep_1_in_N_Frames_0, '0', FFT_autocorrelation_0_0, '0']
 - [Keep_1_in_N_Frames_0, '0', blocks_delay_1, '0']
 - [Keep_1_in_N_Frames_0, '0', blocks_multiply_conjugate_cc_0, '0']
+- [Keep_1_in_N_Frames_0, '0', interp_fir_filter_xxx_1, '0']
+- [Keep_1_in_N_Frames_0, '0', interp_fir_filter_xxx_1_0, '0']
 - [Keep_1_in_N_Frames_0, '0', tempest_fine_sampling_synchronization_0, '0']
-- [Keep_1_in_N_Frames_0, '0', tempest_sync_detector_0, '0']
-- [Keep_1_in_N_Frames_0, '0', tempest_sync_detector_0_0, '0']
 - [analog_sig_source_x_0_0, '0', blocks_multiply_xx_0_0, '1']
 - [blocks_complex_to_arg_0, '0', qtgui_time_sink_x_0, '0']
 - [blocks_complex_to_mag_0, '0', tempest_normalize_flow_0, '0']
 - [blocks_complex_to_real_0, '0', tempest_normalize_flow_0, '0']
-- [blocks_delay_0, '0', interp_fir_filter_xxx_1, '0']
+- [blocks_delay_0, '0', blocks_multiply_xx_0_0, '0']
 - [blocks_delay_0_0, '0', blocks_complex_to_mag_0, '0']
 - [blocks_delay_1, '0', blocks_multiply_conjugate_cc_0, '1']
 - [blocks_file_source_0, '0', blocks_throttle_0, '0']
@@ -1664,7 +1682,8 @@ connections:
 - [blocks_multiply_conjugate_cc_0, '0', single_pole_iir_filter_xx_0, '0']
 - [blocks_multiply_xx_0_0, '0', blocks_complex_to_real_0, '0']
 - [blocks_throttle_0, '0', Keep_1_in_N_Frames_0, '0']
-- [interp_fir_filter_xxx_1, '0', blocks_multiply_xx_0_0, '0']
+- [interp_fir_filter_xxx_1, '0', tempest_sync_detector_0, '0']
+- [interp_fir_filter_xxx_1_0, '0', tempest_sync_detector_0_0, '0']
 - [ratio_finder_toggle_on_and_off, pressed, tempest_fft_peak_fine_sampling_sync_0_0,
   en]
 - [single_pole_iir_filter_xx_0, '0', blocks_complex_to_arg_0, '0']
@@ -1678,7 +1697,6 @@ connections:
 - [tempest_normalize_flow_0, '0', blocks_float_to_short_0, '0']
 - [tempest_sync_detector_0, '0', blocks_delay_0, '0']
 - [tempest_sync_detector_0_0, '0', blocks_delay_0_0, '0']
-- [uhd_usrp_source_0, '0', FFT_autocorrelation_0_0, '0']
 - [uhd_usrp_source_0, '0', Keep_1_in_N_Frames_0, '0']
 
 metadata:

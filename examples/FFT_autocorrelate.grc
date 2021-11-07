@@ -105,24 +105,6 @@ blocks:
     coordinate: [702, 272]
     rotation: 0
     state: true
-- name: blocks_keep_one_in_n_0
-  id: blocks_keep_one_in_n
-  parameters:
-    affinity: ''
-    alias: ''
-    comment: ''
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    n: fac_decimation
-    type: complex
-    vlen: fac_size
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [362, 221]
-    rotation: 0
-    state: true
 - name: blocks_nlog10_ff_1
   id: blocks_nlog10_ff
   parameters:
@@ -198,23 +180,6 @@ blocks:
     bus_source: false
     bus_structure: null
     coordinate: [967, 367]
-    rotation: 0
-    state: true
-- name: fac_decimation
-  id: parameter
-  parameters:
-    alias: ''
-    comment: ''
-    hide: none
-    label: fac_decimation
-    short_id: ''
-    type: intx
-    value: '10'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [198, 113]
     rotation: 0
     state: true
 - name: fft_size
@@ -347,23 +312,6 @@ blocks:
     coordinate: [53, 474]
     rotation: 0
     state: true
-- name: sample_rate
-  id: parameter
-  parameters:
-    alias: ''
-    comment: ''
-    hide: none
-    label: sample_rate
-    short_id: ''
-    type: intx
-    value: int(50e6)
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [84, 137]
-    rotation: 0
-    state: true
 - name: single_pole_iir_filter_xx_0
   id: single_pole_iir_filter_xx
   parameters:
@@ -386,10 +334,9 @@ blocks:
 connections:
 - [blocks_complex_to_mag_0, '0', fft_vxx_1, '0']
 - [blocks_complex_to_mag_0_0, '0', single_pole_iir_filter_xx_0, '0']
-- [blocks_keep_one_in_n_0, '0', fft_vxx_0, '0']
 - [blocks_nlog10_ff_1, '0', blocks_vector_to_stream_0, '0']
 - [blocks_selector_0, '0', blocks_stream_to_vector_0, '0']
-- [blocks_stream_to_vector_0, '0', blocks_keep_one_in_n_0, '0']
+- [blocks_stream_to_vector_0, '0', fft_vxx_0, '0']
 - [blocks_vector_to_stream_0, '0', pad_sink_0, '0']
 - [fft_vxx_0, '0', blocks_complex_to_mag_0, '0']
 - [fft_vxx_1, '0', blocks_complex_to_mag_0_0, '0']

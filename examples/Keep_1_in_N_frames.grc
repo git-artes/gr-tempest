@@ -104,7 +104,7 @@ blocks:
     alias: ''
     comment: ''
     hide: none
-    label: fac_decimation
+    label: N Frames
     short_id: ''
     type: intx
     value: '10'
@@ -121,7 +121,7 @@ blocks:
     alias: ''
     comment: ''
     hide: none
-    label: fft_size
+    label: Frame Size
     short_id: ''
     type: intx
     value: int(4096*512)
