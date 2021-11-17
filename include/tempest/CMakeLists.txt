@@ -31,5 +31,6 @@ install(FILES
     sync_detector.h
     frame_drop.h
     infer_resolution.h
-    fft_peak_fine_sampling_sync.h DESTINATION include/tempest
+    fft_peak_fine_sampling_sync.h
+    infer_screen_resolution.h DESTINATION include/tempest
 )
