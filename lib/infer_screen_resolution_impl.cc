@@ -63,7 +63,7 @@ namespace gr {
       //Search values
       d_search_skip = 0;
       d_search_margin = d_fft_size;
-      d_vtotal_est = 0;
+      d_vtotal_est = 800;
       d_peak_1 = 0;
       d_peak_2 = 0;
       
@@ -82,6 +82,7 @@ namespace gr {
 
       //Counters
       d_work_counter = 1;
+      d_i = 0;
 
 
     }
@@ -191,10 +192,22 @@ namespace gr {
                                     /////////////////////////////
                                     //    UPDATE RESULTS       //
                                     /////////////////////////////
-                                    search_table(d_refresh_rate_est); 
-                                    //publish_messages();
 
-                                    printf(" Hdisplay \t %ld \t Px \t\t Vdisplay \t %ld \t Px \t\t Hsize \t %ld \t Px \t\t Vsize \t %ld \t Px \t\t Refresh Rate \t %f \t Hz \t \n ", d_Hvisible,d_Vvisible,d_Hsize,d_Vsize,fv);
+                                    int last_result = d_Vvisible;
+
+                                    search_table(d_refresh_rate_est); 
+
+                                    if (last_result == d_Vvisible) {
+                                      d_i++;
+                                    } else {
+                                      d_i=0;
+                                    }
+
+                                    if (d_i == 15) {
+                                      printf(" Hdisplay \t %ld \t Px \t\t Vdisplay \t %ld \t Px \t\t Hsize \t %ld \t Px \t\t Vsize \t %ld \t Px \t\t Refresh Rate \t %f \t Hz \t \n ", d_Hvisible,d_Vvisible,d_Hsize,d_Vsize,fv);
+                                      d_i=0;
+                                    }
+                                    //publish_messages();                  
 
                                     long double ratio = (long double)(d_accumulator)/(long double)(d_Hvisible*d_Vvisible);
 
@@ -203,9 +216,9 @@ namespace gr {
                                     /* 
                                       Send ratio message to the interpolator. 
                                     */
-                                    double new_freq = d_ratio;
-                                    printf("\r\n[FFT_peak_finder] Ratio = \t %Lf. \t d_accumulator = \t %Lf. \t \r\n ", ratio, d_accumulator);  
-                                    printf("\r\n[FFT_peak_finder] 1/Refresh_Rate = %f secs \r\n", 1.0/d_refresh_rate);
+                                    //double new_freq = d_ratio;
+                                    //printf("\r\n[FFT_peak_finder] Ratio = \t %Lf. \t d_accumulator = \t %Lf. \t \r\n ", ratio, d_accumulator);  
+                                    //printf("\r\n[FFT_peak_finder] 1/Refresh_Rate = %f secs \r\n", 1.0/d_refresh_rate);
                                     d_accumulator = 0;
                                     d_work_counter = 0;
                                     

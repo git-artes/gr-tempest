@@ -69,7 +69,8 @@ namespace gr {
       //Counters
       uint32_t d_work_counter;
       uint32_t d_sample_counter;
-
+      int d_i;
+      
       //Search values
       float d_refresh_rate_est;
       bool d_flag;

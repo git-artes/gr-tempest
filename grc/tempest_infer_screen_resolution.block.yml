@@ -7,13 +7,13 @@ templates:
     ${automatic_mode})
 parameters:
 - id: sample_rate
-  label: Sample_rate
+  label: Sample rate
   dtype: int
 - id: fft_size
-  label: Fft_size
+  label: Fft size
   dtype: int
 - id: refresh_rate
-  label: Refresh_rate
+  label: Refresh rate
   dtype: float
 - id: automatic_mode
   label: Automatic_mode
