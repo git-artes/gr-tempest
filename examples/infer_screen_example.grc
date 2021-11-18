@@ -36,7 +36,7 @@ blocks:
   id: variable
   parameters:
     comment: ''
-    value: 2**19
+    value: 2**20
   states:
     bus_sink: false
     bus_source: false
@@ -45,22 +45,31 @@ blocks:
     rotation: 0
     state: true
 - name: refresh_rate
-  id: variable
+  id: variable_qtgui_range
   parameters:
     comment: ''
-    value: '300'
+    gui_hint: ''
+    label: refr
+    min_len: '200'
+    orient: Qt.Horizontal
+    rangeType: int
+    start: '0'
+    step: '1'
+    stop: '100'
+    value: '50'
+    widget: counter_slider
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [583, 14]
+    coordinate: [576, 23]
     rotation: 0
-    state: enabled
+    state: true
 - name: samp_rate
   id: variable
   parameters:
     comment: ''
-    value: int(15e6)
+    value: int(19.98e6)
   states:
     bus_sink: false
     bus_source: false
@@ -109,7 +118,7 @@ blocks:
     alias: ''
     begin_tag: pmt.PMT_NIL
     comment: ''
-    file: /home/pablo/fing/proyecto/grabaciones/grab_15M_1680x1050@60
+    file: /home/felipe/gnuradio/git/grabaciones_local/test2_19980KHz_1920_1080.dat
     length: '0'
     maxoutbuf: '0'
     minoutbuf: '0'

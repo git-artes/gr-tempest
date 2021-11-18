@@ -59,6 +59,7 @@ namespace gr {
       //Received parameters
       d_sample_rate = sample_rate;
       d_fft_size = fft_size;
+      d_mode = automatic_mode;
 
       //Search values
       d_search_skip = 0;
@@ -100,6 +101,20 @@ namespace gr {
       ninput_items_required[0] = noutput_items;
     }
 
+
+    //---------------------------------------------------------
+
+    void infer_screen_resolution_impl::set_refresh_rate(float refresh_rate)
+    {
+      //If the refresh rate changed, parameters are reset with callback
+      d_refresh_rate = refresh_rate;
+      d_search_skip = d_sample_rate/(d_refresh_rate+0.2);
+      d_refresh_rate_est = refresh_rate;
+      printf("[TEMPEST] Setting refresh to %i in infer block.\n", refresh_rate);
+    }
+    
+    //---------------------------------------------------------
+
     int
     infer_screen_resolution_impl::general_work (int noutput_items,
                        gr_vector_int &ninput_items,
@@ -132,29 +147,46 @@ namespace gr {
                 */ 
                 if(d_sample_counter > 1)
                 {
-                      uint32_t one_full_frame_in_samples = floor( (1.0/d_refresh_rate) * d_sample_rate );
-                      
-                      d_search_margin = d_fft_size;
-                      d_search_skip = 0;
-                      d_peak_1 = calculate_peak_index_relative_to_search_skip(
-                                              in, 
-                                              d_search_skip, 
-                                              d_search_margin
-                                            );
-       
-                      d_search_skip = d_peak_1 + one_full_frame_in_samples - floor((0.001)*d_sample_rate);
-                      d_search_margin = 200 + floor((0.001)*5*d_sample_rate);
-                      d_peak_2 = calculate_peak_index_relative_to_search_skip(
-                                                in, 
-                                                d_search_skip, 
-                                                d_search_margin
-                                              );
+                      if(d_mode)
+                      {
+                          // Automatic mode.
+                          uint32_t one_full_frame_in_samples = floor( (1.0/d_refresh_rate) * d_sample_rate );
+                          d_search_margin = d_fft_size;
+                          d_search_skip = 0;
+                          d_peak_1 = calculate_peak_index_relative_to_search_skip(
+                                                  in, 
+                                                  d_search_skip, 
+                                                  d_search_margin
+                                                );
+                          d_search_skip = d_peak_1 + one_full_frame_in_samples - floor((0.001)*d_sample_rate);
+                          d_search_margin = 200 + floor((0.001)*5*d_sample_rate);
 
-                      d_accumulator += (long double)(d_peak_2-d_peak_1)/(long double)(N);
+                          d_peak_2 = calculate_peak_index_relative_to_search_skip(
+                                                    in, 
+                                                    d_search_skip, 
+                                                    d_search_margin
+                                                  );
+
+                          d_accumulator += (long double)(d_peak_2-d_peak_1)/(long double)(N);
+                      }
+                      else
+                      {
+                          // Semi-automatic mode.
+                          d_peak_1 = nitems_written(0) + 0;
+                          d_search_skip = d_sample_rate / (d_refresh_rate + 0.2);
+                          d_search_margin = 10000;
+
+                          d_peak_2 = calculate_peak_index_relative_to_search_skip(
+                                                    in, 
+                                                    d_search_skip, 
+                                                    d_search_margin
+                                                  );
+
+                          d_accumulator = d_peak_2;
+                      }
                       
                       if(d_work_counter%N == 0)
                       {
-////////////////////////////////////////////////////////////
                                     uint32_t  yt_index = 0, yt_aux = 0;
                                     double fv = (double)d_sample_rate/(double)d_accumulator;
 
@@ -206,54 +238,35 @@ namespace gr {
                                     if (d_i == 15) {
                                       printf(" Hdisplay \t %ld \t Px \t\t Vdisplay \t %ld \t Px \t\t Hsize \t %ld \t Px \t\t Vsize \t %ld \t Px \t\t Refresh Rate \t %f \t Hz \t \n ", d_Hvisible,d_Vvisible,d_Hsize,d_Vsize,fv);
                                       d_i=0;
-                                    }
-                                    //publish_messages();                  
+                                    }                
 
-                                    long double ratio = (long double)(d_accumulator)/(long double)(d_Hvisible*d_Vvisible);
-
-                                    d_ratio = (ratio-1);
-                                    
-                                    /* 
-                                      Send ratio message to the interpolator. 
-                                    */
-                                    //double new_freq = d_ratio;
-                                    //printf("\r\n[FFT_peak_finder] Ratio = \t %Lf. \t d_accumulator = \t %Lf. \t \r\n ", ratio, d_accumulator);  
-                                    //printf("\r\n[FFT_peak_finder] 1/Refresh_Rate = %f secs \r\n", 1.0/d_refresh_rate);
                                     d_accumulator = 0;
                                     d_work_counter = 0;
-                                    
-                                    /* 
-                                        Maybe sleep for a few milliseconds here.
-                                    */
-                                    long period_ms = (1000);
-                                    //boost::this_thread::sleep(  boost::posix_time::milliseconds(static_cast<long>(period_ms)) );
-                                 
-                      
                                     d_sample_counter = 0;         
                       }
                 }
                 
 
       } 
-                memcpy(&out[0], &in[0], noutput_items*sizeof(float)); // el tag deberia hacerse repetidamente aca con d_peak_1 d_peak_2
+      memcpy(&out[0], &in[0], noutput_items*sizeof(float)); // el tag deberia hacerse repetidamente aca con d_peak_1 d_peak_2
 
-                d_work_counter++;   
-                d_sample_counter+=noutput_items;
-                
-                consume_each (noutput_items);
+      d_work_counter++;   
+      d_sample_counter+=noutput_items;
+      
+      consume_each (noutput_items);
 
-                add_item_tag(
-                  0, 
-                  nitems_written(0) + d_peak_1, 
-                  pmt::mp("peak_1"), 
-                  pmt::PMT_T
-                ); 
-                add_item_tag(
-                  0, 
-                  nitems_written(0) + d_peak_2, 
-                  pmt::mp("peak_2"), pmt::PMT_T
-                );
-                return noutput_items; 
+      add_item_tag(
+        0, 
+        nitems_written(0) + d_peak_1, 
+        pmt::mp("peak_1"), 
+        pmt::PMT_T
+      ); 
+      add_item_tag(
+        0, 
+        nitems_written(0) + d_peak_2, 
+        pmt::mp("peak_2"), pmt::PMT_T
+      );
+      return noutput_items; 
                 
     }
 

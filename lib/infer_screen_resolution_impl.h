@@ -74,6 +74,7 @@ namespace gr {
       //Search values
       float d_refresh_rate_est;
       bool d_flag;
+      bool d_mode;
 
       //Resolution results
       int d_Hsize;
@@ -94,7 +95,7 @@ namespace gr {
 
       void search_table(float fv_estimated)
       {
-            if (fv_estimated<65)
+            if (fv_estimated<65 && fv_estimated>55)
             {
               d_refresh_rate=60;
               if (d_vtotal_est<576.5)
@@ -103,7 +104,7 @@ namespace gr {
                 d_Vsize=525;
                 d_Hvisible=640;
                 d_Hsize=800;
-                          }
+              }
               if (d_vtotal_est>576.5 && d_vtotal_est<687)
               { 
                 //800x600
@@ -243,6 +244,8 @@ namespace gr {
       // Where all the action really happens
       void forecast (int noutput_items, gr_vector_int &ninput_items_required);
 
+      void set_refresh_rate(float refresh_rate);
+    
       int general_work(int noutput_items,
            gr_vector_int &ninput_items,
            gr_vector_const_void_star &input_items,

@@ -42,6 +42,8 @@ namespace gr {
      public:
       typedef boost::shared_ptr<infer_screen_resolution> sptr;
 
+      virtual void set_refresh_rate(float refresh_rate) = 0;
+      
       /*!
        * \brief Return a shared_ptr to a new instance of tempest::infer_screen_resolution.
        *
