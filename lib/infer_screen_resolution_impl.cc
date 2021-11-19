@@ -30,9 +30,8 @@
 #include <gnuradio/io_signature.h>
 #include "infer_screen_resolution_impl.h"
 
-
 #define N 64
-#define lowpasscoeff 0.1
+#define lowpasscoeff 0.6 // TODO: check this for every resolution.
 #define MAX_PERIOD 0.0000284
 
 namespace gr {
@@ -106,6 +105,8 @@ namespace gr {
 
     void infer_screen_resolution_impl::set_refresh_rate(float refresh_rate)
     {
+      gr::thread::scoped_lock l(d_mutex);
+
       //If the refresh rate changed, parameters are reset with callback
       d_refresh_rate = refresh_rate;
       d_search_skip = d_sample_rate/(d_refresh_rate+0.2);
@@ -158,8 +159,8 @@ namespace gr {
                                                   d_search_skip, 
                                                   d_search_margin
                                                 );
-                          d_search_skip = d_peak_1 + one_full_frame_in_samples - floor((0.001)*d_sample_rate);
-                          d_search_margin = 200 + floor((0.001)*5*d_sample_rate);
+                          d_search_skip = d_peak_1 + one_full_frame_in_samples - floor((0.004)*d_sample_rate);
+                          d_search_margin = 200 + floor((0.004)*5*d_sample_rate);
 
                           d_peak_2 = calculate_peak_index_relative_to_search_skip(
                                                     in, 
@@ -220,7 +221,8 @@ namespace gr {
 
                                       }
                                     }
-
+                                    printf(" yt instant \t %lf \t  yt estimate \t %ld \t \n ", yt, d_vtotal_est);
+                                      
                                     /////////////////////////////
                                     //    UPDATE RESULTS       //
                                     /////////////////////////////
@@ -236,7 +238,7 @@ namespace gr {
                                     }
 
                                     if (d_i == 15) {
-                                      printf(" Hdisplay \t %ld \t Px \t\t Vdisplay \t %ld \t Px \t\t Hsize \t %ld \t Px \t\t Vsize \t %ld \t Px \t\t Refresh Rate \t %f \t Hz \t \n ", d_Hvisible,d_Vvisible,d_Hsize,d_Vsize,fv);
+                                      printf(" Hdisplay \t %ld \t Px \t\t Vdisplay \t %ld \t Px \t\t Hsize \t %ld \t Px \t\t Vsize \t %ld \t Px \t\t Refresh Rate \t %f \t Hz \t Busca (refresh_rate_est \t %f \t Hz, \tfv \t %f \t Hz) \t \n ", d_Hvisible,d_Vvisible,d_Hsize,d_Vsize,d_refresh_rate, d_refresh_rate_est, fv);
                                       d_i=0;
                                     }                
 
