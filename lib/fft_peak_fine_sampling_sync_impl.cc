@@ -171,6 +171,13 @@ namespace gr {
 
             message_port_pub(pmt::mp("rate"), pmt::cons(pmt::mp("rate"), pmt::from_double(new_freq))); 
             d_sample_rate = new_freq;
+            new_freq = d_ratio;
+            message_port_pub(
+              pmt::mp("ratio"), pmt::cons(
+                                  pmt::mp("ratio"), 
+                                  pmt::from_double(new_freq)
+                                )
+            );
             
         }
     }
