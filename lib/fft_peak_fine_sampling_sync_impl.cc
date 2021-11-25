@@ -239,49 +239,6 @@ namespace gr {
                       
                       if(d_work_counter%N == 0)
                       {
-////////////////////////////////////////////////////////////
-                                    uint32_t  yt_index = 0, yt_aux = 0;
-                                    double fv = (double)d_sample_rate/(double)d_accumulator;
-
-                                    // Lower the variation of the received refresh rate:
-                                    d_refresh_rate_est = ((long) round(fv * lowpasscoeff + (1.0 - lowpasscoeff) * (d_refresh_rate_est)));
-                                  
-                                    /////////////////////////////
-                                    //     HEIGHT SEARCH       //
-                                    /////////////////////////////
-
-                                    int yt_largo = (int)d_sample_rate*(MAX_PERIOD);
-
-                                    volk_32f_index_max_32u(&yt_index, &in[(d_peak_2)+5], yt_largo);
-                                    // The peak search begins a few samples later to avoid repeating the previous result
-
-                                    double yt = (double)d_sample_rate / (double)((yt_index+5)*fv);
-                                    // The same sample movement is compensated
-
-                                    if (d_flag)  
-                                    {
-                                      if (yt < 1225 && yt > 350)
-                                        d_vtotal_est = ((int) round(yt * lowpasscoeff + (1.0 - lowpasscoeff) * (d_vtotal_est)));
-                                      
-                                    }
-                                    else 
-                                    {
-                                      if (yt < 1225 && yt > 350)
-                                      {
-                                        d_vtotal_est = yt;
-                                        d_flag = true;
-
-                                      }
-                                    }
-
-                                    /////////////////////////////
-                                    //    UPDATE RESULTS       //
-                                    /////////////////////////////
-                                    search_table(d_refresh_rate_est); 
-                                    //publish_messages();
-
-                                    printf(" Hdisplay \t %ld \t Px \t\t Vdisplay \t %ld \t Px \t\t Hsize \t %ld \t Px \t\t Vsize \t %ld \t Px \t\t Refresh Rate \t %f \t Hz \t \n ", d_Hvisible,d_Vvisible,d_Hsize,d_Vsize,fv);
-
                                     long double ratio = (long double)(d_accumulator)/(long double)(d_Hvisible*d_Vvisible);
 
                                     d_ratio = (ratio-1);
