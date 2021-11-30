@@ -321,16 +321,9 @@ namespace gr {
                 }*/
                 gr::thread::scoped_lock l(d_mutex);
                 int required_for_interpolation = noutput_items; 
-                if (d_correct_sampling ){
-                    d_samp_inc_rem = (1-d_alpha_samp_inc)*d_samp_inc_rem + d_alpha_samp_inc*d_new_interpolation_ratio_rem;
-                    required_for_interpolation = interpolate_input(&in[0], &out[0], noutput_items);
-                    consume_each (required_for_interpolation);
-                }
-                else
-                {
-                    memcpy(&out[0], &in[0], noutput_items*sizeof(gr_complex));
-                    consume_each (noutput_items);
-                }
+                d_samp_inc_rem = d_new_interpolation_ratio_rem;
+                required_for_interpolation = interpolate_input(&in[0], &out[0], noutput_items);
+                consume_each (required_for_interpolation);
                 return noutput_items;
             }
 

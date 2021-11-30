@@ -222,81 +222,91 @@ namespace gr {
                   the distance between peak_2 and peak_1. 
                     So we divide the thing over N and repeat the measurement N times.
                 */ 
-                if(d_sample_counter > 1)
+                uint32_t one_full_frame_in_samples = floor( (1.0/d_refresh_rate) * d_sample_rate );
+                
+                d_search_margin = d_fft_size;
+                d_search_skip = 0;
+                d_peak_1 = calculate_peak_index_relative_to_search_skip(
+                                        in, 
+                                        d_search_skip, 
+                                        d_search_margin
+                                      );
+ 
+                d_search_skip = d_peak_1 + one_full_frame_in_samples - floor((0.001)*d_sample_rate);
+                d_search_margin = 200 + floor((0.001)*3*d_sample_rate);
+                d_peak_2 = calculate_peak_index_relative_to_search_skip(
+                                          in, 
+                                          d_search_skip, 
+                                          d_search_margin
+                                        );
+
+                d_accumulator += (long double)(d_peak_2-d_peak_1)/(long double)(N);
+                
+                if(d_work_counter%N == 0)
                 {
-                      uint32_t one_full_frame_in_samples = floor( (1.0/d_refresh_rate) * d_sample_rate );
-                      
-                      d_search_margin = d_fft_size;
-                      d_search_skip = 0;
-                      d_peak_1 = calculate_peak_index_relative_to_search_skip(
-                                              in, 
-                                              d_search_skip, 
-                                              d_search_margin
-                                            );
-       
-                      d_search_skip = d_peak_1 + one_full_frame_in_samples - floor((0.001)*d_sample_rate);
-                      d_search_margin = 200 + floor((0.001)*5*d_sample_rate);
-                      d_peak_2 = calculate_peak_index_relative_to_search_skip(
-                                                in, 
-                                                d_search_skip, 
-                                                d_search_margin
-                                              );
+                              long double ratio = (long double)(d_accumulator)/(long double)(d_Hvisible*d_Vvisible);
 
-                      d_accumulator += (long double)(d_peak_2-d_peak_1)/(long double)(N);
-                      
-                      if(d_work_counter%N == 0)
-                      {
-                                    long double ratio = (long double)(d_accumulator)/(long double)(d_Hvisible*d_Vvisible);
-
-                                    d_ratio = (ratio-1);
-                                    
-                                    /* 
-                                      Send ratio message to the interpolator. 
-                                    */
-                                    double new_freq = d_ratio;
-                                    message_port_pub(
-                                      pmt::mp("ratio"), pmt::cons(
-                                                          pmt::mp("ratio"), 
-                                                          pmt::from_double(new_freq)
-                                                        )
-                                    );
-                                    printf("\r\n[FFT_peak_finder] Ratio = \t %Lf. \t d_accumulator = \t %Lf. \t \r\n ", ratio, d_accumulator);  
-                                    printf("\r\n[FFT_peak_finder] 1/Refresh_Rate = %f secs \r\n", 1.0/d_refresh_rate);
-                                    d_accumulator = 0;
-                                    d_work_counter = 0;
-                                    
-                                    /* 
-                                        Maybe sleep for a few milliseconds here.
-                                    */
-                                    long period_ms = (1000);
-                                    //boost::this_thread::sleep(  boost::posix_time::milliseconds(static_cast<long>(period_ms)) );
-                                 
-                      
-                                    d_sample_counter = 0;         
-                      }
+                              d_ratio = (ratio-1);
+                              
+                              /* 
+                                Send ratio message to the interpolator. 
+                              */
+                              double new_freq = d_ratio;
+                              message_port_pub(
+                                pmt::mp("ratio"), pmt::cons(
+                                                    pmt::mp("ratio"), 
+                                                    pmt::from_double(new_freq)
+                                                  )
+                              );
+                              printf("\r\n[FFT_peak_finder] Ratio = \t %Lf. \t d_accumulator = \t %Lf. \t \r\n ", ratio, d_accumulator);  
+                              
+                              d_accumulator = 0;
+                              d_work_counter = 0;
+                              /* 
+                                  Maybe sleep for a few milliseconds here.
+                              */
+                              long period_ms = (1000);
+                              //boost::this_thread::sleep(  boost::posix_time::milliseconds(static_cast<long>(period_ms)) );
+                           
+                
+                           
+                              d_sample_counter = 0;         
                 }
+                
                 
 
       } 
-                memcpy(&out[0], &in[0], noutput_items*sizeof(float)); // el tag deberia hacerse repetidamente aca con d_peak_1 d_peak_2
+      memcpy(&out[0], &in[0], noutput_items*sizeof(float)); // el tag deberia hacerse repetidamente aca con d_peak_1 d_peak_2
 
-                d_work_counter++;   
-                d_sample_counter+=noutput_items;
-                
-                consume_each (noutput_items);
+      d_work_counter++;   
+      d_sample_counter+=noutput_items;
+      
+                          
+      add_item_tag(
+        0, 
+        nitems_written(0) + d_peak_1, 
+        pmt::mp("peak_1"), 
+        pmt::PMT_T
+      ); 
+      add_item_tag(
+        0, 
+        nitems_written(0) + d_peak_2, 
+        pmt::mp("peak_2"), pmt::PMT_T
+      );
+      add_item_tag(
+        0, 
+        nitems_written(0) + d_search_skip, 
+        pmt::mp("Search1"), 
+        pmt::PMT_T
+      ); 
+      add_item_tag(
+        0, 
+        nitems_written(0) + d_search_skip + d_search_margin, 
+        pmt::mp("Search2"), pmt::PMT_T
+      );
+      consume_each (noutput_items);
 
-                add_item_tag(
-                  0, 
-                  nitems_written(0) + d_peak_1, 
-                  pmt::mp("peak_1"), 
-                  pmt::PMT_T
-                ); 
-                add_item_tag(
-                  0, 
-                  nitems_written(0) + d_peak_2, 
-                  pmt::mp("peak_2"), pmt::PMT_T
-                );
-                return noutput_items; 
+      return noutput_items; 
 
     }
 

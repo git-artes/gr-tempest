@@ -221,7 +221,7 @@ namespace gr {
 
                                       }
                                     }
-                                    printf(" yt instant \t %lf \t  yt estimate \t %ld \t \n ", yt, d_vtotal_est);
+                                    //printf(" yt instant \t %lf \t  yt estimate \t %ld \t \n ", yt, d_vtotal_est);
                                       
                                     /////////////////////////////
                                     //    UPDATE RESULTS       //
@@ -238,7 +238,7 @@ namespace gr {
                                     }
 
                                     if (d_i == 15) {
-                                      printf(" Hdisplay \t %ld \t Px \t\t Vdisplay \t %ld \t Px \t\t Hsize \t %ld \t Px \t\t Vsize \t %ld \t Px \t\t Refresh Rate \t %f \t Hz \t Busca (refresh_rate_est \t %f \t Hz, \tfv \t %f \t Hz) \t \n ", d_Hvisible,d_Vvisible,d_Hsize,d_Vsize,d_refresh_rate, d_refresh_rate_est, fv);
+                                      printf(" Hdisplay \t %ld \t Px \t\t Vdisplay \t %ld \t Px \t\t Hsize \t %ld \t Px \t\t Vsize \t %ld \t Px \t\t Refresh Rate \t %f \t Hz \t \n ", d_Hvisible,d_Vvisible,d_Hsize,d_Vsize,d_refresh_rate);
                                       d_i=0;
                                     }                
 
