@@ -336,7 +336,7 @@ namespace gr {
       gr::thread::scoped_lock l(d_mutex);
       
       if (d_start_sync_detect==0){
-          memcpy(out,in,noutput_items*sizeof(float));
+          memcpy(out,in,noutput_items*sizeof(gr_complex));
           out_amount=noutput_items;
           consumed=noutput_items;
 
