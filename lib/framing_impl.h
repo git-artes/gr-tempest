@@ -26,7 +26,7 @@
 #ifndef INCLUDED_TEMPEST_FRAMING_IMPL_H
 #define INCLUDED_TEMPEST_FRAMING_IMPL_H
 
-#include <tempest/framing.h>
+#include <gnuradio/tempest/framing.h>
 
 namespace gr {
   namespace tempest {

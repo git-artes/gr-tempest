@@ -21,7 +21,7 @@
 #ifndef INCLUDED_TEMPEST_HSYNC_IMPL_H
 #define INCLUDED_TEMPEST_HSYNC_IMPL_H
 
-#include <tempest/Hsync.h>
+#include <gnuradio/tempest/Hsync.h>
 
 namespace gr {
   namespace tempest {
