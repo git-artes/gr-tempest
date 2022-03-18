@@ -384,7 +384,7 @@ blocks:
   id: variable
   parameters:
     comment: ''
-    value: int(2e6)
+    value: int(30e6)
   states:
     bus_sink: false
     bus_source: false
