@@ -4,7 +4,7 @@
 
 ![Screenshot of simulation](https://iie.fing.edu.uy/investigacion/grupos/artes/wp-content/uploads/sites/13/2020/05/captura_tempest.png)
 
-**Status:** The examples folder contains several examples that work with recordings. Until the end of the quarantine I won't be able to test it on hardware, but I'm confident it should work. Feedback is more than welcome!
+**Status:** The examples folder contains several examples that work with recordings and it's been tested on hardware (see videos below). Feedback is more than welcome!
 
 **If you find the code useful, please consider starring the repository. This will help us get funding to support the project.**
 
