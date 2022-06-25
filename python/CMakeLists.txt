@@ -33,7 +33,8 @@ GR_PYTHON_INSTALL(
     FILES
     __init__.py
     image_source.py
-    message_to_var.py DESTINATION ${GR_PYTHON_DIR}/tempest
+    message_to_var.py
+    tempest_msgbtn.py DESTINATION ${GR_PYTHON_DIR}/tempest
 )
 
 ########################################################################
@@ -54,3 +55,4 @@ GR_ADD_TEST(qa_frame_drop ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/qa_fr
 GR_ADD_TEST(qa_infer_resolution ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/qa_infer_resolution.py)
 GR_ADD_TEST(qa_fft_peak_fine_sampling_sync ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/qa_fft_peak_fine_sampling_sync.py)
 GR_ADD_TEST(qa_infer_screen_resolution ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/qa_infer_screen_resolution.py)
+GR_ADD_TEST(qa_tempest_msgbtn ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/qa_tempest_msgbtn.py)

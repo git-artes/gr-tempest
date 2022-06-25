@@ -1013,24 +1013,6 @@ blocks:
     coordinate: [603, 1103]
     rotation: 270
     state: enabled
-- name: ratio_finder_toggle_on_and_off
-  id: variable_qtgui_msg_push_button
-  parameters:
-    comment: ''
-    gui_hint: tab_m@1
-    label: Ratio Finder toggle ON or OFF (FFT peaks).
-    msgName: pressed
-    relBackgroundColor: default
-    relFontColor: default
-    type: bool
-    value: 'True'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [659, 1275]
-    rotation: 180
-    state: enabled
 - name: single_pole_iir_filter_xx_0
   id: single_pole_iir_filter_xx
   parameters:
@@ -1181,6 +1163,28 @@ blocks:
     coordinate: [919, 856]
     rotation: 0
     state: enabled
+- name: tempest_tempest_msgbtn_0
+  id: tempest_tempest_msgbtn
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    gui_hint: tab_m@1
+    label: 'Ratio Finder toggle ON or OFF (FFT peaks). '
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    msgName: pressed
+    relBackgroundColor: default
+    relFontColor: default
+    type: bool
+    value: 'True'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [282, 1185]
+    rotation: 270
+    state: true
 - name: uhd_usrp_source_0
   id: uhd_usrp_source
   parameters:
@@ -1604,8 +1608,6 @@ connections:
 - [blocks_multiply_xx_0_0_0, '0', blocks_multiply_xx_0_0, '0']
 - [blocks_throttle_0, '0', Keep_1_in_N_Frames_0, '0']
 - [blocks_throttle_0, '0', Keep_1_in_N_Frames_0_0, '0']
-- [ratio_finder_toggle_on_and_off, pressed, tempest_fft_peak_fine_sampling_sync_0_0,
-  en]
 - [single_pole_iir_filter_xx_0, '0', blocks_complex_to_arg_0, '0']
 - [single_pole_iir_filter_xx_0_0, '0', blocks_complex_to_arg_0_0, '0']
 - [tempest_fft_peak_fine_sampling_sync_0_0, '0', blocks_null_sink_0, '0']
@@ -1622,6 +1624,7 @@ connections:
 - [tempest_sync_detector_0, '0', blocks_complex_to_mag_0, '0']
 - [tempest_sync_detector_0, '0', blocks_delay_0, '0']
 - [tempest_sync_detector_0, '0', blocks_multiply_xx_0_0_0, '1']
+- [tempest_tempest_msgbtn_0, pressed, tempest_fft_peak_fine_sampling_sync_0_0, en]
 - [uhd_usrp_source_0, '0', Keep_1_in_N_Frames_0, '0']
 - [uhd_usrp_source_0, '0', Keep_1_in_N_Frames_0_0, '0']
 - [uhd_usrp_source_0, '0', blocks_file_sink_0, '0']
