@@ -64,7 +64,7 @@ namespace gr {
             d_alpha_samp_inc = 1e-1;
             
             d_samp_phase = 0; 
-            d_alpha_corr = 1e-3; 
+            d_alpha_corr = 1e-2; 
 
             //VOLK alignment as recommended by GNU Radio's Manual. It has a similar effect 
             //than set_output_multiple(), thus we will generally get multiples of this value

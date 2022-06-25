@@ -129,7 +129,7 @@ namespace gr {
             //for (int i=0; i<datain_length; i++)
             //    printf("datain[%i]=%f\n", i, datain[i]);
             //printf("peak_index: %i\n",peak_index);
-            printf("SAMPLING SINC new_interpolation_ratio: %f\n",d_new_interpolation_ratio);
+            //printf("SAMPLING SINC new_interpolation_ratio: %f\n",d_new_interpolation_ratio);
             //printf("d_samp_inc: %.20f\n",d_samp_inc_remainder+1);
 
             //d_samp_inc = (1-d_alpha_samp_inc)*d_samp_inc - d_alpha_samp_inc* d_new_interpolation_ratio;

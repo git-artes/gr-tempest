@@ -50,7 +50,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1095, 572]
+    coordinate: [963, 571]
     rotation: 0
     state: enabled
 - name: DroppedFrames
@@ -440,7 +440,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [490, 1011]
+    coordinate: [509, 1038]
     rotation: 270
     state: enabled
 - name: Keep_1_in_N_Frames_0
@@ -481,7 +481,7 @@ blocks:
     bus_structure: null
     coordinate: [1147, 819]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: blocks_complex_to_arg_0
   id: blocks_complex_to_arg
   parameters:
@@ -511,9 +511,9 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1563, 706]
+    coordinate: [1563, 705]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: blocks_delay_0
   id: blocks_delay
   parameters:
@@ -530,9 +530,9 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1128, 685]
+    coordinate: [1164, 685]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: blocks_delay_1
   id: blocks_delay
   parameters:
@@ -559,7 +559,7 @@ blocks:
     alias: ''
     begin_tag: pmt.PMT_NIL
     comment: ''
-    file: /home/felipe/gnuradio/git/grabaciones_local/test2_19980KHz_1920_1080.dat
+    file: /home/felipe/gnuradio/git/grabaciones_local/DEMO_VGA_recording_1080p_60Hz_50MHz.dat
     length: '0'
     maxoutbuf: '0'
     minoutbuf: '0'
@@ -573,7 +573,7 @@ blocks:
     bus_structure: null
     coordinate: [69, 626]
     rotation: 0
-    state: disabled
+    state: enabled
 - name: blocks_float_to_short_0
   id: blocks_float_to_short
   parameters:
@@ -590,7 +590,7 @@ blocks:
     bus_structure: null
     coordinate: [1735, 1082]
     rotation: 270
-    state: enabled
+    state: disabled
 - name: blocks_multiply_conjugate_cc_0
   id: blocks_multiply_conjugate_cc
   parameters:
@@ -624,7 +624,7 @@ blocks:
     bus_structure: null
     coordinate: [1385, 689]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: blocks_throttle_0
   id: blocks_throttle
   parameters:
@@ -643,7 +643,7 @@ blocks:
     bus_structure: null
     coordinate: [271, 650]
     rotation: 0
-    state: disabled
+    state: enabled
 - name: import_0
   id: import
   parameters:
@@ -675,7 +675,7 @@ blocks:
     bus_structure: null
     coordinate: [627, 665]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: qtgui_time_sink_x_0
   id: qtgui_time_sink_x
   parameters:
@@ -802,7 +802,7 @@ blocks:
     color9: dark green
     comment: ''
     ctrlpanel: 'False'
-    entags: 'False'
+    entags: 'True'
     grid: 'True'
     gui_hint: tab_m@1
     label1: Signal 1
@@ -848,7 +848,7 @@ blocks:
     tr_slope: qtgui.TRIG_SLOPE_POS
     tr_tag: '"peak_1"'
     type: float
-    update_time: '2.0'
+    update_time: '3.0'
     width1: '1'
     width10: '1'
     width2: '1'
@@ -867,7 +867,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [722, 1011]
+    coordinate: [756, 1022]
     rotation: 270
     state: enabled
 - name: ratio_finder_toggle_on_and_off
@@ -885,7 +885,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [736, 1188]
+    coordinate: [767, 1270]
     rotation: 180
     state: enabled
 - name: single_pole_iir_filter_xx_0
@@ -958,7 +958,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [573, 1021]
+    coordinate: [599, 1018]
     rotation: 90
     state: enabled
 - name: tempest_normalize_flow_0
@@ -980,7 +980,7 @@ blocks:
     bus_structure: null
     coordinate: [1711, 893]
     rotation: 270
-    state: enabled
+    state: disabled
 - name: tempest_sync_detector_0
   id: tempest_sync_detector
   parameters:
@@ -997,9 +997,9 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [891, 665]
+    coordinate: [842, 817]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: uhd_usrp_source_0
   id: uhd_usrp_source
   parameters:
@@ -1368,9 +1368,9 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [83, 741]
+    coordinate: [82, 742]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: video_sdl_sink_0_0_0
   id: video_sdl_sink
   parameters:
@@ -1391,7 +1391,7 @@ blocks:
     bus_structure: null
     coordinate: [1711, 1227]
     rotation: 270
-    state: enabled
+    state: disabled
 
 connections:
 - [FFT_autocorrelation_0_0, '0', tempest_fft_peak_fine_sampling_sync_0_0, '0']
@@ -1414,7 +1414,6 @@ connections:
   en]
 - [single_pole_iir_filter_xx_0, '0', blocks_complex_to_arg_0, '0']
 - [tempest_fft_peak_fine_sampling_sync_0_0, '0', qtgui_time_sink_x_1, '0']
-- [tempest_fft_peak_fine_sampling_sync_0_0, en, FFT_autocorrelation_0_0, en]
 - [tempest_fft_peak_fine_sampling_sync_0_0, en, tempest_sync_detector_0, en]
 - [tempest_fft_peak_fine_sampling_sync_0_0, rate, uhd_usrp_source_0, command]
 - [tempest_normalize_flow_0, '0', blocks_float_to_short_0, '0']

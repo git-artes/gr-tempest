@@ -443,18 +443,16 @@ blocks:
     alias: ''
     alpha: '1.0'
     comment: ''
-    fac_decimation: '10'
     fft_size: int(fft_size)
     maxoutbuf: '0'
     minoutbuf: '0'
-    sample_rate: usrp_rate
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
     coordinate: [1278, 128]
     rotation: 90
-    state: enabled
+    state: disabled
 - name: analog_sig_source_x_0
   id: analog_sig_source_x
   parameters:
@@ -474,7 +472,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [511, 377]
+    coordinate: [504, 374]
     rotation: 0
     state: enabled
 - name: blocks_complex_to_mag_0
@@ -490,9 +488,9 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [565, 527]
+    coordinate: [595, 524]
     rotation: 180
-    state: enabled
+    state: disabled
 - name: blocks_delay_0
   id: blocks_delay
   parameters:
@@ -509,9 +507,9 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [742, 523]
+    coordinate: [791, 517]
     rotation: 180
-    state: enabled
+    state: disabled
 - name: blocks_float_to_short_0
   id: blocks_float_to_short
   parameters:
@@ -528,7 +526,7 @@ blocks:
     bus_structure: null
     coordinate: [193, 539]
     rotation: 180
-    state: enabled
+    state: disabled
 - name: blocks_multiply_xx_0
   id: blocks_multiply_xx
   parameters:
@@ -563,7 +561,7 @@ blocks:
     bus_structure: null
     coordinate: [1371, 192]
     rotation: 90
-    state: enabled
+    state: disabled
 - name: blocks_throttle_0_0
   id: blocks_throttle
   parameters:
@@ -583,6 +581,26 @@ blocks:
     coordinate: [514, 326]
     rotation: 0
     state: enabled
+- name: blocks_vector_source_x_0
+  id: blocks_vector_source_x
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    repeat: 'True'
+    tags: '[]'
+    type: float
+    vector: '[124124.7,0,0.3,0.4,0.1,0.6]*128'
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [57, 408]
+    rotation: 0
+    state: true
 - name: channels_channel_model_0
   id: channels_channel_model
   parameters:
@@ -601,7 +619,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1091, 302]
+    coordinate: [1098, 275]
     rotation: 0
     state: enabled
 - name: interp_fir_filter_xxx_0
@@ -623,6 +641,103 @@ blocks:
     coordinate: [288, 318]
     rotation: 0
     state: enabled
+- name: qtgui_time_sink_x_0
+  id: qtgui_time_sink_x
+  parameters:
+    affinity: ''
+    alias: ''
+    alpha1: '1.0'
+    alpha10: '1.0'
+    alpha2: '1.0'
+    alpha3: '1.0'
+    alpha4: '1.0'
+    alpha5: '1.0'
+    alpha6: '1.0'
+    alpha7: '1.0'
+    alpha8: '1.0'
+    alpha9: '1.0'
+    autoscale: 'False'
+    axislabels: 'True'
+    color1: blue
+    color10: dark blue
+    color2: red
+    color3: green
+    color4: black
+    color5: cyan
+    color6: magenta
+    color7: yellow
+    color8: dark red
+    color9: dark green
+    comment: ''
+    ctrlpanel: 'False'
+    entags: 'True'
+    grid: 'False'
+    gui_hint: ''
+    label1: Signal 1
+    label10: Signal 10
+    label2: Signal 2
+    label3: Signal 3
+    label4: Signal 4
+    label5: Signal 5
+    label6: Signal 6
+    label7: Signal 7
+    label8: Signal 8
+    label9: Signal 9
+    legend: 'True'
+    marker1: '-1'
+    marker10: '-1'
+    marker2: '-1'
+    marker3: '-1'
+    marker4: '-1'
+    marker5: '-1'
+    marker6: '-1'
+    marker7: '-1'
+    marker8: '-1'
+    marker9: '-1'
+    name: '""'
+    nconnections: '1'
+    size: '4096'
+    srate: samp_rate
+    stemplot: 'False'
+    style1: '1'
+    style10: '1'
+    style2: '1'
+    style3: '1'
+    style4: '1'
+    style5: '1'
+    style6: '1'
+    style7: '1'
+    style8: '1'
+    style9: '1'
+    tr_chan: '0'
+    tr_delay: '0'
+    tr_level: '0.0'
+    tr_mode: qtgui.TRIG_MODE_FREE
+    tr_slope: qtgui.TRIG_SLOPE_POS
+    tr_tag: '""'
+    type: complex
+    update_time: '0.10'
+    width1: '1'
+    width10: '1'
+    width2: '1'
+    width3: '1'
+    width4: '1'
+    width5: '1'
+    width6: '1'
+    width7: '1'
+    width8: '1'
+    width9: '1'
+    ylabel: Amplitude
+    ymax: '1'
+    ymin: '-1'
+    yunit: '""'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1318, 316]
+    rotation: 0
+    state: true
 - name: rational_resampler_xxx_0
   id: rational_resampler_xxx
   parameters:
@@ -640,7 +755,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [886, 318]
+    coordinate: [888, 264]
     rotation: 0
     state: enabled
 - name: tempest_fft_peak_fine_sampling_sync_0
@@ -661,9 +776,9 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1408, 81]
+    coordinate: [1420, 118]
     rotation: 270
-    state: enabled
+    state: disabled
 - name: tempest_fine_sampling_synchronization_0
   id: tempest_fine_sampling_synchronization
   parameters:
@@ -683,7 +798,7 @@ blocks:
     bus_structure: null
     coordinate: [1053, 475]
     rotation: 180
-    state: enabled
+    state: disabled
 - name: tempest_frame_drop_0
   id: tempest_frame_drop
   parameters:
@@ -704,7 +819,7 @@ blocks:
     bus_structure: null
     coordinate: [1370, 409]
     rotation: 270
-    state: enabled
+    state: disabled
 - name: tempest_image_source_0
   id: tempest_image_source
   parameters:
@@ -725,7 +840,7 @@ blocks:
     bus_structure: null
     coordinate: [43, 286]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: tempest_normalize_flow_0
   id: tempest_normalize_flow
   parameters:
@@ -745,7 +860,7 @@ blocks:
     bus_structure: null
     coordinate: [350, 507]
     rotation: 180
-    state: enabled
+    state: disabled
 - name: tempest_sync_detector_0
   id: tempest_sync_detector
   parameters:
@@ -785,7 +900,7 @@ blocks:
     bus_structure: null
     coordinate: [7, 507]
     rotation: 180
-    state: enabled
+    state: disabled
 
 connections:
 - [FFT_autocorrelation_0, '0', tempest_fft_peak_fine_sampling_sync_0, '0']
@@ -795,7 +910,9 @@ connections:
 - [blocks_float_to_short_0, '0', video_sdl_sink_0_0_0, '0']
 - [blocks_multiply_xx_0, '0', rational_resampler_xxx_0, '0']
 - [blocks_throttle_0_0, '0', blocks_multiply_xx_0, '0']
+- [blocks_vector_source_x_0, '0', interp_fir_filter_xxx_0, '0']
 - [channels_channel_model_0, '0', FFT_autocorrelation_0, '0']
+- [channels_channel_model_0, '0', qtgui_time_sink_x_0, '0']
 - [channels_channel_model_0, '0', tempest_frame_drop_0, '0']
 - [interp_fir_filter_xxx_0, '0', blocks_throttle_0_0, '0']
 - [rational_resampler_xxx_0, '0', channels_channel_model_0, '0']
@@ -804,13 +921,9 @@ connections:
 - [tempest_fft_peak_fine_sampling_sync_0, en, tempest_sync_detector_0, en]
 - [tempest_fft_peak_fine_sampling_sync_0, ratio, tempest_fine_sampling_synchronization_0,
   ratio]
-- [tempest_fft_peak_fine_sampling_sync_0, smpl, tempest_frame_drop_0, smpl]
-- [tempest_fine_sampling_synchronization_0, '0', blocks_delay_0, '0']
-- [tempest_fine_sampling_synchronization_0, '0', tempest_sync_detector_0, '0']
-- [tempest_frame_drop_0, '0', tempest_fine_sampling_synchronization_0, '0']
+- [tempest_frame_drop_0, '0', blocks_complex_to_mag_0, '0']
 - [tempest_image_source_0, '0', interp_fir_filter_xxx_0, '0']
 - [tempest_normalize_flow_0, '0', blocks_float_to_short_0, '0']
-- [tempest_sync_detector_0, '0', blocks_delay_0, '0']
 
 metadata:
   file_format: 1

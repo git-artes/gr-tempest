@@ -27,7 +27,7 @@ options:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [81, 12]
+    coordinate: [15, 12]
     rotation: 0
     state: enabled
 
@@ -36,7 +36,7 @@ blocks:
   id: variable_qtgui_range
   parameters:
     comment: ''
-    gui_hint: tab_m@1
+    gui_hint: tab_m@0
     label: ''
     min_len: '200'
     orient: Qt.Horizontal
@@ -44,25 +44,25 @@ blocks:
     start: '0'
     step: interpolatedHsize*1
     stop: Vsize*interpolatedHsize
-    value: '0'
+    value: interpolatedHsize*1
     widget: counter_slider
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [932, 1064]
+    coordinate: [1061, 35]
     rotation: 0
-    state: disabled
+    state: enabled
 - name: DroppedFrames
   id: variable_qtgui_range
   parameters:
     comment: ''
-    gui_hint: tab_m@1
+    gui_hint: tab_m@0
     label: ''
     min_len: '200'
     orient: Qt.Horizontal
     rangeType: float
-    start: '0'
+    start: '1'
     step: '1'
     stop: '100'
     value: '50'
@@ -71,9 +71,9 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [16, 1125]
+    coordinate: [859, 34]
     rotation: 0
-    state: enabled
+    state: true
 - name: Hblank
   id: variable
   parameters:
@@ -83,14 +83,14 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [623, 168]
+    coordinate: [740, 220]
     rotation: 0
     state: enabled
 - name: Hsize
   id: variable_qtgui_range
   parameters:
     comment: ''
-    gui_hint: ''
+    gui_hint: tab_m@0
     label: Horizontal resolution (total)
     min_len: '200'
     orient: Qt.Horizontal
@@ -104,7 +104,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [350, 102]
+    coordinate: [505, 34]
     rotation: 0
     state: enabled
 - name: Hvisible
@@ -116,7 +116,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [624, 64]
+    coordinate: [740, 156]
     rotation: 0
     state: enabled
 - name: Vblank
@@ -128,14 +128,14 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [750, 178]
+    coordinate: [656, 220]
     rotation: 0
     state: enabled
 - name: Vsize
   id: variable_qtgui_range
   parameters:
     comment: ''
-    gui_hint: ''
+    gui_hint: tab_m@0
     label: Vertical resolution (total)
     min_len: '200'
     orient: Qt.Horizontal
@@ -149,7 +149,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [493, 104]
+    coordinate: [649, 34]
     rotation: 0
     state: enabled
 - name: Vvisible
@@ -161,61 +161,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [750, 126]
-    rotation: 0
-    state: enabled
-- name: angle_error
-  id: variable_qtgui_range
-  parameters:
-    comment: ''
-    gui_hint: tab_m@1
-    label: Sine angle correction
-    min_len: '200'
-    orient: Qt.Horizontal
-    rangeType: float
-    start: -pi-0.2
-    step: '0.00001'
-    stop: pi+0.2
-    value: '-2.6'
-    widget: counter
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [972, 5]
-    rotation: 0
-    state: enabled
-- name: denominador
-  id: variable_qtgui_range
-  parameters:
-    comment: ''
-    gui_hint: ''
-    label: ''
-    min_len: '200'
-    orient: Qt.Horizontal
-    rangeType: float
-    start: '0.91'
-    step: '0.000001'
-    stop: '1.1'
-    value: '1.0'
-    widget: counter_slider
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [144, 285]
-    rotation: 0
-    state: true
-- name: ferror
-  id: variable
-  parameters:
-    comment: ''
-    value: (samp_rate*angle_error)/(2*pi*interpolatedHsize)
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [1077, 302]
+    coordinate: [649, 157]
     rotation: 0
     state: enabled
 - name: fft_size
@@ -227,88 +173,14 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [592, 224]
+    coordinate: [226, 244]
     rotation: 0
     state: true
-- name: filtro_ecualizador_1st
-  id: variable
-  parameters:
-    comment: ''
-    value: '[-6.13e-05-1.22e-05j,
-
-      6.18e-04-2.02e-04j,
-
-      3.84e-03-2.43e-03j,
-
-      5.50e-03-3.87e-03j,
-
-      7.65e-03-5.51e-03j,
-
-      8.36e-03-6.47e-03j,
-
-      3.42e-03-3.78e-03j,
-
-      -7.81e-03+2.35e-03j,
-
-      -3.86e-02+2.21e-02j,
-
-      -8.12e-02+4.68e-02j,
-
-      -1.62e-01+9.94e-02j,
-
-      -2.48e-01+1.48e-01j,
-
-      -3.92e-01+2.43e-01j,
-
-      -5.04e-01+2.99e-01j,
-
-      -7.22e-01+4.49e-01j,
-
-      -6.65e-01+3.56e-01j,
-
-      7.83e-01-4.68e-01j,
-
-      6.76e-01-3.60e-01j,
-
-      5.19e-01-2.92e-01j,
-
-      3.70e-01-1.98e-01j,
-
-      2.48e-01-1.39e-01j,
-
-      1.48e-01-8.02e-02j,
-
-      7.74e-02-4.50e-02j,
-
-      3.09e-02-1.83e-02j,
-
-      4.68e-03-4.89e-03j,
-
-      -6.43e-03+1.92e-03j,
-
-      -9.85e-03+4.10e-03j,
-
-      -8.23e-03+3.73e-03j,
-
-      -5.86e-03+2.73e-03j,
-
-      -3.57e-03+1.94e-03j,
-
-      -1.81e-04+2.41e-04j,
-
-      ]'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [976, 185]
-    rotation: 0
-    state: enabled
 - name: harmonic
   id: variable_qtgui_range
   parameters:
     comment: ''
-    gui_hint: ''
+    gui_hint: tab_m@0
     label: Harmonic
     min_len: '200'
     orient: Qt.Horizontal
@@ -322,7 +194,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [229, 132]
+    coordinate: [226, 127]
     rotation: 0
     state: enabled
 - name: interpolatedHblank
@@ -334,7 +206,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [740, 7]
+    coordinate: [506, 215]
     rotation: 0
     state: enabled
 - name: interpolatedHscreen
@@ -346,7 +218,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [622, 116]
+    coordinate: [506, 278]
     rotation: 0
     state: enabled
 - name: interpolatedHsize
@@ -358,14 +230,14 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [747, 64]
+    coordinate: [506, 154]
     rotation: 0
     state: enabled
 - name: inverted
   id: variable_qtgui_chooser
   parameters:
     comment: ''
-    gui_hint: ''
+    gui_hint: tab_m@0
     label: Inverted colors?
     label0: 'Yes'
     label1: 'No'
@@ -387,7 +259,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [850, 6]
+    coordinate: [21, 235]
     rotation: 0
     state: enabled
 - name: px_rate
@@ -399,14 +271,14 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [146, 193]
+    coordinate: [332, 244]
     rotation: 0
     state: enabled
 - name: refresh_rate
   id: variable_qtgui_range
   parameters:
     comment: ''
-    gui_hint: ''
+    gui_hint: tab_m@0
     label: Refresh Rate (Hz)
     min_len: '200'
     orient: Qt.Horizontal
@@ -420,19 +292,19 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [222, 8]
+    coordinate: [331, 126]
     rotation: 0
     state: enabled
 - name: samp_rate
   id: variable
   parameters:
     comment: ''
-    value: round(50e6)
+    value: int(50e6)
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [137, 116]
+    coordinate: [225, 61]
     rotation: 0
     state: enabled
 - name: FFT_autocorrelation_0_0
@@ -440,7 +312,7 @@ blocks:
   parameters:
     affinity: ''
     alias: ''
-    alpha: '0.5'
+    alpha: '1.0'
     comment: ''
     fft_size: int(fft_size)
     maxoutbuf: '0'
@@ -449,7 +321,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [390, 1120]
+    coordinate: [597, 634]
     rotation: 270
     state: enabled
 - name: Keep_1_in_N_Frames_0
@@ -459,101 +331,14 @@ blocks:
     alias: ''
     comment: ''
     fac_decimation: DroppedFrames
-    fft_size: int(fft_size)
+    fft_size: interpolatedHsize*Vsize*4
     maxoutbuf: '0'
     minoutbuf: '0'
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [349, 773]
-    rotation: 270
-    state: disabled
-- name: Keep_1_in_N_Frames_0_0
-  id: Keep_1_in_N_Frames
-  parameters:
-    affinity: ''
-    alias: ''
-    comment: ''
-    fac_decimation: DroppedFrames
-    fft_size: int(interpolatedHsize*Vsize*4)
-    maxoutbuf: '0'
-    minoutbuf: '0'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [452, 765]
-    rotation: 270
-    state: enabled
-- name: analog_frequency_modulator_fc_0
-  id: analog_frequency_modulator_fc
-  parameters:
-    affinity: ''
-    alias: ''
-    comment: ''
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    sensitivity: 2*pi/(samp_rate)
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [916, 450]
-    rotation: 270
-    state: enabled
-- name: analog_sig_source_x_0_0
-  id: analog_sig_source_x
-  parameters:
-    affinity: ''
-    alias: ''
-    amp: '1'
-    comment: ''
-    freq: -ferror
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    offset: '0'
-    phase: '0'
-    samp_rate: samp_rate
-    type: complex
-    waveform: analog.GR_COS_WAVE
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [1044, 774]
-    rotation: 0
-    state: enabled
-- name: blocks_complex_to_arg_0
-  id: blocks_complex_to_arg
-  parameters:
-    affinity: ''
-    alias: ''
-    comment: ''
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    vlen: '1'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [869, 362]
-    rotation: 0
-    state: enabled
-- name: blocks_complex_to_arg_0_0
-  id: blocks_complex_to_arg
-  parameters:
-    affinity: ''
-    alias: ''
-    comment: ''
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    vlen: '1'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [1923, 390]
+    coordinate: [506, 470]
     rotation: 0
     state: enabled
 - name: blocks_complex_to_mag_0
@@ -569,26 +354,10 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1215, 908]
-    rotation: 0
-    state: disabled
-- name: blocks_complex_to_real_0
-  id: blocks_complex_to_real
-  parameters:
-    affinity: ''
-    alias: ''
-    comment: ''
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    vlen: '1'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [1373, 745]
+    coordinate: [1336, 493]
     rotation: 0
     state: enabled
-- name: blocks_delay_0
+- name: blocks_delay_0_0
   id: blocks_delay
   parameters:
     affinity: ''
@@ -604,46 +373,8 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [949, 653]
+    coordinate: [1099, 491]
     rotation: 0
-    state: disabled
-- name: blocks_delay_1
-  id: blocks_delay
-  parameters:
-    affinity: ''
-    alias: ''
-    comment: ''
-    delay: interpolatedHsize
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    num_ports: '1'
-    type: complex
-    vlen: '1'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [603, 554]
-    rotation: 90
-    state: enabled
-- name: blocks_delay_1_0
-  id: blocks_delay
-  parameters:
-    affinity: ''
-    alias: ''
-    comment: ''
-    delay: interpolatedHsize
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    num_ports: '1'
-    type: complex
-    vlen: '1'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [1657, 582]
-    rotation: 90
     state: enabled
 - name: blocks_file_sink_0
   id: blocks_file_sink
@@ -652,7 +383,7 @@ blocks:
     alias: ''
     append: 'False'
     comment: ''
-    file: /home/felipe/gnuradio/git/grabaciones_local/DEMO_VGA_recording_1080p_60Hz_50MHz.dat
+    file: /home/felipe/gnuradio/git/grabaciones_local/VGA_16MSps_1080p_300MHzCentral_2.dat
     type: complex
     unbuffered: 'False'
     vlen: '1'
@@ -660,29 +391,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [267, 541]
-    rotation: 0
-    state: disabled
-- name: blocks_file_source_0
-  id: blocks_file_source
-  parameters:
-    affinity: ''
-    alias: ''
-    begin_tag: pmt.PMT_NIL
-    comment: ''
-    file: /home/felipe/gnuradio/git/grabaciones_local/DEMO_VGA_recording_1080p_60Hz_50MHz.dat
-    length: '0'
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    offset: '0'
-    repeat: 'True'
-    type: complex
-    vlen: '1'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [37, 625]
+    coordinate: [418, 642]
     rotation: 0
     state: disabled
 - name: blocks_float_to_short_0
@@ -699,113 +408,9 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1422, 1154]
+    coordinate: [1496, 796]
     rotation: 270
     state: enabled
-- name: blocks_multiply_conjugate_cc_0
-  id: blocks_multiply_conjugate_cc
-  parameters:
-    affinity: ''
-    alias: ''
-    comment: ''
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    vlen: '1'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [576, 374]
-    rotation: 90
-    state: enabled
-- name: blocks_multiply_conjugate_cc_0_0
-  id: blocks_multiply_conjugate_cc
-  parameters:
-    affinity: ''
-    alias: ''
-    comment: ''
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    vlen: '1'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [1630, 402]
-    rotation: 90
-    state: enabled
-- name: blocks_multiply_xx_0_0
-  id: blocks_multiply_xx
-  parameters:
-    affinity: ''
-    alias: ''
-    comment: ''
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    num_inputs: '2'
-    type: complex
-    vlen: '1'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [1239, 688]
-    rotation: 0
-    state: enabled
-- name: blocks_multiply_xx_0_0_0
-  id: blocks_multiply_xx
-  parameters:
-    affinity: ''
-    alias: ''
-    comment: ''
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    num_inputs: '2'
-    type: complex
-    vlen: '1'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [1039, 559]
-    rotation: 0
-    state: enabled
-- name: blocks_null_sink_0
-  id: blocks_null_sink
-  parameters:
-    affinity: ''
-    alias: ''
-    bus_structure_sink: '[[0,],]'
-    comment: ''
-    num_inputs: '1'
-    type: float
-    vlen: '1'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [830, 1036]
-    rotation: 0
-    state: disabled
-- name: blocks_throttle_0
-  id: blocks_throttle
-  parameters:
-    affinity: ''
-    alias: ''
-    comment: ''
-    ignoretag: 'True'
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    samples_per_second: samp_rate
-    type: complex
-    vlen: '1'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [277, 619]
-    rotation: 0
-    state: disabled
 - name: import_0
   id: import
   parameters:
@@ -816,106 +421,9 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1048, 141]
+    coordinate: [22, 185]
     rotation: 0
     state: true
-- name: qtgui_time_sink_x_0
-  id: qtgui_time_sink_x
-  parameters:
-    affinity: ''
-    alias: ''
-    alpha1: '1.0'
-    alpha10: '1.0'
-    alpha2: '1.0'
-    alpha3: '1.0'
-    alpha4: '1.0'
-    alpha5: '1.0'
-    alpha6: '1.0'
-    alpha7: '1.0'
-    alpha8: '1.0'
-    alpha9: '1.0'
-    autoscale: 'True'
-    axislabels: 'True'
-    color1: blue
-    color10: dark blue
-    color2: red
-    color3: green
-    color4: black
-    color5: cyan
-    color6: magenta
-    color7: yellow
-    color8: dark red
-    color9: dark green
-    comment: ''
-    ctrlpanel: 'False'
-    entags: 'True'
-    grid: 'False'
-    gui_hint: tab_m@0
-    label1: Signal 1
-    label10: Signal 10
-    label2: Signal 2
-    label3: Signal 3
-    label4: Signal 4
-    label5: Signal 5
-    label6: Signal 6
-    label7: Signal 7
-    label8: Signal 8
-    label9: Signal 9
-    legend: 'True'
-    marker1: '-1'
-    marker10: '-1'
-    marker2: '-1'
-    marker3: '-1'
-    marker4: '-1'
-    marker5: '-1'
-    marker6: '-1'
-    marker7: '-1'
-    marker8: '-1'
-    marker9: '-1'
-    name: '""'
-    nconnections: '1'
-    size: '1024'
-    srate: samp_rate
-    stemplot: 'False'
-    style1: '1'
-    style10: '1'
-    style2: '1'
-    style3: '1'
-    style4: '1'
-    style5: '1'
-    style6: '1'
-    style7: '1'
-    style8: '1'
-    style9: '1'
-    tr_chan: '0'
-    tr_delay: '0'
-    tr_level: '0.0'
-    tr_mode: qtgui.TRIG_MODE_FREE
-    tr_slope: qtgui.TRIG_SLOPE_POS
-    tr_tag: '""'
-    type: float
-    update_time: '0.5'
-    width1: '1'
-    width10: '1'
-    width2: '1'
-    width3: '1'
-    width4: '1'
-    width5: '1'
-    width6: '1'
-    width7: '1'
-    width8: '1'
-    width9: '1'
-    ylabel: Phase difference (rad).
-    ymax: '1'
-    ymin: '-1'
-    yunit: '""'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [1906, 488]
-    rotation: 0
-    state: enabled
 - name: qtgui_time_sink_x_1
   id: qtgui_time_sink_x
   parameters:
@@ -971,7 +479,7 @@ blocks:
     marker9: '-1'
     name: '""'
     nconnections: '1'
-    size: int(fft_size*2)
+    size: int(fft_size/2)
     srate: samp_rate
     stemplot: 'False'
     style1: '1'
@@ -986,12 +494,12 @@ blocks:
     style9: '1'
     tr_chan: '0'
     tr_delay: '0'
-    tr_level: '18.0'
+    tr_level: '15.0'
     tr_mode: qtgui.TRIG_MODE_NORM
     tr_slope: qtgui.TRIG_SLOPE_POS
     tr_tag: '"peak_1"'
     type: float
-    update_time: '1.0'
+    update_time: '2.0'
     width1: '1'
     width10: '1'
     width2: '1'
@@ -1010,14 +518,14 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [603, 1103]
+    coordinate: [868, 623]
     rotation: 270
     state: enabled
 - name: ratio_finder_toggle_on_and_off
   id: variable_qtgui_msg_push_button
   parameters:
     comment: ''
-    gui_hint: tab_m@1
+    gui_hint: ''
     label: Ratio Finder toggle ON or OFF (FFT peaks).
     msgName: pressed
     relBackgroundColor: default
@@ -1028,44 +536,8 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [659, 1275]
+    coordinate: [874, 817]
     rotation: 180
-    state: enabled
-- name: single_pole_iir_filter_xx_0
-  id: single_pole_iir_filter_xx
-  parameters:
-    affinity: ''
-    alias: ''
-    alpha: '0.00001'
-    comment: ''
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    type: complex
-    vlen: '1'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [695, 302]
-    rotation: 0
-    state: enabled
-- name: single_pole_iir_filter_xx_0_0
-  id: single_pole_iir_filter_xx
-  parameters:
-    affinity: ''
-    alias: ''
-    alpha: '0.00001'
-    comment: ''
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    type: complex
-    vlen: '1'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [1749, 330]
-    rotation: 0
     state: enabled
 - name: tab_m
   id: qtgui_tab_widget
@@ -1098,7 +570,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [353, 8]
+    coordinate: [17, 92]
     rotation: 0
     state: true
 - name: tempest_fft_peak_fine_sampling_sync_0_0
@@ -1113,34 +585,14 @@ blocks:
     maxoutbuf: '0'
     minoutbuf: '0'
     refresh_rate: refresh_rate
-    sample_rate: int(samp_rate)
+    sample_rate: samp_rate
     size: int(fft_size)
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [463, 1105]
+    coordinate: [706, 628]
     rotation: 90
-    state: enabled
-- name: tempest_fine_sampling_synchronization_0
-  id: tempest_fine_sampling_synchronization
-  parameters:
-    Htotal: interpolatedHsize
-    Vtotal: Vsize
-    affinity: ''
-    alias: ''
-    comment: ''
-    correct_sampling: '1'
-    max_deviation: '10'
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    update_proba: 1e-3
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [651, 813]
-    rotation: 0
     state: enabled
 - name: tempest_normalize_flow_0
   id: tempest_normalize_flow
@@ -1159,10 +611,10 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1398, 967]
+    coordinate: [1472, 578]
     rotation: 270
     state: enabled
-- name: tempest_sync_detector_0
+- name: tempest_sync_detector_0_0
   id: tempest_sync_detector
   parameters:
     affinity: ''
@@ -1178,7 +630,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [919, 856]
+    coordinate: [842, 473]
     rotation: 0
     state: enabled
 - name: uhd_usrp_source_0
@@ -1250,7 +702,7 @@ blocks:
     bw7: '0'
     bw8: '0'
     bw9: '0'
-    center_freq0: 10*px_rate*harmonic
+    center_freq0: px_rate*harmonic
     center_freq1: '0'
     center_freq10: '0'
     center_freq11: '0'
@@ -1549,7 +1001,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [83, 741]
+    coordinate: [240, 438]
     rotation: 0
     state: enabled
 - name: video_sdl_sink_0_0_0
@@ -1559,8 +1011,8 @@ blocks:
     alias: ''
     comment: "Enable this path when you are sure what the \nresolution is (and defaut\
       \ to those values on \nthe chooser)."
-    display_height: '517'
-    display_width: '1088'
+    display_height: '1080'
+    display_width: '1920'
     fps: '0'
     height: Vsize
     num_channels: '1'
@@ -1570,60 +1022,26 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1398, 1326]
+    coordinate: [1473, 1001]
     rotation: 270
     state: enabled
 
 connections:
 - [FFT_autocorrelation_0_0, '0', tempest_fft_peak_fine_sampling_sync_0_0, '0']
 - [Keep_1_in_N_Frames_0, '0', FFT_autocorrelation_0_0, '0']
-- [Keep_1_in_N_Frames_0, '0', blocks_delay_1, '0']
-- [Keep_1_in_N_Frames_0, '0', blocks_multiply_conjugate_cc_0, '0']
-- [Keep_1_in_N_Frames_0_0, '0', FFT_autocorrelation_0_0, '0']
-- [Keep_1_in_N_Frames_0_0, '0', blocks_complex_to_mag_0, '0']
-- [Keep_1_in_N_Frames_0_0, '0', blocks_delay_1, '0']
-- [Keep_1_in_N_Frames_0_0, '0', blocks_multiply_conjugate_cc_0, '0']
-- [Keep_1_in_N_Frames_0_0, '0', tempest_fine_sampling_synchronization_0, '0']
-- [analog_frequency_modulator_fc_0, '0', blocks_multiply_xx_0_0_0, '0']
-- [analog_sig_source_x_0_0, '0', blocks_multiply_xx_0_0, '1']
-- [blocks_complex_to_arg_0, '0', analog_frequency_modulator_fc_0, '0']
-- [blocks_complex_to_arg_0_0, '0', qtgui_time_sink_x_0, '0']
+- [Keep_1_in_N_Frames_0, '0', tempest_sync_detector_0_0, '0']
 - [blocks_complex_to_mag_0, '0', tempest_normalize_flow_0, '0']
-- [blocks_complex_to_real_0, '0', tempest_normalize_flow_0, '0']
-- [blocks_delay_0, '0', blocks_multiply_xx_0_0, '0']
-- [blocks_delay_1, '0', blocks_multiply_conjugate_cc_0, '1']
-- [blocks_delay_1_0, '0', blocks_multiply_conjugate_cc_0_0, '1']
-- [blocks_file_source_0, '0', blocks_file_sink_0, '0']
-- [blocks_file_source_0, '0', blocks_throttle_0, '0']
+- [blocks_delay_0_0, '0', blocks_complex_to_mag_0, '0']
 - [blocks_float_to_short_0, '0', video_sdl_sink_0_0_0, '0']
-- [blocks_multiply_conjugate_cc_0, '0', single_pole_iir_filter_xx_0, '0']
-- [blocks_multiply_conjugate_cc_0_0, '0', single_pole_iir_filter_xx_0_0, '0']
-- [blocks_multiply_xx_0_0, '0', blocks_complex_to_real_0, '0']
-- [blocks_multiply_xx_0_0, '0', blocks_delay_1_0, '0']
-- [blocks_multiply_xx_0_0, '0', blocks_multiply_conjugate_cc_0_0, '0']
-- [blocks_multiply_xx_0_0_0, '0', blocks_multiply_xx_0_0, '0']
-- [blocks_throttle_0, '0', Keep_1_in_N_Frames_0, '0']
-- [blocks_throttle_0, '0', Keep_1_in_N_Frames_0_0, '0']
 - [ratio_finder_toggle_on_and_off, pressed, tempest_fft_peak_fine_sampling_sync_0_0,
   en]
-- [single_pole_iir_filter_xx_0, '0', blocks_complex_to_arg_0, '0']
-- [single_pole_iir_filter_xx_0_0, '0', blocks_complex_to_arg_0_0, '0']
-- [tempest_fft_peak_fine_sampling_sync_0_0, '0', blocks_null_sink_0, '0']
 - [tempest_fft_peak_fine_sampling_sync_0_0, '0', qtgui_time_sink_x_1, '0']
 - [tempest_fft_peak_fine_sampling_sync_0_0, en, FFT_autocorrelation_0_0, en]
-- [tempest_fft_peak_fine_sampling_sync_0_0, en, tempest_fine_sampling_synchronization_0,
-  en]
-- [tempest_fft_peak_fine_sampling_sync_0_0, en, tempest_sync_detector_0, en]
+- [tempest_fft_peak_fine_sampling_sync_0_0, en, tempest_sync_detector_0_0, en]
 - [tempest_fft_peak_fine_sampling_sync_0_0, rate, uhd_usrp_source_0, command]
-- [tempest_fft_peak_fine_sampling_sync_0_0, ratio, tempest_fine_sampling_synchronization_0,
-  ratio]
-- [tempest_fine_sampling_synchronization_0, '0', tempest_sync_detector_0, '0']
 - [tempest_normalize_flow_0, '0', blocks_float_to_short_0, '0']
-- [tempest_sync_detector_0, '0', blocks_complex_to_mag_0, '0']
-- [tempest_sync_detector_0, '0', blocks_delay_0, '0']
-- [tempest_sync_detector_0, '0', blocks_multiply_xx_0_0_0, '1']
+- [tempest_sync_detector_0_0, '0', blocks_delay_0_0, '0']
 - [uhd_usrp_source_0, '0', Keep_1_in_N_Frames_0, '0']
-- [uhd_usrp_source_0, '0', Keep_1_in_N_Frames_0_0, '0']
 - [uhd_usrp_source_0, '0', blocks_file_sink_0, '0']
 
 metadata:

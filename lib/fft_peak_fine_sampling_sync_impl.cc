@@ -233,7 +233,7 @@ namespace gr {
                                       );
  
                 d_search_skip = d_peak_1 + one_full_frame_in_samples - floor((0.001)*d_sample_rate);
-                d_search_margin = 200 + floor((0.001)*3*d_sample_rate);
+                d_search_margin = 200 + floor((0.001)*4*d_sample_rate);
                 d_peak_2 = calculate_peak_index_relative_to_search_skip(
                                           in, 
                                           d_search_skip, 

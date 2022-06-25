@@ -135,11 +135,8 @@ namespace gr
     //---------------------------------------------------------
 
     void frame_drop_impl::set_ratio_msg(pmt::pmt_t msg){
-
       if(pmt::is_pair(msg)) {
-          // saca el primero de la pareja
           pmt::pmt_t key = pmt::car(msg);
-          // saca el segundo
           pmt::pmt_t val = pmt::cdr(msg);
           if(pmt::eq(key, pmt::string_to_symbol("ratio"))) {
               if(pmt::is_number(val)) {
