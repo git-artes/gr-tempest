@@ -58,6 +58,9 @@ namespace gr {
 
         set_output_multiple(d_win);
 
+        message_port_register_in(pmt::mp("iHsize"));
+        set_msg_handler(pmt::mp("iHsize"), [this](const pmt::pmt_t& msg) {normalize_flow_impl::set_iHsize_msg(msg); });
+
         d_current_max = d_max;
         d_current_min = d_min;
         
@@ -84,6 +87,21 @@ namespace gr {
      */
     normalize_flow_impl::~normalize_flow_impl()
     {
+    }
+
+    void normalize_flow_impl::set_iHsize_msg(pmt::pmt_t msg){
+
+        if(pmt::is_pair(msg)) {
+            // saca el primero de la pareja
+            pmt::pmt_t key = pmt::car(msg);
+            // saca el segundo
+            pmt::pmt_t val = pmt::cdr(msg);
+            if(pmt::eq(key, pmt::string_to_symbol("iHsize"))) {
+                if(pmt::is_number(val)) {
+                    d_win = pmt::to_long(val);
+                }
+            }
+        }
     }
 
     int

@@ -40,6 +40,14 @@ namespace gr {
          int d_Vtotal; 
          int d_correct_sampling;
          float d_max_deviation; 
+        //Counters
+        int d_frame_height_counter;
+        int d_frames_counter;
+
+        //Fixed parameter
+        int d_discarded_amount_per_frame;
+
+
 
          // to accelerate the process, I'll only update the interpolation
          // once every a random number of iterations with probability d_proba_of_updating
@@ -47,6 +55,7 @@ namespace gr {
          std::minstd_rand d_gen;
          float d_proba_of_updating;
          int d_next_update;
+         int d_required_for_interpolation;
 
          double d_samp_inc_rem;
          double d_new_interpolation_ratio_rem;
@@ -56,14 +65,18 @@ namespace gr {
          int d_max_deviation_px; 
       
         // correlation with the last line 
+        
          gr_complex * d_current_line_corr;  
          gr_complex * d_historic_line_corr;  
          float * d_abs_historic_line_corr;  
+         
         // correlation with the last frame 
+         
          gr_complex * d_current_frame_corr;  
          gr_complex * d_historic_frame_corr;  
          float * d_abs_historic_frame_corr;  
-      
+         
+         bool d_stop_fine_sampling_synch;
         // where is the line correlation peak  
          int d_peak_line_index;
 
@@ -77,6 +90,15 @@ namespace gr {
         void update_interpolation_ratio(const gr_complex * in, int in_size);
 
         void estimate_peak_line_index(const gr_complex * in, int in_size);
+
+        void set_iHsize_msg(pmt::pmt_t msg);
+
+        void set_Vsize_msg(pmt::pmt_t msg);
+
+        
+        void set_ena_msg(pmt::pmt_t msg);
+        gr::thread::mutex d_mutex;
+        void set_ratio_msg(pmt::pmt_t msg);
 
      public:
       fine_sampling_synchronization_impl(int Htotal, int Vtotal, int correct_sampling, float max_deviation, float update_proba);

@@ -1,0 +1,37 @@
+id: tempest_infer_resolution
+label: infer resolution
+category: '[Tempest]'
+templates:
+  imports: import tempest
+  make: tempest.infer_resolution(${samp_rate}, ${fft_size})
+parameters:
+- id: samp_rate
+  label: Samp_rate
+  dtype: int
+- id: fft_size
+  label: Fft_size
+  dtype: int
+inputs:
+- label: in
+  domain: stream
+  dtype: float
+outputs:
+- label: out
+  domain: stream
+  dtype: float
+- label: refresh_rate
+  domain: message
+  optional: true
+- label: Vvisible
+  domain: message
+  optional: true
+- label: Vsize
+  domain: message
+  optional: true
+- label: Hvisible
+  domain: message
+  optional: true
+- label: Hblank
+  domain: message
+  optional: true
+file_format: 1

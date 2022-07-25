@@ -27,11 +27,23 @@ options:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [8, 8]
+    coordinate: [1049, 130]
     rotation: 0
     state: enabled
 
 blocks:
+- name: Hblank
+  id: variable
+  parameters:
+    comment: ''
+    value: Hsize-Hvisible
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1016, 70]
+    rotation: 0
+    state: enabled
 - name: Hdisplay
   id: variable
   parameters:
@@ -41,7 +53,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [464, 148]
+    coordinate: [400, 142]
     rotation: 0
     state: enabled
 - name: Hsize
@@ -53,7 +65,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [440, 20]
+    coordinate: [376, 14]
     rotation: 0
     state: enabled
 - name: Hvisible
@@ -65,7 +77,19 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [352, 20]
+    coordinate: [288, 14]
+    rotation: 0
+    state: enabled
+- name: Vblank
+  id: variable
+  parameters:
+    comment: ''
+    value: Vsize-Vvisible
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1095, 70]
     rotation: 0
     state: enabled
 - name: Vdisplay
@@ -77,7 +101,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [384, 148]
+    coordinate: [320, 142]
     rotation: 0
     state: enabled
 - name: Vsize
@@ -89,7 +113,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [440, 84]
+    coordinate: [376, 78]
     rotation: 0
     state: enabled
 - name: Vvisible
@@ -101,7 +125,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [352, 84]
+    coordinate: [288, 78]
     rotation: 0
     state: enabled
 - name: decim
@@ -113,9 +137,30 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [304, 148]
+    coordinate: [240, 142]
     rotation: 0
     state: enabled
+- name: delayrange
+  id: variable_qtgui_range
+  parameters:
+    comment: ''
+    gui_hint: ''
+    label: delay
+    min_len: '200'
+    orient: Qt.Horizontal
+    rangeType: float
+    start: '0'
+    step: interpolatedHsize
+    stop: interpolatedHsize*Vsize
+    value: interpolatedHsize*63
+    widget: counter_slider
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1169, 2]
+    rotation: 0
+    state: true
 - name: epsilon_channel
   id: variable_qtgui_range
   parameters:
@@ -134,9 +179,21 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [904, 180]
+    coordinate: [800, 131]
     rotation: 0
     state: enabled
+- name: fft_size
+  id: variable
+  parameters:
+    comment: ''
+    value: 4096*512
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1050, 194]
+    rotation: 0
+    state: true
 - name: freq
   id: variable_qtgui_range
   parameters:
@@ -155,7 +212,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [584, 180]
+    coordinate: [496, 147]
     rotation: 0
     state: enabled
 - name: harmonic
@@ -176,7 +233,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1048, 180]
+    coordinate: [937, 129]
     rotation: 0
     state: enabled
 - name: horizontal_offset
@@ -197,7 +254,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [728, 12]
+    coordinate: [610, 3]
     rotation: 0
     state: enabled
 - name: inter
@@ -209,7 +266,31 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [232, 148]
+    coordinate: [168, 142]
+    rotation: 0
+    state: enabled
+- name: interpolatedHblank
+  id: variable
+  parameters:
+    comment: ''
+    value: int(Hblank/float(px_rate)*usrp_rate)
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1008, 3]
+    rotation: 0
+    state: enabled
+- name: interpolatedHscreen
+  id: variable
+  parameters:
+    comment: ''
+    value: int(Hvisible/float(px_rate)*usrp_rate)
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [880, 67]
     rotation: 0
     state: enabled
 - name: interpolatedHsize
@@ -221,7 +302,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1008, 20]
+    coordinate: [880, 5]
     rotation: 0
     state: enabled
 - name: inverted
@@ -250,7 +331,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [592, 12]
+    coordinate: [474, 3]
     rotation: 0
     state: enabled
 - name: lines_offset
@@ -271,7 +352,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [872, 12]
+    coordinate: [754, 3]
     rotation: 0
     state: enabled
 - name: noise
@@ -292,7 +373,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [768, 180]
+    coordinate: [664, 131]
     rotation: 0
     state: enabled
 - name: px_rate
@@ -304,7 +385,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [0, 76]
+    coordinate: [193, 206]
     rotation: 0
     state: enabled
 - name: rectangular_pulse
@@ -316,7 +397,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [224, 84]
+    coordinate: [160, 78]
     rotation: 0
     state: enabled
 - name: refresh_rate
@@ -328,7 +409,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [248, 20]
+    coordinate: [184, 14]
     rotation: 0
     state: enabled
 - name: samp_rate
@@ -340,21 +421,38 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [8, 204]
+    coordinate: [394, 207]
     rotation: 0
     state: enabled
 - name: usrp_rate
   id: variable
   parameters:
     comment: ''
-    value: int(30e6)
+    value: int(29.952e6)
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [8, 140]
+    coordinate: [306, 204]
     rotation: 0
     state: enabled
+- name: FFT_autocorrelation_0
+  id: FFT_autocorrelation
+  parameters:
+    affinity: ''
+    alias: ''
+    alpha: '1.0'
+    comment: ''
+    fft_size: int(fft_size)
+    maxoutbuf: '0'
+    minoutbuf: '0'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1278, 128]
+    rotation: 90
+    state: disabled
 - name: analog_sig_source_x_0
   id: analog_sig_source_x
   parameters:
@@ -374,7 +472,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [568, 580]
+    coordinate: [504, 374]
     rotation: 0
     state: enabled
 - name: blocks_complex_to_mag_0
@@ -390,16 +488,16 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [923, 797]
+    coordinate: [595, 524]
     rotation: 180
-    state: enabled
+    state: disabled
 - name: blocks_delay_0
   id: blocks_delay
   parameters:
     affinity: ''
     alias: ''
     comment: ''
-    delay: interpolatedHsize*lines_offset+horizontal_offset
+    delay: delayrange
     maxoutbuf: '0'
     minoutbuf: '0'
     num_ports: '1'
@@ -409,9 +507,9 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1091, 793]
+    coordinate: [791, 517]
     rotation: 180
-    state: enabled
+    state: disabled
 - name: blocks_float_to_short_0
   id: blocks_float_to_short
   parameters:
@@ -420,30 +518,13 @@ blocks:
     comment: ''
     maxoutbuf: '0'
     minoutbuf: '0'
-    scale: inverted
+    scale: '1'
     vlen: '1'
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [412, 714]
-    rotation: 180
-    state: enabled
-- name: blocks_float_to_short_0_0
-  id: blocks_float_to_short
-  parameters:
-    affinity: ''
-    alias: ''
-    comment: ''
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    scale: inverted
-    vlen: '1'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [235, 893]
+    coordinate: [193, 539]
     rotation: 180
     state: disabled
 - name: blocks_multiply_xx_0
@@ -461,9 +542,26 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [867, 498]
+    coordinate: [745, 330]
     rotation: 0
     state: enabled
+- name: blocks_null_sink_0
+  id: blocks_null_sink
+  parameters:
+    affinity: ''
+    alias: ''
+    bus_structure_sink: '[[0,],]'
+    comment: ''
+    num_inputs: '1'
+    type: float
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1371, 192]
+    rotation: 90
+    state: disabled
 - name: blocks_throttle_0_0
   id: blocks_throttle
   parameters:
@@ -480,9 +578,29 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [576, 492]
+    coordinate: [514, 326]
     rotation: 0
     state: enabled
+- name: blocks_vector_source_x_0
+  id: blocks_vector_source_x
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    repeat: 'True'
+    tags: '[]'
+    type: float
+    vector: '[124124.7,0,0.3,0.4,0.1,0.6]*128'
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [57, 408]
+    rotation: 0
+    state: true
 - name: channels_channel_model_0
   id: channels_channel_model
   parameters:
@@ -501,7 +619,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1305, 469]
+    coordinate: [1098, 275]
     rotation: 0
     state: enabled
 - name: interp_fir_filter_xxx_0
@@ -520,9 +638,106 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [296, 492]
+    coordinate: [288, 318]
     rotation: 0
     state: enabled
+- name: qtgui_time_sink_x_0
+  id: qtgui_time_sink_x
+  parameters:
+    affinity: ''
+    alias: ''
+    alpha1: '1.0'
+    alpha10: '1.0'
+    alpha2: '1.0'
+    alpha3: '1.0'
+    alpha4: '1.0'
+    alpha5: '1.0'
+    alpha6: '1.0'
+    alpha7: '1.0'
+    alpha8: '1.0'
+    alpha9: '1.0'
+    autoscale: 'False'
+    axislabels: 'True'
+    color1: blue
+    color10: dark blue
+    color2: red
+    color3: green
+    color4: black
+    color5: cyan
+    color6: magenta
+    color7: yellow
+    color8: dark red
+    color9: dark green
+    comment: ''
+    ctrlpanel: 'False'
+    entags: 'True'
+    grid: 'False'
+    gui_hint: ''
+    label1: Signal 1
+    label10: Signal 10
+    label2: Signal 2
+    label3: Signal 3
+    label4: Signal 4
+    label5: Signal 5
+    label6: Signal 6
+    label7: Signal 7
+    label8: Signal 8
+    label9: Signal 9
+    legend: 'True'
+    marker1: '-1'
+    marker10: '-1'
+    marker2: '-1'
+    marker3: '-1'
+    marker4: '-1'
+    marker5: '-1'
+    marker6: '-1'
+    marker7: '-1'
+    marker8: '-1'
+    marker9: '-1'
+    name: '""'
+    nconnections: '1'
+    size: '4096'
+    srate: samp_rate
+    stemplot: 'False'
+    style1: '1'
+    style10: '1'
+    style2: '1'
+    style3: '1'
+    style4: '1'
+    style5: '1'
+    style6: '1'
+    style7: '1'
+    style8: '1'
+    style9: '1'
+    tr_chan: '0'
+    tr_delay: '0'
+    tr_level: '0.0'
+    tr_mode: qtgui.TRIG_MODE_FREE
+    tr_slope: qtgui.TRIG_SLOPE_POS
+    tr_tag: '""'
+    type: complex
+    update_time: '0.10'
+    width1: '1'
+    width10: '1'
+    width2: '1'
+    width3: '1'
+    width4: '1'
+    width5: '1'
+    width6: '1'
+    width7: '1'
+    width8: '1'
+    width9: '1'
+    ylabel: Amplitude
+    ymax: '1'
+    ymin: '-1'
+    yunit: '""'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1318, 316]
+    rotation: 0
+    state: true
 - name: rational_resampler_xxx_0
   id: rational_resampler_xxx
   parameters:
@@ -540,9 +755,30 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1049, 486]
+    coordinate: [888, 264]
     rotation: 0
     state: enabled
+- name: tempest_fft_peak_fine_sampling_sync_0
+  id: tempest_fft_peak_fine_sampling_sync
+  parameters:
+    Hvisible: interpolatedHsize
+    Vvisible: Vsize
+    affinity: ''
+    alias: ''
+    automatic_mode: 'True'
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    refresh_rate: refresh_rate
+    sample_rate: usrp_rate
+    size: int(fft_size/1)
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1420, 118]
+    rotation: 270
+    state: disabled
 - name: tempest_fine_sampling_synchronization_0
   id: tempest_fine_sampling_synchronization
   parameters:
@@ -552,7 +788,28 @@ blocks:
     alias: ''
     comment: ''
     correct_sampling: '1'
-    max_deviation: 100.0/interpolatedHsize
+    max_deviation: 10.0/interpolatedHsize
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    update_proba: 1.0e-1/(interpolatedHsize*Vsize)
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1053, 475]
+    rotation: 180
+    state: disabled
+- name: tempest_frame_drop_0
+  id: tempest_frame_drop
+  parameters:
+    Htotal: interpolatedHsize
+    Vtotal: Vsize
+    actual_samp_rate: usrp_rate
+    affinity: ''
+    alias: ''
+    comment: ''
+    correct_sampling: '1'
+    max_deviation: 10.0/interpolatedHsize
     maxoutbuf: '0'
     minoutbuf: '0'
     update_proba: 1.0/(interpolatedHsize*Vsize)
@@ -560,27 +817,8 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1243, 761]
-    rotation: 180
-    state: enabled
-- name: tempest_framing_0
-  id: tempest_framing
-  parameters:
-    Hdisplay: Hdisplay
-    Htotal: interpolatedHsize
-    Vdisplay: Vdisplay
-    Vtotal: Vsize
-    affinity: ''
-    alias: ''
-    comment: ''
-    maxoutbuf: '0'
-    minoutbuf: '0'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [379, 869]
-    rotation: 180
+    coordinate: [1370, 409]
+    rotation: 270
     state: disabled
 - name: tempest_image_source_0
   id: tempest_image_source
@@ -592,7 +830,7 @@ blocks:
     affinity: ''
     alias: ''
     comment: ''
-    image_file: /home/gnuradio/persistent/gr-tempest/Imagen_800_600.png
+    image_file: /home/pablo/fing/proyecto/grabaciones/prueba2.800x600.jpg
     maxoutbuf: '0'
     minoutbuf: '0'
     repeatmode: '1'
@@ -600,9 +838,9 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [0, 460]
+    coordinate: [43, 286]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: tempest_normalize_flow_0
   id: tempest_normalize_flow
   parameters:
@@ -620,28 +858,26 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [620, 762]
+    coordinate: [350, 507]
     rotation: 180
-    state: enabled
-- name: video_sdl_sink_0_0
-  id: video_sdl_sink
+    state: disabled
+- name: tempest_sync_detector_0
+  id: tempest_sync_detector
   parameters:
     affinity: ''
     alias: ''
-    comment: "Enable this path when you are not sure what the \nresolution is and\
-      \ you want to try several ones \non run-time. Then, enable the other path."
-    display_height: Vdisplay
-    display_width: Hdisplay
-    fps: '0'
-    height: Vdisplay
-    num_channels: '1'
-    type: short
-    width: Hdisplay
+    comment: ''
+    hblanking: interpolatedHblank
+    hscreen: interpolatedHscreen
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    vblanking: Vblank
+    vscreen: Vvisible
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [51, 861]
+    coordinate: [888, 499]
     rotation: 180
     state: disabled
 - name: video_sdl_sink_0_0_0
@@ -662,26 +898,32 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [204, 682]
+    coordinate: [7, 507]
     rotation: 180
-    state: enabled
+    state: disabled
 
 connections:
+- [FFT_autocorrelation_0, '0', tempest_fft_peak_fine_sampling_sync_0, '0']
 - [analog_sig_source_x_0, '0', blocks_multiply_xx_0, '1']
 - [blocks_complex_to_mag_0, '0', tempest_normalize_flow_0, '0']
 - [blocks_delay_0, '0', blocks_complex_to_mag_0, '0']
 - [blocks_float_to_short_0, '0', video_sdl_sink_0_0_0, '0']
-- [blocks_float_to_short_0_0, '0', video_sdl_sink_0_0, '0']
 - [blocks_multiply_xx_0, '0', rational_resampler_xxx_0, '0']
 - [blocks_throttle_0_0, '0', blocks_multiply_xx_0, '0']
-- [channels_channel_model_0, '0', tempest_fine_sampling_synchronization_0, '0']
+- [blocks_vector_source_x_0, '0', interp_fir_filter_xxx_0, '0']
+- [channels_channel_model_0, '0', FFT_autocorrelation_0, '0']
+- [channels_channel_model_0, '0', qtgui_time_sink_x_0, '0']
+- [channels_channel_model_0, '0', tempest_frame_drop_0, '0']
 - [interp_fir_filter_xxx_0, '0', blocks_throttle_0_0, '0']
 - [rational_resampler_xxx_0, '0', channels_channel_model_0, '0']
-- [tempest_fine_sampling_synchronization_0, '0', blocks_delay_0, '0']
-- [tempest_framing_0, '0', blocks_float_to_short_0_0, '0']
+- [tempest_fft_peak_fine_sampling_sync_0, '0', blocks_null_sink_0, '0']
+- [tempest_fft_peak_fine_sampling_sync_0, en, FFT_autocorrelation_0, en]
+- [tempest_fft_peak_fine_sampling_sync_0, en, tempest_sync_detector_0, en]
+- [tempest_fft_peak_fine_sampling_sync_0, ratio, tempest_fine_sampling_synchronization_0,
+  ratio]
+- [tempest_frame_drop_0, '0', blocks_complex_to_mag_0, '0']
 - [tempest_image_source_0, '0', interp_fir_filter_xxx_0, '0']
 - [tempest_normalize_flow_0, '0', blocks_float_to_short_0, '0']
-- [tempest_normalize_flow_0, '0', tempest_framing_0, '0']
 
 metadata:
   file_format: 1
