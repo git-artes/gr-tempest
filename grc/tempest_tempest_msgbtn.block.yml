@@ -1,6 +1,6 @@
 id: tempest_tempest_msgbtn
-label: tempest_msgbtn
-category: '[tempest]'
+label: GUI Button - Message Passer
+category: '[Tempest]'
 flags: [ show_id, python ]
 
 parameters:
