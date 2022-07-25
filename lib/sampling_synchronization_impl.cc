@@ -129,12 +129,12 @@ namespace gr {
             //for (int i=0; i<datain_length; i++)
             //    printf("datain[%i]=%f\n", i, datain[i]);
             //printf("peak_index: %i\n",peak_index);
-            //printf("SAMPLING SINC new_interpolation_ratio: %f\n",d_new_interpolation_ratio);
+            //printf("new_interpolation_ratio: %f\n",d_new_interpolation_ratio);
             //printf("d_samp_inc: %.20f\n",d_samp_inc_remainder+1);
 
             //d_samp_inc = (1-d_alpha_samp_inc)*d_samp_inc - d_alpha_samp_inc* d_new_interpolation_ratio;
             d_samp_inc_remainder = d_samp_inc_remainder - d_alpha_samp_inc*(d_samp_inc_remainder+1 - d_new_interpolation_ratio);
-                                        // 1 - alfa REM - alfa( 1 - ratio )
+
     }
 
     int sampling_synchronization_impl::interpolate_input(const gr_complex * in, gr_complex * out, int size){

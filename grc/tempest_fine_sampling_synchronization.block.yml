@@ -30,15 +30,8 @@ inputs:
 - label: in
   domain: stream
   dtype: complex
-- label: ratio
-  domain: message
-  optional: true
-- label: en
-  domain: message
-  optional: true
 outputs:
 - label: out
   domain: stream
   dtype: complex
-
 file_format: 1

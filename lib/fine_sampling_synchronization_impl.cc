@@ -64,7 +64,7 @@ namespace gr {
             d_alpha_samp_inc = 1e-1;
             
             d_samp_phase = 0; 
-            d_alpha_corr = 1e-2; 
+            d_alpha_corr = 1e-6; 
 
             //VOLK alignment as recommended by GNU Radio's Manual. It has a similar effect 
             //than set_output_multiple(), thus we will generally get multiples of this value
@@ -72,18 +72,6 @@ namespace gr {
             const int alignment_multiple = volk_get_alignment() / sizeof(gr_complex);
             set_alignment(std::max(1, alignment_multiple));
 
-
-            // PMT ports
-            message_port_register_in(pmt::mp("ratio"));
-            //message_port_register_in(pmt::mp("iHsize"));
-            //message_port_register_in(pmt::mp("Vsize"));
-            message_port_register_in(pmt::mp("en"));
-
-            // PMT handlers
-            set_msg_handler(pmt::mp("ratio"),  [this](const pmt::pmt_t& msg) {fine_sampling_synchronization_impl::set_ratio_msg(msg); });
-            //set_msg_handler(pmt::mp("iHsize"), [this](const pmt::pmt_t& msg) {fine_sampling_synchronization_impl::set_iHsize_msg(msg); });
-            //set_msg_handler(pmt::mp("Vsize"),  [this](const pmt::pmt_t& msg) {fine_sampling_synchronization_impl::set_Vsize_msg(msg); });
-            set_msg_handler(pmt::mp("en"),  [this](const pmt::pmt_t& msg) {fine_sampling_synchronization_impl::set_ena_msg(msg); });
 
             //set_output_multiple(d_Htotal);
 
@@ -128,7 +116,6 @@ namespace gr {
 
             d_peak_line_index = 0;
             d_samp_inc_rem = 0;
-            d_stop_fine_sampling_synch = 0;
             d_new_interpolation_ratio_rem = 0;
 
             /** @fcarraustewart: FIXME > Memory leak when using this as a callback ? 
@@ -144,17 +131,6 @@ namespace gr {
 
             // d_current_line_corr[i] and derivatives will keep the correlation between pixels 
             // px[t] and px[t+Htotal+i]
-
-            /** @fcarraustewart: FIXME > Memory leak when using this as a callback ? 
-             * in the context where we already constructed our block
-             * invoking this function would leave 6 dangling pointers right here, we 
-             * should somehow memory manage this correctly, on first thought:
-             * */
-            /**
-             * < Calling delete for each of the following pointers 
-             * and assigning them nullptr right here. Before running the new operator.
-             * 
-             * */
             d_current_line_corr = new gr_complex[2*d_max_deviation_px + 1];
             d_historic_line_corr = new gr_complex[2*d_max_deviation_px + 1];
             d_abs_historic_line_corr = new float[2*d_max_deviation_px + 1];
@@ -183,69 +159,6 @@ namespace gr {
 
         }
 
-
-        void fine_sampling_synchronization_impl::set_ena_msg(pmt::pmt_t msg){
-
-            if (pmt::is_bool(msg)) {
-                bool en = pmt::to_bool(msg);
-                gr::thread::scoped_lock l(d_mutex);
-                d_stop_fine_sampling_synch = !en;
-                printf("Fine Samp Received Sampling Stop.\n");
-            } else {
-                GR_LOG_WARN(d_logger,
-                            "Fine Samp Received : Non-PMT type received, expecting Boolean PMT\n");
-            }
-        }
-
-
-        void fine_sampling_synchronization_impl::set_ratio_msg(pmt::pmt_t msg){
-
-            if(pmt::is_pair(msg)) {
-                // saca el primero de la pareja
-                pmt::pmt_t key = pmt::car(msg);
-                // saca el segundo
-                pmt::pmt_t val = pmt::cdr(msg);
-                if(pmt::eq(key, pmt::string_to_symbol("ratio"))) {
-                    if(pmt::is_number(val)) {
-                        d_new_interpolation_ratio_rem = (double)pmt::to_double(val);
-                        printf("Fine sampling: interpolation ratio received = %f \n", d_new_interpolation_ratio_rem);
-                    }
-                }
-            }
-        }
-/*
-        void fine_sampling_synchronization_impl::set_iHsize_msg(pmt::pmt_t msg){
-
-            if(pmt::is_pair(msg)) {
-                // saca el primero de la pareja
-                pmt::pmt_t key = pmt::car(msg);
-                // saca el segundo
-                pmt::pmt_t val = pmt::cdr(msg);
-                if(pmt::eq(key, pmt::string_to_symbol("iHsize"))) {
-                    if(pmt::is_number(val)) {
-                        d_Htotal = pmt::to_long(val);
-                        //set_Htotal_Vtotal(d_Htotal, d_Vtotal);
-                    }
-                }
-            }
-        }
-
-        void fine_sampling_synchronization_impl::set_Vsize_msg(pmt::pmt_t msg){
-
-            if(pmt::is_pair(msg)) {
-                // saca el primero de la pareja
-                pmt::pmt_t key = pmt::car(msg);
-                // saca el segundo
-                pmt::pmt_t val = pmt::cdr(msg);
-                if(pmt::eq(key, pmt::string_to_symbol("Vsize"))) {
-                    if(pmt::is_number(val)) {
-                        d_Vtotal = pmt::to_long(val);
-                        //set_Htotal_Vtotal(d_Htotal, d_Vtotal);
-                    }
-                }
-            }
-        }
-*/
         int fine_sampling_synchronization_impl::interpolate_input(const gr_complex * in, gr_complex * out, int size){
             int ii = 0; // input index
             int oo = 0; // output index
@@ -266,7 +179,7 @@ namespace gr {
             return ii;
         }
 
-/*
+
         void fine_sampling_synchronization_impl::estimate_peak_line_index(const gr_complex * in, int in_size)
         {
 
@@ -317,7 +230,7 @@ namespace gr {
             delete [] d_in_conj;
             
         }
-*/
+
         int
             fine_sampling_synchronization_impl::general_work (int noutput_items,
                     gr_vector_int &ninput_items,
@@ -326,10 +239,11 @@ namespace gr {
             {
                 const gr_complex *in = (const gr_complex *) input_items[0];
                 gr_complex *out = (gr_complex *) output_items[0];
-                //if(d_dist(d_gen)<d_proba_of_updating){
-                //d_next_update -= noutput_items;
-                /*if(d_next_update <= 0 && d_stop_fine_sampling_synch==0){
 
+
+                //if(d_dist(d_gen)<d_proba_of_updating){
+                d_next_update -= noutput_items;
+                if(d_next_update <= 0){
                     estimate_peak_line_index(in, noutput_items);
                     // If noutput_items is too big, I only use a single line
                     //update_interpolation_ratio(in, std::min(noutput_items,d_Htotal));
@@ -338,16 +252,31 @@ namespace gr {
                     if (d_next_update<=-10*d_Htotal){
                         d_next_update = d_dist(d_gen);
                     }
-                    printf("\b\b\b\b\b\b\b\b Update \t");
-
-                }*/
-                gr::thread::scoped_lock l(d_mutex);
+                }
                 int required_for_interpolation = noutput_items; 
-                d_samp_inc_rem = d_new_interpolation_ratio_rem;
-                required_for_interpolation = interpolate_input(&in[0], &out[0], noutput_items);
+                
+                //printf("d_next_update: %i\n",d_next_update);
+                if (d_correct_sampling){
+                    d_samp_inc_rem = (1-d_alpha_samp_inc)*d_samp_inc_rem + d_alpha_samp_inc*d_new_interpolation_ratio_rem;
+                    // d_samp_inc_rem = d_samp_inc_rem - d_alpha_samp_inc*(d_samp_inc_rem+1 - new_interpolation_ratio);
+                    required_for_interpolation = interpolate_input(&in[0], &out[0], noutput_items);
+                }
+                else
+                {
+                    memcpy(&out[0], &in[0], noutput_items*sizeof(gr_complex));
+                }
+
+                //memcpy(out, in, noutput_items*sizeof(gr_complex));
+
+                // Tell runtime system how many input items we consumed on
+                // each input stream.
                 consume_each (required_for_interpolation);
+
+                // Tell runtime system how many output items we produced.
                 return noutput_items;
             }
 
     } /* namespace tempest */
 } /* namespace gr */
+
+

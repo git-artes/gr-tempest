@@ -447,7 +447,7 @@ blocks:
   id: variable
   parameters:
     comment: ''
-    value: int(10e6)
+    value: int(30e6)
   states:
     bus_sink: false
     bus_source: false
@@ -511,7 +511,7 @@ blocks:
     bus_structure: null
     coordinate: [22, 460]
     rotation: 0
-    state: disabled
+    state: enabled
 - name: blocks_float_to_short_0_0
   id: blocks_float_to_short
   parameters:
@@ -564,7 +564,7 @@ blocks:
     bus_structure: null
     coordinate: [272, 465]
     rotation: 0
-    state: disabled
+    state: enabled
 - name: tempest_fine_sampling_synchronization_0
   id: tempest_fine_sampling_synchronization
   parameters:
@@ -994,7 +994,7 @@ blocks:
     bus_structure: null
     coordinate: [148, 607]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: video_sdl_sink_0_0
   id: video_sdl_sink
   parameters:

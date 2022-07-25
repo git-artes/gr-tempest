@@ -26,9 +26,6 @@ inputs:
 - label: in
   domain: stream
   dtype: float
-- label: iHsize
-  domain: message
-  optional: true
 outputs:
 - label: out
   domain: stream
