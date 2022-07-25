@@ -15,7 +15,6 @@
 #include "tempest/fine_sampling_synchronization.h"
 #include "tempest/sync_detector.h"
 #include "tempest/frame_drop.h"
-#include "tempest/infer_resolution.h"
 #include "tempest/fft_peak_fine_sampling_sync.h"
 #include "tempest/infer_screen_resolution.h"
 #include "tempest/ssamp_correction.h"
@@ -36,8 +35,7 @@ GR_SWIG_BLOCK_MAGIC2(tempest, fine_sampling_synchronization);
 GR_SWIG_BLOCK_MAGIC2(tempest, sync_detector);
 %include "tempest/frame_drop.h"
 GR_SWIG_BLOCK_MAGIC2(tempest, frame_drop);
-%include "tempest/infer_resolution.h"
-GR_SWIG_BLOCK_MAGIC2(tempest, infer_resolution);
+
 %include "tempest/fft_peak_fine_sampling_sync.h"
 GR_SWIG_BLOCK_MAGIC2(tempest, fft_peak_fine_sampling_sync);
 %include "tempest/infer_screen_resolution.h"

@@ -30,7 +30,6 @@ list(APPEND tempest_sources
     fine_sampling_synchronization_impl.cc
     sync_detector_impl.cc
     frame_drop_impl.cc
-    infer_resolution_impl.cc
     fft_peak_fine_sampling_sync_impl.cc
     infer_screen_resolution_impl.cc
     ssamp_correction_impl.cc
