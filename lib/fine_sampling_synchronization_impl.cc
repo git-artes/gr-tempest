@@ -133,6 +133,17 @@ namespace gr {
 
             // d_current_line_corr[i] and derivatives will keep the correlation between pixels 
             // px[t] and px[t+Htotal+i]
+
+            /** @fcarraustewart: FIXME > Memory leak when using this as a callback ? 
+             * in the context where we already constructed our block
+             * invoking this function would leave 6 dangling pointers right here, we 
+             * should somehow memory manage this correctly, on first thought:
+             * */
+            /**
+             * < Calling delete for each of the following pointers 
+             * and assigning them nullptr right here. Before running the new operator.
+             * 
+             * */
             d_current_line_corr = new gr_complex[2*d_max_deviation_px + 1];
             d_historic_line_corr = new gr_complex[2*d_max_deviation_px + 1];
             d_abs_historic_line_corr = new float[2*d_max_deviation_px + 1];

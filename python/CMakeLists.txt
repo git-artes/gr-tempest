@@ -56,3 +56,4 @@ GR_ADD_TEST(qa_infer_resolution ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}
 GR_ADD_TEST(qa_fft_peak_fine_sampling_sync ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/qa_fft_peak_fine_sampling_sync.py)
 GR_ADD_TEST(qa_infer_screen_resolution ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/qa_infer_screen_resolution.py)
 GR_ADD_TEST(qa_tempest_msgbtn ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/qa_tempest_msgbtn.py)
+GR_ADD_TEST(qa_ssamp_correction ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/qa_ssamp_correction.py)

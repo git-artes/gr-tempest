@@ -18,6 +18,7 @@
 #include "tempest/infer_resolution.h"
 #include "tempest/fft_peak_fine_sampling_sync.h"
 #include "tempest/infer_screen_resolution.h"
+#include "tempest/ssamp_correction.h"
 %}
 
 %include "tempest/sampling_synchronization.h"
@@ -41,3 +42,5 @@ GR_SWIG_BLOCK_MAGIC2(tempest, infer_resolution);
 GR_SWIG_BLOCK_MAGIC2(tempest, fft_peak_fine_sampling_sync);
 %include "tempest/infer_screen_resolution.h"
 GR_SWIG_BLOCK_MAGIC2(tempest, infer_screen_resolution);
+%include "tempest/ssamp_correction.h"
+GR_SWIG_BLOCK_MAGIC2(tempest, ssamp_correction);

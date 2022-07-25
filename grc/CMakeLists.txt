@@ -29,5 +29,6 @@ install(FILES
     tempest_message_to_var.block.yml
     tempest_fft_peak_fine_sampling_sync.block.yml
     tempest_infer_screen_resolution.block.yml
-    tempest_tempest_msgbtn.block.yml DESTINATION share/gnuradio/grc/blocks
+    tempest_tempest_msgbtn.block.yml
+    tempest_ssamp_correction.block.yml DESTINATION share/gnuradio/grc/blocks
 )

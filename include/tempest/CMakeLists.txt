@@ -32,5 +32,6 @@ install(FILES
     frame_drop.h
     infer_resolution.h
     fft_peak_fine_sampling_sync.h
-    infer_screen_resolution.h DESTINATION include/tempest
+    infer_screen_resolution.h
+    ssamp_correction.h DESTINATION include/tempest
 )
