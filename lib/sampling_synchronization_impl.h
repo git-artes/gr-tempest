@@ -26,7 +26,7 @@
 #ifndef INCLUDED_TEMPEST_SAMPLING_SYNCHRONIZATION_IMPL_H
 #define INCLUDED_TEMPEST_SAMPLING_SYNCHRONIZATION_IMPL_H
 
-#include <tempest/sampling_synchronization.h>
+#include <gnuradio/tempest/sampling_synchronization.h>
 #include <gnuradio/filter/mmse_fir_interpolator_cc.h>
 #include <random>
 
