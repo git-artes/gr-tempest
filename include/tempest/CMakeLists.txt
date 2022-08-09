@@ -27,5 +27,10 @@ install(FILES
     framing.h
     Hsync.h
     normalize_flow.h
-    fine_sampling_synchronization.h DESTINATION include/tempest
+    fine_sampling_synchronization.h
+    sync_detector.h
+    frame_drop.h
+    fft_peak_fine_sampling_sync.h
+    infer_screen_resolution.h
+    ssamp_correction.h DESTINATION include/tempest
 )

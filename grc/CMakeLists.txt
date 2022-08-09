@@ -17,12 +17,18 @@
 # along with GNU Radio; see the file COPYING.  If not, write to
 # the Free Software Foundation, Inc., 51 Franklin Street,
 # Boston, MA 02110-1301, USA.
-
 install(FILES
     tempest_sampling_synchronization.block.yml
     tempest_framing.block.yml
     tempest_Hsync.block.yml
     tempest_image_source.block.yml
     tempest_normalize_flow.block.yml
-    tempest_fine_sampling_synchronization.block.yml DESTINATION share/gnuradio/grc/blocks
+    tempest_fine_sampling_synchronization.block.yml
+    tempest_sync_detector.block.yml
+    tempest_frame_drop.block.yml
+    tempest_message_to_var.block.yml
+    tempest_fft_peak_fine_sampling_sync.block.yml
+    tempest_infer_screen_resolution.block.yml
+    tempest_tempest_msgbtn.block.yml
+    tempest_ssamp_correction.block.yml DESTINATION share/gnuradio/grc/blocks
 )
