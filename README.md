@@ -6,6 +6,8 @@
 
 **Status:** The examples folder contains several examples that work with recordings and it's been tested on hardware (see videos below). Feedback is more than welcome!
 
+**As of August 2022 several new blocks have been added, and are still under testing. If something's not working, checkout the `vanilla-3.8' branch for the previous, more tested, version**
+
 **If you find the code useful, please consider starring the repository. This will help us get funding to support the project.**
 
 TEMPEST (or [Van Eck Phreaking](https://en.wikipedia.org/wiki/Van_Eck_phreaking)) is a technique to eavesdrop video monitors by receiving the electromagnetic signal emitted by the VGA/HDMI cable and connectors (although other targets are possible, such as keyboards, for which the same term is generally used, see [Wikipedia/Tempest](https://en.wikipedia.org/wiki/Tempest_(codename))). 
