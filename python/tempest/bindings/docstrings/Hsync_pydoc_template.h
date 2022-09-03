@@ -7,7 +7,7 @@
  *
  */
 #include "pydoc_macros.h"
-#define D(...) DOC(gr,tempest, __VA_ARGS__ )
+#define D(...) DOC(gr, tempest, __VA_ARGS__)
 /*
   This file contains placeholders for docstrings for the Python bindings.
   Do not edit! These were automatically extracted during the binding process
@@ -15,19 +15,16 @@
  */
 
 
- 
- static const char *__doc_gr_tempest_Hsync = R"doc()doc";
+static const char* __doc_gr_tempest_Hsync = R"doc()doc";
 
 
- static const char *__doc_gr_tempest_Hsync_Hsync_0 = R"doc()doc";
+static const char* __doc_gr_tempest_Hsync_Hsync_0 = R"doc()doc";
 
 
- static const char *__doc_gr_tempest_Hsync_Hsync_1 = R"doc()doc";
+static const char* __doc_gr_tempest_Hsync_Hsync_1 = R"doc()doc";
 
 
- static const char *__doc_gr_tempest_Hsync_make = R"doc()doc";
+static const char* __doc_gr_tempest_Hsync_make = R"doc()doc";
 
 
- static const char *__doc_gr_tempest_Hsync_set_Htotal_and_delay = R"doc()doc";
-
-  
+static const char* __doc_gr_tempest_Hsync_set_Htotal_and_delay = R"doc()doc";

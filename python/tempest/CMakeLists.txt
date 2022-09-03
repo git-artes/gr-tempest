@@ -23,6 +23,8 @@ GR_PYTHON_INSTALL(
     FILES
     __init__.py
     image_source.py
+    message_to_var.py
+    tempest_msgbtn.py
     DESTINATION ${GR_PYTHON_DIR}/gnuradio/tempest
 )
 
@@ -38,11 +40,6 @@ set(GR_TEST_TARGET_DEPS gnuradio-tempest)
 add_custom_target(
   copy_module_for_tests ALL
   COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}
-          ${CMAKE_BINARY_DIR}/test_modules/gnuradio/tempest/
+          ${PROJECT_BINARY_DIR}/test_modules/gnuradio/tempest/
 )
-GR_ADD_TEST(qa_sampling_synchronization ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/qa_sampling_synchronization.py)
-GR_ADD_TEST(qa_framing ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/qa_framing.py)
-GR_ADD_TEST(qa_Hsync ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/qa_Hsync.py)
-GR_ADD_TEST(qa_image_source ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/qa_image_source.py)
-GR_ADD_TEST(qa_normalize_flow ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/qa_normalize_flow.py)
-GR_ADD_TEST(qa_fine_sampling_synchronization ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/qa_fine_sampling_synchronization.py)
+

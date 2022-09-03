@@ -21,11 +21,16 @@ namespace py = pybind11;
 // Please do not delete
 /**************************************/
 // BINDING_FUNCTION_PROTOTYPES(
+void bind_fft_peak_fine_sampling_sync(py::module& m);
 void bind_fine_sampling_synchronization(py::module& m);
+void bind_frame_drop(py::module& m);
 void bind_framing(py::module& m);
 void bind_Hsync(py::module& m);
+void bind_infer_screen_resolution(py::module& m);
 void bind_normalize_flow(py::module& m);
 void bind_sampling_synchronization(py::module& m);
+void bind_ssamp_correction(py::module& m);
+void bind_sync_detector(py::module& m);
 // ) END BINDING_FUNCTION_PROTOTYPES
 
 
@@ -54,10 +59,15 @@ PYBIND11_MODULE(tempest_python, m)
     // Please do not delete
     /**************************************/
     // BINDING_FUNCTION_CALLS(
+    bind_fft_peak_fine_sampling_sync(m);
     bind_fine_sampling_synchronization(m);
+    bind_frame_drop(m);
     bind_framing(m);
     bind_Hsync(m);
+    bind_infer_screen_resolution(m);
     bind_normalize_flow(m);
     bind_sampling_synchronization(m);
+    bind_ssamp_correction(m);
+    bind_sync_detector(m);
     // ) END BINDING_FUNCTION_CALLS
 }

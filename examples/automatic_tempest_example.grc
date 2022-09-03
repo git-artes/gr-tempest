@@ -182,7 +182,9 @@ blocks:
     label: Hsync delay
     min_len: '200'
     orient: QtCore.Qt.Horizontal
+    outputmsgname: value
     rangeType: int
+    showports: 'False'
     start: '0'
     step: '1'
     stop: int(Hblank/float(px_rate)*samp_rate)*2
@@ -203,7 +205,9 @@ blocks:
     label: Harmonic
     min_len: '200'
     orient: QtCore.Qt.Horizontal
+    outputmsgname: value
     rangeType: float
+    showports: 'False'
     start: '1'
     step: '1'
     stop: '10'
@@ -266,7 +270,9 @@ blocks:
     label: Vertical offset
     min_len: '200'
     orient: QtCore.Qt.Horizontal
+    outputmsgname: value
     rangeType: int
+    showports: 'False'
     start: '0'
     step: '1'
     stop: Vsize
@@ -297,7 +303,7 @@ blocks:
     option2: '2'
     option3: '3'
     option4: '4'
-    options: '[x for x in range(len(modes))]'
+    options: range(len(modes))
     orient: Qt.QVBoxLayout
     type: int
     value: '20'
@@ -961,7 +967,7 @@ blocks:
     start_time: '-1.0'
     stream_args: ''
     stream_chans: '[]'
-    sync: pc_clock
+    sync: sync
     time_source0: ''
     time_source1: ''
     time_source2: ''
@@ -1012,4 +1018,4 @@ connections:
 
 metadata:
   file_format: 1
-  grc_version: v3.11.0.0git-55-g8526e6f8
+  grc_version: v3.11.0.0git-215-g9a698313

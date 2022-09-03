@@ -13,7 +13,7 @@
 /* If manual edits are made, the following tags should be modified accordingly.    */
 /* BINDTOOL_GEN_AUTOMATIC(0)                                                       */
 /* BINDTOOL_USE_PYGCCXML(0)                                                        */
-/* BINDTOOL_HEADER_FILE(fine_sampling_synchronization.h)                                        */
+/* BINDTOOL_HEADER_FILE(fine_sampling_synchronization.h) */
 /* BINDTOOL_HEADER_FILE_HASH(d9255331a9967d64d71153447c08db71)                     */
 /***********************************************************************************/
 
@@ -30,43 +30,29 @@ namespace py = pybind11;
 void bind_fine_sampling_synchronization(py::module& m)
 {
 
-    using fine_sampling_synchronization    = ::gr::tempest::fine_sampling_synchronization;
+    using fine_sampling_synchronization = ::gr::tempest::fine_sampling_synchronization;
 
 
-    py::class_<fine_sampling_synchronization, gr::block, gr::basic_block,
-        std::shared_ptr<fine_sampling_synchronization>>(m, "fine_sampling_synchronization", D(fine_sampling_synchronization))
+    py::class_<fine_sampling_synchronization,
+               gr::block,
+               gr::basic_block,
+               std::shared_ptr<fine_sampling_synchronization>>(
+        m, "fine_sampling_synchronization", D(fine_sampling_synchronization))
 
         .def(py::init(&fine_sampling_synchronization::make),
-           py::arg("Htotal"),
-           py::arg("Vtotal"),
-           py::arg("correct_sampling"),
-           py::arg("max_deviation"),
-           py::arg("update_proba"),
-           D(fine_sampling_synchronization,make)
-        )
-        
+             py::arg("Htotal"),
+             py::arg("Vtotal"),
+             py::arg("correct_sampling"),
+             py::arg("max_deviation"),
+             py::arg("update_proba"),
+             D(fine_sampling_synchronization, make))
 
 
-
-
-        
-        .def("set_Htotal_Vtotal",&fine_sampling_synchronization::set_Htotal_Vtotal,       
-            py::arg("Htotal"),
-            py::arg("Vtotal"),
-            D(fine_sampling_synchronization,set_Htotal_Vtotal)
-        )
+        .def("set_Htotal_Vtotal",
+             &fine_sampling_synchronization::set_Htotal_Vtotal,
+             py::arg("Htotal"),
+             py::arg("Vtotal"),
+             D(fine_sampling_synchronization, set_Htotal_Vtotal))
 
         ;
-
-
-
-
 }
-
-
-
-
-
-
-
-

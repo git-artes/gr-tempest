@@ -30,42 +30,25 @@ namespace py = pybind11;
 void bind_framing(py::module& m)
 {
 
-    using framing    = ::gr::tempest::framing;
+    using framing = ::gr::tempest::framing;
 
 
-    py::class_<framing, gr::block, gr::basic_block,
-        std::shared_ptr<framing>>(m, "framing", D(framing))
+    py::class_<framing, gr::block, gr::basic_block, std::shared_ptr<framing>>(
+        m, "framing", D(framing))
 
         .def(py::init(&framing::make),
-           py::arg("Htotal"),
-           py::arg("Vtotal"),
-           py::arg("Hdisplay"),
-           py::arg("Vdisplay"),
-           D(framing,make)
-        )
-        
+             py::arg("Htotal"),
+             py::arg("Vtotal"),
+             py::arg("Hdisplay"),
+             py::arg("Vdisplay"),
+             D(framing, make))
 
 
-
-
-        
-        .def("set_Htotal_and_Vtotal",&framing::set_Htotal_and_Vtotal,       
-            py::arg("Htotal"),
-            py::arg("Vtotal"),
-            D(framing,set_Htotal_and_Vtotal)
-        )
+        .def("set_Htotal_and_Vtotal",
+             &framing::set_Htotal_and_Vtotal,
+             py::arg("Htotal"),
+             py::arg("Vtotal"),
+             D(framing, set_Htotal_and_Vtotal))
 
         ;
-
-
-
-
 }
-
-
-
-
-
-
-
-

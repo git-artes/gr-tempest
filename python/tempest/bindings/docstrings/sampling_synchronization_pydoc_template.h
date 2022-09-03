@@ -7,7 +7,7 @@
  *
  */
 #include "pydoc_macros.h"
-#define D(...) DOC(gr,tempest, __VA_ARGS__ )
+#define D(...) DOC(gr, tempest, __VA_ARGS__)
 /*
   This file contains placeholders for docstrings for the Python bindings.
   Do not edit! These were automatically extracted during the binding process
@@ -15,22 +15,22 @@
  */
 
 
- 
- static const char *__doc_gr_tempest_sampling_synchronization = R"doc()doc";
+static const char* __doc_gr_tempest_sampling_synchronization = R"doc()doc";
 
 
- static const char *__doc_gr_tempest_sampling_synchronization_sampling_synchronization_0 = R"doc()doc";
+static const char* __doc_gr_tempest_sampling_synchronization_sampling_synchronization_0 =
+    R"doc()doc";
 
 
- static const char *__doc_gr_tempest_sampling_synchronization_sampling_synchronization_1 = R"doc()doc";
+static const char* __doc_gr_tempest_sampling_synchronization_sampling_synchronization_1 =
+    R"doc()doc";
 
 
- static const char *__doc_gr_tempest_sampling_synchronization_make = R"doc()doc";
+static const char* __doc_gr_tempest_sampling_synchronization_make = R"doc()doc";
 
 
- static const char *__doc_gr_tempest_sampling_synchronization_set_Htotal = R"doc()doc";
+static const char* __doc_gr_tempest_sampling_synchronization_set_Htotal = R"doc()doc";
 
 
- static const char *__doc_gr_tempest_sampling_synchronization_set_manual_correction = R"doc()doc";
-
-  
+static const char* __doc_gr_tempest_sampling_synchronization_set_manual_correction =
+    R"doc()doc";

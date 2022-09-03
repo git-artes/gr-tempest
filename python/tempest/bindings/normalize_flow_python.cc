@@ -30,43 +30,29 @@ namespace py = pybind11;
 void bind_normalize_flow(py::module& m)
 {
 
-    using normalize_flow    = ::gr::tempest::normalize_flow;
+    using normalize_flow = ::gr::tempest::normalize_flow;
 
 
-    py::class_<normalize_flow, gr::sync_block, gr::block, gr::basic_block,
-        std::shared_ptr<normalize_flow>>(m, "normalize_flow", D(normalize_flow))
+    py::class_<normalize_flow,
+               gr::sync_block,
+               gr::block,
+               gr::basic_block,
+               std::shared_ptr<normalize_flow>>(m, "normalize_flow", D(normalize_flow))
 
         .def(py::init(&normalize_flow::make),
-           py::arg("min"),
-           py::arg("max"),
-           py::arg("window"),
-           py::arg("alpha_avg"),
-           py::arg("update_proba"),
-           D(normalize_flow,make)
-        )
-        
+             py::arg("min"),
+             py::arg("max"),
+             py::arg("window"),
+             py::arg("alpha_avg"),
+             py::arg("update_proba"),
+             D(normalize_flow, make))
 
 
-
-
-        
-        .def("set_min_max",&normalize_flow::set_min_max,       
-            py::arg("min"),
-            py::arg("max"),
-            D(normalize_flow,set_min_max)
-        )
+        .def("set_min_max",
+             &normalize_flow::set_min_max,
+             py::arg("min"),
+             py::arg("max"),
+             D(normalize_flow, set_min_max))
 
         ;
-
-
-
-
 }
-
-
-
-
-
-
-
-

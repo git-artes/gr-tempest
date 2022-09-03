@@ -13,7 +13,7 @@
 /* If manual edits are made, the following tags should be modified accordingly.    */
 /* BINDTOOL_GEN_AUTOMATIC(0)                                                       */
 /* BINDTOOL_USE_PYGCCXML(0)                                                        */
-/* BINDTOOL_HEADER_FILE(sampling_synchronization.h)                                        */
+/* BINDTOOL_HEADER_FILE(sampling_synchronization.h) */
 /* BINDTOOL_HEADER_FILE_HASH(c8bb79ae5be873e8364ff176c2a43efe)                     */
 /***********************************************************************************/
 
@@ -30,46 +30,31 @@ namespace py = pybind11;
 void bind_sampling_synchronization(py::module& m)
 {
 
-    using sampling_synchronization    = ::gr::tempest::sampling_synchronization;
+    using sampling_synchronization = ::gr::tempest::sampling_synchronization;
 
 
-    py::class_<sampling_synchronization, gr::block, gr::basic_block,
-        std::shared_ptr<sampling_synchronization>>(m, "sampling_synchronization", D(sampling_synchronization))
+    py::class_<sampling_synchronization,
+               gr::block,
+               gr::basic_block,
+               std::shared_ptr<sampling_synchronization>>(
+        m, "sampling_synchronization", D(sampling_synchronization))
 
         .def(py::init(&sampling_synchronization::make),
-           py::arg("Htotal"),
-           py::arg("manual_correction"),
-           D(sampling_synchronization,make)
-        )
-        
+             py::arg("Htotal"),
+             py::arg("manual_correction"),
+             D(sampling_synchronization, make))
 
 
+        .def("set_Htotal",
+             &sampling_synchronization::set_Htotal,
+             py::arg("Htotal"),
+             D(sampling_synchronization, set_Htotal))
 
 
-        
-        .def("set_Htotal",&sampling_synchronization::set_Htotal,       
-            py::arg("Htotal"),
-            D(sampling_synchronization,set_Htotal)
-        )
-
-
-        
-        .def("set_manual_correction",&sampling_synchronization::set_manual_correction,       
-            py::arg("correction"),
-            D(sampling_synchronization,set_manual_correction)
-        )
+        .def("set_manual_correction",
+             &sampling_synchronization::set_manual_correction,
+             py::arg("correction"),
+             D(sampling_synchronization, set_manual_correction))
 
         ;
-
-
-
-
 }
-
-
-
-
-
-
-
-

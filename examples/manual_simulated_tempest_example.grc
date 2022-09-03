@@ -1,6 +1,7 @@
 options:
   parameters:
     author: ''
+    catch_exceptions: 'True'
     category: '[GRC Hier Blocks]'
     cmake_opt: ''
     comment: ''
@@ -123,8 +124,10 @@ blocks:
     gui_hint: 1,0,1,1
     label: Sampling error
     min_len: '200'
-    orient: Qt.Horizontal
+    orient: QtCore.Qt.Horizontal
+    outputmsgname: value
     rangeType: float
+    showports: 'False'
     start: '-0.1'
     step: 10e-6
     stop: '0.1'
@@ -144,8 +147,10 @@ blocks:
     gui_hint: 0,0,1,1
     label: Frequency Error (normalized)
     min_len: '200'
-    orient: Qt.Horizontal
+    orient: QtCore.Qt.Horizontal
+    outputmsgname: value
     rangeType: float
+    showports: 'False'
     start: '-1'
     step: 1e-5
     stop: '1'
@@ -165,8 +170,10 @@ blocks:
     gui_hint: 1,1,1,1
     label: Harmonic
     min_len: '200'
-    orient: Qt.Horizontal
+    orient: QtCore.Qt.Horizontal
+    outputmsgname: value
     rangeType: float
+    showports: 'False'
     start: '1'
     step: '1'
     stop: '10'
@@ -186,8 +193,10 @@ blocks:
     gui_hint: 3,0,1,1
     label: Horizontal offset
     min_len: '200'
-    orient: Qt.Horizontal
+    orient: QtCore.Qt.Horizontal
+    outputmsgname: value
     rangeType: int
+    showports: 'False'
     start: '0'
     step: '1'
     stop: interpolatedHsize
@@ -237,6 +246,7 @@ blocks:
     label4: ''
     labels: '[]'
     num_opts: '2'
+    option0: '0'
     option1: '1'
     option2: '2'
     option3: '3'
@@ -260,8 +270,10 @@ blocks:
     gui_hint: 3,1,1,1
     label: Vertical offset
     min_len: '200'
-    orient: Qt.Horizontal
+    orient: QtCore.Qt.Horizontal
+    outputmsgname: value
     rangeType: int
+    showports: 'False'
     start: '0'
     step: '1'
     stop: Vsize
@@ -281,8 +293,10 @@ blocks:
     gui_hint: 0,1,1,1
     label: Noise Power
     min_len: '200'
-    orient: Qt.Horizontal
+    orient: QtCore.Qt.Horizontal
+    outputmsgname: value
     rangeType: float
+    showports: 'False'
     start: '0'
     step: 1e-4
     stop: 2e-2
@@ -685,3 +699,4 @@ connections:
 
 metadata:
   file_format: 1
+  grc_version: v3.11.0.0git-215-g9a698313

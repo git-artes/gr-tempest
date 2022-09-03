@@ -30,40 +30,20 @@ namespace py = pybind11;
 void bind_Hsync(py::module& m)
 {
 
-    using Hsync    = ::gr::tempest::Hsync;
+    using Hsync = ::gr::tempest::Hsync;
 
 
-    py::class_<Hsync, gr::block, gr::basic_block,
-        std::shared_ptr<Hsync>>(m, "Hsync", D(Hsync))
+    py::class_<Hsync, gr::block, gr::basic_block, std::shared_ptr<Hsync>>(
+        m, "Hsync", D(Hsync))
 
-        .def(py::init(&Hsync::make),
-           py::arg("Htotal"),
-           py::arg("delay"),
-           D(Hsync,make)
-        )
-        
+        .def(py::init(&Hsync::make), py::arg("Htotal"), py::arg("delay"), D(Hsync, make))
 
 
-
-
-        
-        .def("set_Htotal_and_delay",&Hsync::set_Htotal_and_delay,       
-            py::arg("Htotal"),
-            py::arg("delay"),
-            D(Hsync,set_Htotal_and_delay)
-        )
+        .def("set_Htotal_and_delay",
+             &Hsync::set_Htotal_and_delay,
+             py::arg("Htotal"),
+             py::arg("delay"),
+             D(Hsync, set_Htotal_and_delay))
 
         ;
-
-
-
-
 }
-
-
-
-
-
-
-
-

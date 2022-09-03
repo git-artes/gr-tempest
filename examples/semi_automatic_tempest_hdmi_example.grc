@@ -53,7 +53,9 @@ blocks:
     label: Horizontal correction
     min_len: '200'
     orient: QtCore.Qt.Horizontal
+    outputmsgname: value
     rangeType: int
+    showports: 'False'
     start: '-20'
     step: '1'
     stop: '20'
@@ -157,7 +159,9 @@ blocks:
     label: Vertical correction
     min_len: '200'
     orient: QtCore.Qt.Horizontal
+    outputmsgname: value
     rangeType: int
+    showports: 'False'
     start: '-20'
     step: '1'
     stop: '20'
@@ -248,7 +252,9 @@ blocks:
     label: Harmonic
     min_len: '200'
     orient: QtCore.Qt.Horizontal
+    outputmsgname: value
     rangeType: float
+    showports: 'False'
     start: '1'
     step: '1'
     stop: '10'
@@ -269,7 +275,9 @@ blocks:
     label: Horizontal offset
     min_len: '200'
     orient: QtCore.Qt.Horizontal
+    outputmsgname: value
     rangeType: int
+    showports: 'False'
     start: '0'
     step: '1'
     stop: interpolatedHsize
@@ -332,7 +340,9 @@ blocks:
     label: Vertical offset
     min_len: '200'
     orient: QtCore.Qt.Horizontal
+    outputmsgname: value
     rangeType: int
+    showports: 'False'
     start: '0'
     step: '1'
     stop: Vsize
@@ -363,9 +373,9 @@ blocks:
     option2: '2'
     option3: '3'
     option4: '4'
-    options: '[x for x in range(len(modes))]'
+    options: range(len(modes))
     orient: Qt.QVBoxLayout
-    type: raw
+    type: int
     value: '21'
     widget: combo_box
   states:
@@ -1121,4 +1131,4 @@ connections:
 
 metadata:
   file_format: 1
-  grc_version: v3.11.0.0git-55-g8526e6f8
+  grc_version: v3.11.0.0git-215-g9a698313

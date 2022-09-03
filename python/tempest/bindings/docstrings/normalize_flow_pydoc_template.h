@@ -7,7 +7,7 @@
  *
  */
 #include "pydoc_macros.h"
-#define D(...) DOC(gr,tempest, __VA_ARGS__ )
+#define D(...) DOC(gr, tempest, __VA_ARGS__)
 /*
   This file contains placeholders for docstrings for the Python bindings.
   Do not edit! These were automatically extracted during the binding process
@@ -15,19 +15,16 @@
  */
 
 
- 
- static const char *__doc_gr_tempest_normalize_flow = R"doc()doc";
+static const char* __doc_gr_tempest_normalize_flow = R"doc()doc";
 
 
- static const char *__doc_gr_tempest_normalize_flow_normalize_flow_0 = R"doc()doc";
+static const char* __doc_gr_tempest_normalize_flow_normalize_flow_0 = R"doc()doc";
 
 
- static const char *__doc_gr_tempest_normalize_flow_normalize_flow_1 = R"doc()doc";
+static const char* __doc_gr_tempest_normalize_flow_normalize_flow_1 = R"doc()doc";
 
 
- static const char *__doc_gr_tempest_normalize_flow_make = R"doc()doc";
+static const char* __doc_gr_tempest_normalize_flow_make = R"doc()doc";
 
 
- static const char *__doc_gr_tempest_normalize_flow_set_min_max = R"doc()doc";
-
-  
+static const char* __doc_gr_tempest_normalize_flow_set_min_max = R"doc()doc";
