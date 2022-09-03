@@ -6,7 +6,7 @@
 
 **Status:** The examples folder contains several examples that work with recordings and it's been tested on hardware (see videos below). Feedback is more than welcome!
 
-**As of August 2022 several new blocks have been added, and are still under testing. If something's not working, checkout the `vanilla-3.8' branch for the previous, more tested, version**
+**As of August 2022 several new blocks have been added, and are still under testing. If something's not working, checkout the `vanilla-3.8' branch or f5ed517ea60a2bb84c10e3bd14c638c575957c26 gnuradio 3.10 commit for the previous, more tested, version**
 
 **If you find the code useful, please consider starring the repository. This will help us get funding to support the project.**
 
