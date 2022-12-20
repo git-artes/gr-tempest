@@ -51,7 +51,7 @@
 
 #include <gnuradio/filter/mmse_fir_interpolator_cc.h>
 #include <random>
-#include <tempest/frame_drop.h>
+#include <gnuradio/tempest/frame_drop.h>
 #include <stdio.h>
 #include <math.h>
 

@@ -2,13 +2,11 @@ id: tempest_Hsync
 label: Horizontal Sync
 category: '[Tempest]'
 templates:
-  imports: import tempest
+  imports: from gnuradio import tempest
   make: tempest.Hsync(${Htotal}, ${delay})
-  callbacks:
-  - set_Htotal_and_delay(${Htotal},${delay}) 
 parameters:
 - id: Htotal
-  label: Horizontal px (total)
+  label: Htotal
   dtype: int
 - id: delay
   label: Delay

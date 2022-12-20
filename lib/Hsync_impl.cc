@@ -42,6 +42,8 @@ namespace gr {
             {
                 return gnuradio::get_initial_sptr
                     (new Hsync_impl(Htotal, delay));
+                //return
+               //gnuradio::make_block_sptr<Hsync>(Htotal, delay);
             }
 
         /*

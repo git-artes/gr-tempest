@@ -26,7 +26,7 @@
 #ifndef INCLUDED_TEMPEST_SSAMP_CORRECTION_IMPL_H
 #define INCLUDED_TEMPEST_SSAMP_CORRECTION_IMPL_H
 
-#include <tempest/ssamp_correction.h>
+#include <gnuradio/tempest/ssamp_correction.h>
 #include <gnuradio/filter/mmse_fir_interpolator_cc.h>
 #include <random>
 

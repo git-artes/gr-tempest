@@ -49,7 +49,7 @@
  * Include statements
  **********************************************************/
 
-#include <tempest/fft_peak_fine_sampling_sync.h>
+#include <gnuradio/tempest/fft_peak_fine_sampling_sync.h>
 
 namespace gr {
   namespace tempest {

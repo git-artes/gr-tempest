@@ -32,7 +32,7 @@
 #ifndef INCLUDED_SYNC_DETECTOR_IMPL_H
 #define INCLUDED_SYNC_DETECTOR_IMPL_H
 
-#include <tempest/sync_detector.h>
+#include <gnuradio/tempest/sync_detector.h>
 
 namespace gr {
   namespace tempest {

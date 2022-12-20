@@ -26,7 +26,7 @@
 #ifndef INCLUDED_TEMPEST_NORMALIZE_FLOW_IMPL_H
 #define INCLUDED_TEMPEST_NORMALIZE_FLOW_IMPL_H
 
-#include <tempest/normalize_flow.h>
+#include <gnuradio/tempest/normalize_flow.h>
 #include <random>
 
 namespace gr {

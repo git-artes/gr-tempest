@@ -1,6 +1,7 @@
 options:
   parameters:
     author: ''
+    catch_exceptions: 'True'
     category: '[GRC Hier Blocks]'
     cmake_opt: ''
     comment: ''
@@ -51,7 +52,7 @@ blocks:
     gui_hint: ''
     label: Horizontal resolution (total)
     min_len: '200'
-    orient: Qt.Horizontal
+    orient: QtCore.Qt.Horizontal
     rangeType: int
     start: '0'
     step: '1'
@@ -96,7 +97,7 @@ blocks:
     gui_hint: ''
     label: Vertical resolution (total)
     min_len: '200'
-    orient: Qt.Horizontal
+    orient: QtCore.Qt.Horizontal
     rangeType: int
     start: '0'
     step: '1'
@@ -129,7 +130,7 @@ blocks:
     gui_hint: ''
     label: Hsync delay
     min_len: '200'
-    orient: Qt.Horizontal
+    orient: QtCore.Qt.Horizontal
     rangeType: int
     start: '0'
     step: '1'
@@ -150,7 +151,7 @@ blocks:
     gui_hint: ''
     label: Delay fase
     min_len: '200'
-    orient: Qt.Horizontal
+    orient: QtCore.Qt.Horizontal
     rangeType: int
     start: '0'
     step: '1'
@@ -171,7 +172,7 @@ blocks:
     gui_hint: ''
     label: Fine sampling correction
     min_len: '200'
-    orient: Qt.Horizontal
+    orient: QtCore.Qt.Horizontal
     rangeType: float
     start: (interpolatedHsize-2)/float(interpolatedHsize)-1
     step: 1e-7
@@ -419,7 +420,7 @@ blocks:
     gui_hint: ''
     label: Fine frequency correction
     min_len: '200'
-    orient: Qt.Horizontal
+    orient: QtCore.Qt.Horizontal
     rangeType: float
     start: '-100'
     step: 1e-5
@@ -440,7 +441,7 @@ blocks:
     gui_hint: ''
     label: Frequency Error (normalized)
     min_len: '200'
-    orient: Qt.Horizontal
+    orient: QtCore.Qt.Horizontal
     rangeType: float
     start: '-1'
     step: 1e-7
@@ -461,7 +462,7 @@ blocks:
     gui_hint: ''
     label: Harmonic
     min_len: '200'
-    orient: Qt.Horizontal
+    orient: QtCore.Qt.Horizontal
     rangeType: float
     start: '1'
     step: '1'
@@ -482,7 +483,7 @@ blocks:
     gui_hint: ''
     label: Horizontal offset
     min_len: '200'
-    orient: Qt.Horizontal
+    orient: QtCore.Qt.Horizontal
     rangeType: int
     start: '0'
     step: '1'
@@ -545,6 +546,7 @@ blocks:
     label4: ''
     labels: '[]'
     num_opts: '2'
+    option0: '0'
     option1: '1'
     option2: '2'
     option3: '3'
@@ -568,7 +570,7 @@ blocks:
     gui_hint: ''
     label: Vertical offset
     min_len: '200'
-    orient: Qt.Horizontal
+    orient: QtCore.Qt.Horizontal
     rangeType: int
     start: '0'
     step: '1'
@@ -589,7 +591,7 @@ blocks:
     gui_hint: ''
     label: ''
     min_len: '200'
-    orient: Qt.Horizontal
+    orient: QtCore.Qt.Horizontal
     rangeType: float
     start: '0'
     step: '1'
@@ -622,7 +624,7 @@ blocks:
     gui_hint: ''
     label: Refresh Rate (Hz)
     min_len: '200'
-    orient: Qt.Horizontal
+    orient: QtCore.Qt.Horizontal
     rangeType: float
     start: '0'
     step: '1'
@@ -655,11 +657,9 @@ blocks:
     alias: ''
     alpha: '1.0'
     comment: ''
-    fac_decimation: '10'
     fft_size: int(fft_size)
     maxoutbuf: '0'
     minoutbuf: '0'
-    sample_rate: samp_rate
   states:
     bus_sink: false
     bus_source: false
@@ -674,11 +674,9 @@ blocks:
     alias: ''
     alpha: '1.0'
     comment: ''
-    fac_decimation: '10'
     fft_size: int(fft_size/2)
     maxoutbuf: '0'
     minoutbuf: '0'
-    sample_rate: samp_rate
   states:
     bus_sink: false
     bus_source: false
@@ -1224,16 +1222,6 @@ connections:
 - [tempest_fft_peak_fine_sampling_sync_0_0, '0', blocks_null_sink_0_0, '0']
 - [tempest_fft_peak_fine_sampling_sync_0_0, '0', qtgui_time_sink_x_1, '0']
 - [tempest_fft_peak_fine_sampling_sync_0_0, en, FFT_autocorrelation_0_0, en]
-- [tempest_fft_peak_fine_sampling_sync_0_0, ratio, tempest_fine_sampling_synchronization_0,
-  ratio]
-- [tempest_fft_peak_fine_sampling_sync_0_0, smpl, tempest_frame_drop_0, smpl]
-- [tempest_fine_sampling_synchronization_0, '0', FFT_autocorrelation_0, '0']
-- [tempest_fine_sampling_synchronization_0, '0', blocks_complex_to_mag_0, '0']
-- [tempest_fine_sampling_synchronization_0, '0', tempest_sync_detector_0, '0']
-- [tempest_frame_drop_0, '0', tempest_fine_sampling_synchronization_0, '0']
-- [tempest_frame_drop_0, ratio, tempest_fine_sampling_synchronization_0, ratio]
-- [tempest_normalize_flow_0, '0', blocks_float_to_short_0, '0']
-- [tempest_sync_detector_0, '0', blocks_complex_to_mag_0, '0']
 
 metadata:
   file_format: 1

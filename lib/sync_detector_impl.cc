@@ -36,7 +36,7 @@
 #include <gnuradio/io_signature.h>
 #include "sync_detector_impl.h"
 #include <volk/volk.h>
-#include <math.h>
+#include <gnuradio/math.h>
 #include <gnuradio/math.h>
 
 namespace gr {

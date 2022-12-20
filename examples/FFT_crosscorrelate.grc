@@ -1,6 +1,7 @@
 options:
   parameters:
     author: tempest
+    catch_exceptions: 'True'
     category: '[Tempest]'
     cmake_opt: ''
     comment: ''

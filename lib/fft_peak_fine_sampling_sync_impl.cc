@@ -45,7 +45,7 @@
 #include "fft_peak_fine_sampling_sync_impl.h"
 #include <thread>
 #include <volk/volk.h>
-#include <math.h>
+#include <gnuradio/math.h>
 
 /**********************************************************
  * Constant and macro definitions
