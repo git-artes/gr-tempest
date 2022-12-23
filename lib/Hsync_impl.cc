@@ -2,6 +2,7 @@
 /* 
 * Copyright 2020
 *   Federico "Larroca" La Rocca <flarroca@fing.edu.uy>
+*   Adapted to 3.10 by Santiago Fernandez <santiago.fernandez.rovira@fing.edu.uy>
 * 
 *   Instituto de Ingenieria Electrica, Facultad de Ingenieria,
 *   Universidad de la Republica, Uruguay.
@@ -42,6 +43,8 @@ namespace gr {
             {
                 return gnuradio::get_initial_sptr
                     (new Hsync_impl(Htotal, delay));
+                //return
+               //gnuradio::make_block_sptr<Hsync>(Htotal, delay);
             }
 
         /*

@@ -1,6 +1,7 @@
 options:
   parameters:
     author: tempest
+    catch_exceptions: 'True'
     category: '[Tempest]'
     cmake_opt: ''
     comment: ''
@@ -341,7 +342,6 @@ connections:
 - [fft_vxx_0, '0', blocks_complex_to_mag_0, '0']
 - [fft_vxx_1, '0', blocks_complex_to_mag_0_0, '0']
 - [pad_source_0, '0', blocks_selector_0, '0']
-- [pad_source_0_0, out, blocks_selector_0, en]
 - [single_pole_iir_filter_xx_0, '0', blocks_nlog10_ff_1, '0']
 
 metadata:

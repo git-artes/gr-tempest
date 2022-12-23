@@ -2,6 +2,8 @@
 /*
  * Copyright 2020
  *   Federico "Larroca" La Rocca <flarroca@fing.edu.uy>
+ *   Adapted to 3.10 by Santiago Fernandez <santiago.fernandez.rovira@fing.edu.uy>
+ 
  *
  *   Instituto de Ingenieria Electrica, Facultad de Ingenieria,
  *   Universidad de la Republica, Uruguay.
@@ -26,10 +28,10 @@
 #ifndef INCLUDED_TEMPEST_INFER_SCREEN_RESOLUTION_IMPL_H
 #define INCLUDED_TEMPEST_INFER_SCREEN_RESOLUTION_IMPL_H
 
-#include <tempest/infer_screen_resolution.h>
+#include <gnuradio/tempest/infer_screen_resolution.h>
 //#include <thread>
 #include <volk/volk.h>
-#include <math.h>
+#include <gnuradio/math.h>
 
 namespace gr {
   namespace tempest {

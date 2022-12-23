@@ -1,6 +1,7 @@
 options:
   parameters:
     author: ''
+    catch_exceptions: 'True'
     category: '[GRC Hier Blocks]'
     cmake_opt: ''
     comment: ''
@@ -123,7 +124,7 @@ blocks:
     gui_hint: 1,0,1,1
     label: Sampling error
     min_len: '200'
-    orient: Qt.Horizontal
+    orient: QtCore.Qt.Horizontal
     rangeType: float
     start: '-0.1'
     step: 10e-6
@@ -144,7 +145,7 @@ blocks:
     gui_hint: 0,0,1,1
     label: Frequency Error (normalized)
     min_len: '200'
-    orient: Qt.Horizontal
+    orient: QtCore.Qt.Horizontal
     rangeType: float
     start: '-1'
     step: 1e-5
@@ -165,7 +166,7 @@ blocks:
     gui_hint: 1,1,1,1
     label: Harmonic
     min_len: '200'
-    orient: Qt.Horizontal
+    orient: QtCore.Qt.Horizontal
     rangeType: float
     start: '1'
     step: '1'
@@ -186,7 +187,7 @@ blocks:
     gui_hint: 3,0,1,1
     label: Horizontal offset
     min_len: '200'
-    orient: Qt.Horizontal
+    orient: QtCore.Qt.Horizontal
     rangeType: int
     start: '0'
     step: '1'
@@ -237,6 +238,7 @@ blocks:
     label4: ''
     labels: '[]'
     num_opts: '2'
+    option0: '0'
     option1: '1'
     option2: '2'
     option3: '3'
@@ -260,7 +262,7 @@ blocks:
     gui_hint: 3,1,1,1
     label: Vertical offset
     min_len: '200'
-    orient: Qt.Horizontal
+    orient: QtCore.Qt.Horizontal
     rangeType: int
     start: '0'
     step: '1'
@@ -281,7 +283,7 @@ blocks:
     gui_hint: 0,1,1,1
     label: Noise Power
     min_len: '200'
-    orient: Qt.Horizontal
+    orient: QtCore.Qt.Horizontal
     rangeType: float
     start: '0'
     step: 1e-4

@@ -4,6 +4,8 @@
  *    Pablo Bertrand    <pablo.bertrand@fing.edu.uy>
  *    Felipe Carrau     <felipe.carrau@fing.edu.uy>
  *    Victoria Severi   <maria.severi@fing.edu.uy>
+ *   Adapted to 3.10 by Santiago Fernandez <santiago.fernandez.rovira@fing.edu.uy>
+ 
  *    
  *    Instituto de Ingeniería Eléctrica, Facultad de Ingeniería,
  *    Universidad de la República, Uruguay.
@@ -32,7 +34,7 @@
 #ifndef INCLUDED_SYNC_DETECTOR_IMPL_H
 #define INCLUDED_SYNC_DETECTOR_IMPL_H
 
-#include <tempest/sync_detector.h>
+#include <gnuradio/tempest/sync_detector.h>
 
 namespace gr {
   namespace tempest {
