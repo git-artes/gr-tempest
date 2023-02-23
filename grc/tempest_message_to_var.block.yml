@@ -7,11 +7,9 @@ parameters:
     label: Variable
     dtype: string
     default: 'delay_0'
-    optional: true
 inputs:
 -   label: port0
     domain: message
-    optional: true
 
 
 templates:
