@@ -1,3 +1,4 @@
 ./include/gnuradio/tempest/Hsync.hError occurred while running CASTXML xml file does not exist
 ./include/gnuradio/tempest/sampling_synchronization.hError occurred while running CASTXML xml file does not exist
 ./include/gnuradio/tempest/sync_detector.hError occurred while running CASTXML xml file does not exist
+./include/gnuradio/tempest/api.hUnable to find declaration. Matcher: [(decl type==namespace_t) and (name==gr)]
