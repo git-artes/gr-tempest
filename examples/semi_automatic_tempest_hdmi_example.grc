@@ -240,6 +240,18 @@ blocks:
     coordinate: [416, 228]
     rotation: 0
     state: enabled
+- name: a
+  id: variable
+  parameters:
+    comment: ''
+    value: range(len(modes))
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [856, 308.0]
+    rotation: 0
+    state: true
 - name: harmonic
   id: variable_qtgui_range
   parameters:
@@ -363,7 +375,7 @@ blocks:
     option2: '2'
     option3: '3'
     option4: '4'
-    options: range(len(modes))
+    options: list(range(len(modes)))
     orient: Qt.QVBoxLayout
     type: int
     value: '21'
@@ -484,6 +496,7 @@ blocks:
     maxoutbuf: '0'
     minoutbuf: '0'
     num_ports: '1'
+    showports: 'False'
     type: complex
     vlen: '1'
   states:
@@ -1121,3 +1134,4 @@ connections:
 
 metadata:
   file_format: 1
+  grc_version: 3.10.7.0
