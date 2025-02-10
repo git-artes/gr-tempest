@@ -79,6 +79,8 @@ On Debian/Ubuntu based distributions, you may have to run:
     volk_profile 
 
 **FAQ**
+*Q*: When running the flowgraphs a dialog box with the text "PYTHON V.3.XX is not responding". What's wrong?
+*A*: It's a problem with the SDL Video and Ubuntu 24.04. Please see the solution using ffplay I suggest in this issue: https://github.com/git-artes/gr-tempest/issues/30#issuecomment-2647946242. 
 
 *Q*: Cmake complains about unmet requirements. What's the problem?   
 *A*: You should read the errors carefully (though we reckon they are sometimes mysterious). Most probably is a missing library. Candidates are Boost (in Ubuntu libboost-all-dev) or libcppunit (in Ubuntu libcppunit-dev).   
@@ -87,7 +89,7 @@ On Debian/Ubuntu based distributions, you may have to run:
 *A*: This is a problem with using Cmake with a version >= 3, which is installed in Ubuntu 16, for instance. The good news is that you may ignore all these warnings. 
 
 *Q*: It is not compiling. What's the problem?  
-*A*: Again, you should read carefully the errors. Again, it's most probably a missing library, for instance log4cpp (in Ubuntu liblog4cpp5-dev). If the problem is with the API of GNU Radio, you should update it. I've tested gr-tempest with GNU Radio 3.7.11. Finally, if it complains about the random number generator, you have to compile using the -std=c++11 flag. 
+*A*: Again, you should read carefully the errors. Again, it's most probably a missing library, for instance log4cpp (in Ubuntu liblog4cpp5-dev). If the problem is with the API of GNU Radio, you should update it. I've tested gr-tempest with several versions of GNU Radio. Finally, if it complains about the random number generator, you have to compile using the -std=c++11 flag. 
 
 *Q*: I got the following error: "ModuleNotFoundError: No module named 'tempest'". What's wrong?
 
